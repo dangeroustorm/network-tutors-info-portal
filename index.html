@@ -3,30 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Information Portal - Network Tutors Dorm 718</title>
+    <title>Network Tutors | Wohnanlage Chiemgauer Str.</title>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        sjGreen: '#008550',
-                        sjGreenDark: '#006c41',
-                        sjSoftGreen: '#E6F3ED',
-                        sjCharcoal: '#1E2225',
-                        sjBg: '#F4F6F8',
-                        sjBorder: '#E2E8F0',
-                        sjText: '#1E2225',
-                        sjMuted: '#59636E',
-                        sjRed: '#D32F2F',
-                        sjAmber: '#E65100'
+                        brandNavy: '#0e1426',      /* Deep Midnight Slate */
+                        brandPrimary: '#0088ce',   /* Cyan Blue Primary */
+                        brandCyan: '#8de8fe',      /* Electric Light Cyan Accent */
+                        brandCyanDark: '#006ba6',  /* Deep Cyan Accent */
+                        brandBg: '#F3F6F9',        /* Light Clean Neutral Background */
+                        cardBg: '#FFFFFF',        /* Crisp White Card */
+                        textPrimary: '#0e1426',   /* Dark Slate High Contrast Text */
+                        textMuted: '#52607A',     /* Accessible Secondary Text */
+                        borderLight: '#DCE4EC',   /* Subtle Border */
+                        accentLight: '#EBF7FF',   /* Light Cyan Tint */
+                        roseLight: '#FEF2F2',
+                        emeraldLight: '#ECFDF5'
                     },
                     fontFamily: {
-                        sans: ['Arial', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif']
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']
                     }
                 }
             }
@@ -34,643 +41,656 @@
     </script>
 
     <style>
-        /* SJ.SE Flat & High-Contrast Design Principles */
         body {
-            background-color: #F4F6F8;
-            color: #1E2225;
-            font-family: Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #F3F6F9;
+            color: #0e1426;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Card Surface */
-        .sj-card {
-            background-color: #FFFFFF;
-            border: 1px solid #E2E8F0;
+        /* Modular Crisp Card Styling */
+        .modular-card {
+            background: #FFFFFF;
+            border: 1px solid #DCE4EC;
             border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 14px rgba(14, 20, 38, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
-        .sj-card:hover {
-            border-color: #CBD5E1;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        .modular-card:hover {
+            box-shadow: 0 10px 24px rgba(14, 20, 38, 0.08);
+            border-color: #0088ce;
         }
 
         /* Buttons */
-        .sj-btn-primary {
-            background-color: #008550;
+        .btn-primary {
+            background-color: #0088ce;
             color: #FFFFFF;
-            font-weight: 700;
-            border-radius: 9999px;
-            transition: background-color 0.2s ease;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 12px 24px;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 136, 206, 0.25);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .sj-btn-primary:hover {
-            background-color: #006c41;
+        .btn-primary:hover {
+            background-color: #0074b0;
+            box-shadow: 0 5px 16px rgba(0, 136, 206, 0.38);
+            transform: translateY(-1px);
         }
 
-        .sj-btn-secondary {
-            background-color: #E6F3ED;
-            color: #008550;
-            font-weight: 700;
-            border-radius: 9999px;
-            transition: background-color 0.2s ease;
-        }
-
-        .sj-btn-secondary:hover {
-            background-color: #d2e8de;
-        }
-
-        .sj-btn-outline {
+        .btn-outline {
             background-color: #FFFFFF;
-            border: 2px solid #008550;
-            color: #008550;
-            font-weight: 700;
-            border-radius: 9999px;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-
-        .sj-btn-outline:hover {
-            background-color: #008550;
-            color: #FFFFFF;
-        }
-
-        /* Language Selector Pill */
-        .lang-pill {
-            padding: 6px 14px;
-            border-radius: 9999px;
-            font-size: 0.8125rem;
-            font-weight: 700;
-            color: #59636E;
-            background-color: transparent;
+            border: 1px solid #0088ce;
+            color: #0088ce;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 12px 24px;
             transition: all 0.2s ease;
         }
 
-        .lang-pill.active {
-            background-color: #008550;
-            color: #FFFFFF;
+        .btn-outline:hover {
+            background-color: #EBF7FF;
+            color: #006ba6;
         }
 
-        /* Input Control */
-        .sj-input {
-            background-color: #FFFFFF;
+        /* Language Capsule Selector */
+        .lang-capsule {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #8de8fe;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .lang-capsule.active {
+            background: #8de8fe;
+            color: #0e1426;
+            box-shadow: 0 2px 8px rgba(141, 232, 254, 0.3);
+        }
+
+        /* Glowing LED Inspector Lights */
+        .led-glow-on {
+            background-color: #10B981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25), 0 0 16px rgba(16, 185, 129, 0.9);
+        }
+
+        .led-glow-off {
+            background-color: #EF4444;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.25), 0 0 16px rgba(239, 68, 68, 0.9);
+        }
+
+        /* Form Inputs */
+        .form-input {
+            background: #F8FAFC;
             border: 1px solid #CBD5E1;
             border-radius: 10px;
             padding: 10px 14px;
-            color: #1E2225;
+            color: #0e1426;
             transition: border-color 0.2s ease;
         }
 
-        .sj-input:focus {
-            outline: none;
-            border-color: #008550;
-            box-shadow: 0 0 0 3px rgba(0, 133, 80, 0.15);
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        /* Progress Bar Animation */
-        .speed-bar-fill {
-            transition: width 0.4s ease-in-out;
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0088ce;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col justify-between selection:bg-brandCyan selection:text-brandNavy">
 
-    <!-- HEADER / NAVIGATION -->
-    <header class="bg-sjCharcoal text-white sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
-            <!-- BRANDING LOGO -->
-            <a href="#" class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-sjGreen flex items-center justify-center text-white text-lg font-bold">
-                    <i class="fa-solid fa-network-wired"></i>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-base sm:text-lg tracking-tight">Network Tutors | Wohnanlage Chiemgauer Str.</span>
-                    </div>
-                    <p class="text-xs text-slate-300" data-i18n="hero_badge">Updated: Winter Semester 26/27</p>
-                </div>
-            </a>
-
-            <!-- DESKTOP NAVIGATION LINKS -->
-            <nav class="hidden md:flex items-center gap-1 bg-white/10 p-1.5 rounded-full">
-                <a href="#guide" class="px-4 py-2 rounded-full text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_guide">Setup Guide</a>
-                <a href="#speedtest" class="px-4 py-2 rounded-full text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_speed">Speed Test</a>
-                <a href="#security" class="px-4 py-2 rounded-full text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_security">Security Rules</a>
-                <a href="#support" class="px-4 py-2 rounded-full text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_support">Support & Links</a>
-                <a href="#media" class="px-4 py-2 rounded-full text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition" data-i18n="nav_media">Video Guide</a>
-            </nav>
-
-            <!-- LANGUAGE SWITCHER & MOBILE TOGGLE -->
-            <div class="flex items-center gap-3">
-                
-                <!-- LANGUAGE SELECTOR -->
-                <div class="flex items-center bg-white/10 p-1 rounded-full border border-white/20">
-                    <button onclick="setLanguage('en')" id="lang-en" class="lang-pill active">EN</button>
-                    <button onclick="setLanguage('de')" id="lang-de" class="lang-pill">DE</button>
-                    <button onclick="setLanguage('fr')" id="lang-fr" class="lang-pill">FR</button>
-                </div>
-
-                <!-- MOBILE MENU BUTTON -->
-                <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-white/10 text-white hover:bg-white/20">
-                    <i class="fa-solid fa-bars text-lg"></i>
+    <!-- EXTERNAL LINK DISCLAIMER MODAL -->
+    <div id="ext-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-200">
+            <div class="w-12 h-12 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-xl mb-4">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2" data-i18n="modal_title">External Website Notice</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4" data-i18n="modal_body">
+                You are about to leave the Network Tutors portal to visit an external website. Network Tutors are not responsible for third-party content or external privacy policies.
+            </p>
+            <div class="p-3 bg-slate-100 rounded-xl font-mono text-xs text-slate-700 truncate mb-6" id="modal-url-display">
+                https://www.example.com
+            </div>
+            <div class="flex flex-col sm:flex-row items-center gap-3">
+                <button onclick="confirmExternalRedirect()" class="w-full sm:w-auto flex-1 btn-primary text-xs uppercase tracking-wider py-3" data-i18n="modal_proceed">
+                    Proceed
+                </button>
+                <button onclick="closeExternalModal()" class="w-full sm:w-auto btn-outline text-xs uppercase tracking-wider py-3" data-i18n="modal_cancel">
+                    Cancel
                 </button>
             </div>
         </div>
+    </div>
 
-        <!-- MOBILE MENU DROPDOWN -->
-        <div id="mobile-menu" class="hidden md:hidden bg-sjCharcoal border-t border-white/10 px-4 py-4 space-y-2">
-            <a href="#guide" onclick="toggleMobileMenu()" class="block p-2.5 rounded-lg text-sm text-slate-200 hover:bg-white/10" data-i18n="nav_guide">Setup Guide</a>
-            <a href="#speedtest" onclick="toggleMobileMenu()" class="block p-2.5 rounded-lg text-sm text-slate-200 hover:bg-white/10" data-i18n="nav_speed">Speed Test</a>
-            <a href="#security" onclick="toggleMobileMenu()" class="block p-2.5 rounded-lg text-sm text-slate-200 hover:bg-white/10" data-i18n="nav_security">Security Rules</a>
-            <a href="#support" onclick="toggleMobileMenu()" class="block p-2.5 rounded-lg text-sm text-slate-200 hover:bg-white/10" data-i18n="nav_support">Support & Links</a>
-            <a href="#media" onclick="toggleMobileMenu()" class="block p-2.5 rounded-lg text-sm text-slate-200 hover:bg-white/10" data-i18n="nav_media">Video Guide</a>
-        </div>
-    </header>
+    <!-- MAIN WRAPPER -->
+    <div class="flex flex-col min-h-screen">
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-grow">
-
-        <!-- HERO SECTION & SERVICE NOTICE BANNER -->
-        <section class="bg-sjSoftGreen border-b border-sjBorder py-12 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="max-w-3xl">
-                    <span class="inline-block px-3 py-1 bg-sjGreen text-white text-xs font-bold rounded-full mb-4 uppercase tracking-wider" data-i18n="hero_badge">Updated: Winter Semester 26/27</span>
-                    <h1 class="text-3xl sm:text-5xl font-bold text-sjText tracking-tight mb-4" data-i18n="hero_title">
-                        Internet Information for Wohnanlage Chiemgauer Str.
-                    </h1>
-                    <p class="text-base sm:text-lg text-sjMuted leading-relaxed mb-8" data-i18n="hero_desc">
-                        Instructions for connecting your router, network security rules, speed diagnostics, and tutor service hours.
-                    </p>
-
-                    <div class="flex flex-wrap gap-4">
-                        <a href="#guide" class="px-6 py-3.5 sj-btn-primary text-sm flex items-center gap-2">
-                            <span data-i18n="hero_cta_guide">Open Router Setup Guide</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                        <a href="#support" class="px-6 py-3.5 sj-btn-outline text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-clock"></i>
-                            <span data-i18n="hero_cta_hours">View Service Hours</span>
-                        </a>
+        <!-- HEADER / NAVIGATION BAR -->
+        <header class="sticky top-0 z-40 bg-brandNavy text-white shadow-lg border-b border-cyan-900/40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                
+                <!-- BRANDING -->
+                <a href="#" class="flex items-center gap-2.5 sm:gap-3.5 group min-w-0">
+                    <div class="w-10 h-10 rounded-xl bg-brandPrimary text-white flex items-center justify-center text-base font-bold shrink-0 shadow-md">
+                        <i class="fa-solid fa-network-wired"></i>
                     </div>
-                </div>
-
-                <!-- FIXED SERVICE HOURS NOTICE BOX -->
-                <div class="mt-8 sj-card p-5 border-l-4 border-l-sjGreen flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 rounded-full bg-sjGreen/10 text-sjGreen flex items-center justify-center shrink-0 text-lg font-bold">
-                            <i class="fa-solid fa-calendar-check"></i>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-base sm:text-lg tracking-tight truncate text-white">Network Tutors</span>
+                            <span class="text-xs text-brandCyan font-medium hidden sm:inline-block whitespace-nowrap">| Chiemgauer Str.</span>
                         </div>
-                        <div>
-                            <div class="font-bold text-sjText text-sm sm:text-base" data-i18n="notice_title">Next Tutor Service Hours</div>
-                            <div class="text-xs sm:text-sm text-sjMuted mt-0.5" data-i18n="notice_body">
-                                Service hours take place every two weeks on Friday at 19:00 (1 hour before the Tutors' Night Party) in Chiemgauerstr. 3 Common Room.
+                        <p class="text-[11px] text-slate-300 truncate font-light" data-i18n="hero_badge">Updated: Winter Semester 26/27</p>
+                    </div>
+                </a>
+
+                <!-- DESKTOP NAVIGATION LINKS -->
+                <nav class="hidden lg:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800">
+                    <a href="#guide" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-200 hover:text-brandCyan hover:bg-slate-800/80 transition" data-i18n="nav_guide">Setup Guide</a>
+                    <a href="#speedtest" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-200 hover:text-brandCyan hover:bg-slate-800/80 transition" data-i18n="nav_speed">Speed Test</a>
+                    <a href="#security" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-200 hover:text-brandCyan hover:bg-slate-800/80 transition" data-i18n="nav_security">Security Rules</a>
+                    <a href="#support" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-200 hover:text-brandCyan hover:bg-slate-800/80 transition" data-i18n="nav_support">Support & Links</a>
+                    <a href="#media" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-200 hover:text-brandCyan hover:bg-slate-800/80 transition" data-i18n="nav_media">Video Guide</a>
+                </nav>
+
+                <!-- LANGUAGE SELECTOR & MOBILE TOGGLE -->
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                    <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+                        <button onclick="setLanguage('en')" id="lang-en" class="lang-capsule active">EN</button>
+                        <button onclick="setLanguage('de')" id="lang-de" class="lang-capsule">DE</button>
+                        <button onclick="setLanguage('fr')" id="lang-fr" class="lang-capsule">FR</button>
+                    </div>
+
+                    <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white hover:bg-slate-700">
+                        <i class="fa-solid fa-bars text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MOBILE DROPDOWN NAVIGATION -->
+            <div id="mobile-menu" class="hidden lg:hidden bg-brandNavy border-b border-slate-800 px-4 py-4 space-y-2 text-xs">
+                <a href="#guide" onclick="toggleMobileMenu()" class="block p-3 rounded-xl text-slate-200 hover:bg-slate-800/80 font-medium" data-i18n="nav_guide">Setup Guide</a>
+                <a href="#speedtest" onclick="toggleMobileMenu()" class="block p-3 rounded-xl text-slate-200 hover:bg-slate-800/80 font-medium" data-i18n="nav_speed">Speed Test</a>
+                <a href="#security" onclick="toggleMobileMenu()" class="block p-3 rounded-xl text-slate-200 hover:bg-slate-800/80 font-medium" data-i18n="nav_security">Security Rules</a>
+                <a href="#support" onclick="toggleMobileMenu()" class="block p-3 rounded-xl text-slate-200 hover:bg-slate-800/80 font-medium" data-i18n="nav_support">Support & Links</a>
+                <a href="#media" onclick="toggleMobileMenu()" class="block p-3 rounded-xl text-slate-200 hover:bg-slate-800/80 font-medium" data-i18n="nav_media">Video Guide</a>
+            </div>
+        </header>
+
+        <!-- MAIN PAGE CONTENT -->
+        <main class="flex-grow">
+
+            <!-- HERO SECTION & SERVICE NOTICE CARDS -->
+            <section class="bg-brandNavy text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-800 relative overflow-hidden">
+                <div class="max-w-7xl mx-auto relative z-10">
+                    <div class="max-w-3xl">
+                        <span class="inline-block px-3.5 py-1 rounded-full bg-slate-900/90 border border-cyan-800/60 text-brandCyan text-xs font-semibold mb-6" data-i18n="hero_badge">
+                            Updated: Winter Semester 26/27
+                        </span>
+                        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6" data-i18n="hero_title">
+                            Internet Information for Wohnanlage Chiemgauer Str.
+                        </h1>
+                        <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8 font-normal max-w-2xl" data-i18n="hero_desc">
+                            Step-by-step setup guides, upcoming service hours, network safety tips, speed diagnostic tools, and practical local links.
+                        </p>
+
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#guide" class="btn-primary text-xs uppercase tracking-wider flex items-center gap-2">
+                                <span data-i18n="hero_cta_guide">Open Router Setup Guide</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </a>
+                            <a href="#support" class="btn-outline border-cyan-400 text-brandCyan hover:bg-cyan-950/40 text-xs uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-regular fa-clock text-xs"></i>
+                                <span data-i18n="hero_cta_hours">View Service Hours</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- DYNAMIC NEXT SERVICE HOURS BANNER -->
+                    <div class="mt-12 bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-brandPrimary text-white flex items-center justify-center shrink-0 text-xl shadow-md">
+                                <i class="fa-regular fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs uppercase tracking-wider font-bold text-brandCyan font-mono" data-i18n="notice_subtitle">Next Tutor Service Hours</div>
+                                <div class="text-lg sm:text-xl font-bold text-white mt-1" id="hero-next-date-display">
+                                    Calculating next date...
+                                </div>
+                                <div class="text-xs sm:text-sm text-slate-300 mt-1 font-normal leading-relaxed" data-i18n="notice_body">
+                                    Location: Traunsteiner Str. 5 Common Rooms (1 hour before the dorm bar night).
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="px-3 py-1.5 rounded-lg bg-sjSoftGreen text-sjGreen font-mono font-bold text-xs shrink-0" data-i18n="notice_time">
-                        Fridays @ 19:00 CET
+                        <div class="px-4 py-2 rounded-xl bg-brandPrimary/20 border border-brandPrimary/50 text-brandCyan font-mono text-xs font-semibold shrink-0" id="hero-date-pill">
+                            Bi-weekly @ 19:00 CET
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- SECTION 1: ROUTER CONNECTION GUIDE -->
-        <section id="guide" class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <div class="mb-8">
-                <h2 class="text-2xl sm:text-3xl font-bold text-sjText" data-i18n="guide_heading">Router Connection Guide</h2>
-                <p class="text-sm sm:text-base text-sjMuted mt-1" data-i18n="guide_sub">
-                    Follow these 4 simple steps to set up your router in Wohnanlage Chiemgauer Str.
-                </p>
-            </div>
+            <!-- SECTION 1: ROUTER CONNECTION GUIDE (4 STEPS) -->
+            <section id="guide" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="guide_heading">4-Step Router Connection Guide</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1 font-normal" data-i18n="guide_sub">
+                        Follow these 4 steps to set up your router in Wohnanlage Chiemgauer Str.
+                    </p>
+                </div>
 
-            <!-- STEP WIZARD NAVIGATION TABS -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                <button onclick="switchWizardStep(1)" id="wiz-tab-1" class="p-4 rounded-xl sj-card text-left flex items-center gap-3 border-sjGreen bg-sjSoftGreen">
-                    <span class="w-7 h-7 rounded-full bg-sjGreen text-white font-bold flex items-center justify-center text-xs shrink-0">1</span>
-                    <div>
-                        <div class="text-[11px] text-sjMuted uppercase font-semibold" data-i18n="wiz_s1_lbl">Step 1</div>
-                        <div class="text-xs sm:text-sm font-bold text-sjText" data-i18n="wiz_s1_title">Cable Wiring</div>
-                    </div>
-                </button>
+                <!-- STEP WIZARD NAVIGATION TABS -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+                    <button onclick="switchWizardStep(1)" id="wiz-tab-1" class="p-4 rounded-xl modular-card text-left flex items-center gap-3.5 border-brandPrimary bg-cyan-50/50">
+                        <span class="w-8 h-8 rounded-lg bg-brandPrimary text-white font-bold flex items-center justify-center text-xs shrink-0 shadow-sm">1</span>
+                        <div>
+                            <div class="text-[10px] text-slate-500 uppercase font-mono tracking-wider" data-i18n="wiz_s1_lbl">Step 1</div>
+                            <div class="text-xs font-bold text-slate-900" data-i18n="wiz_s1_title">Power & Cable</div>
+                        </div>
+                    </button>
 
-                <button onclick="switchWizardStep(2)" id="wiz-tab-2" class="p-4 rounded-xl sj-card text-left flex items-center gap-3 opacity-70 hover:opacity-100">
-                    <span class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-xs shrink-0">2</span>
-                    <div>
-                        <div class="text-[11px] text-sjMuted uppercase font-semibold" data-i18n="wiz_s2_lbl">Step 2</div>
-                        <div class="text-xs sm:text-sm font-bold text-sjText" data-i18n="wiz_s2_title">Admin Login</div>
-                    </div>
-                </button>
+                    <button onclick="switchWizardStep(2)" id="wiz-tab-2" class="p-4 rounded-xl modular-card text-left flex items-center gap-3.5 opacity-70 hover:opacity-100">
+                        <span class="w-8 h-8 rounded-lg bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-xs shrink-0">2</span>
+                        <div>
+                            <div class="text-[10px] text-slate-500 uppercase font-mono tracking-wider" data-i18n="wiz_s2_lbl">Step 2</div>
+                            <div class="text-xs font-bold text-slate-900" data-i18n="wiz_s2_title">Wi-Fi Connect</div>
+                        </div>
+                    </button>
 
-                <button onclick="switchWizardStep(3)" id="wiz-tab-3" class="p-4 rounded-xl sj-card text-left flex items-center gap-3 opacity-70 hover:opacity-100">
-                    <span class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-xs shrink-0">3</span>
-                    <div>
-                        <div class="text-[11px] text-sjMuted uppercase font-semibold" data-i18n="wiz_s3_lbl">Step 3</div>
-                        <div class="text-xs sm:text-sm font-bold text-sjText" data-i18n="wiz_s3_title">DHCP Mode</div>
-                    </div>
-                </button>
+                    <button onclick="switchWizardStep(3)" id="wiz-tab-3" class="p-4 rounded-xl modular-card text-left flex items-center gap-3.5 opacity-70 hover:opacity-100">
+                        <span class="w-8 h-8 rounded-lg bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-xs shrink-0">3</span>
+                        <div>
+                            <div class="text-[10px] text-slate-500 uppercase font-mono tracking-wider" data-i18n="wiz_s3_lbl">Step 3</div>
+                            <div class="text-xs font-bold text-slate-900" data-i18n="wiz_s3_title">Admin Login (Opt)</div>
+                        </div>
+                    </button>
 
-                <button onclick="switchWizardStep(4)" id="wiz-tab-4" class="p-4 rounded-xl sj-card text-left flex items-center gap-3 opacity-70 hover:opacity-100">
-                    <span class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-xs shrink-0">4</span>
-                    <div>
-                        <div class="text-[11px] text-sjMuted uppercase font-semibold" data-i18n="wiz_s4_lbl">Step 4</div>
-                        <div class="text-xs sm:text-sm font-bold text-sjText" data-i18n="wiz_s4_title">Wi-Fi Password</div>
-                    </div>
-                </button>
-            </div>
+                    <button onclick="switchWizardStep(4)" id="wiz-tab-4" class="p-4 rounded-xl modular-card text-left flex items-center gap-3.5 opacity-70 hover:opacity-100">
+                        <span class="w-8 h-8 rounded-lg bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-xs shrink-0">4</span>
+                        <div>
+                            <div class="text-[10px] text-slate-500 uppercase font-mono tracking-wider" data-i18n="wiz_s4_lbl">Step 4</div>
+                            <div class="text-xs font-bold text-slate-900" data-i18n="wiz_s4_title">DHCP Setup (Opt)</div>
+                        </div>
+                    </button>
+                </div>
 
-            <!-- STEP CONTENT CONTAINER -->
-            <div class="sj-card p-6 sm:p-8 mb-8">
-                
-                <!-- STEP 1: PHYSICAL CABLE WIRING & INTERACTIVE SVG REAR PANEL -->
-                <div id="wiz-content-1" class="wiz-content">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                        <div class="space-y-4">
-                            <h3 class="text-xl font-bold text-sjText flex items-center gap-2">
-                                <i class="fa-solid fa-plug text-sjGreen"></i>
-                                <span data-i18n="step1_head">Connect Cable to Blue WAN Port</span>
-                            </h3>
-                            <p class="text-sm text-sjMuted leading-relaxed" data-i18n="step1_text">
-                                Plug the network cable coming from your room's wall socket directly into the <strong>BLUE WAN Port</strong> on the back of your TP-Link router.
-                            </p>
+                <!-- STEP WIZARD CONTENT BOX -->
+                <div class="modular-card p-6 sm:p-10 mb-8">
+                    
+                    <!-- STEP 1: POWER & CABLE WIRING -->
+                    <div id="wiz-content-1" class="wiz-content">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                            <div class="space-y-5">
+                                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-3">
+                                    <i class="fa-solid fa-plug text-brandPrimary"></i>
+                                    <span data-i18n="step1_head">Connect Power Adapter & Blue WAN Port</span>
+                                </h3>
+                                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" data-i18n="step1_text">
+                                    Plug the power adapter into an outlet and press the power button. Connect the network cable from your room's wall socket directly into the <strong>BLUE WAN Port</strong> on the back of your router.
+                                </p>
 
-                            <!-- CRITICAL WARNING -->
-                            <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm flex items-start gap-3">
-                                <i class="fa-solid fa-triangle-exclamation text-sjAmber text-lg shrink-0 mt-0.5"></i>
-                                <div>
-                                    <strong data-i18n="step1_warn_title">Important Rule:</strong>
-                                    <span data-i18n="step1_warn_body"> Never plug the wall cable into an orange LAN port. Plugging into LAN creates network loops that automatically disable internet access for your floor.</span>
+                                <!-- SOFT SAFETY TIP -->
+                                <div class="p-4 rounded-xl bg-cyan-50 border border-cyan-200 text-slate-800 text-xs flex items-start gap-3">
+                                    <i class="fa-solid fa-circle-info text-base text-brandPrimary shrink-0 mt-0.5"></i>
+                                    <div>
+                                        <strong class="text-slate-900" data-i18n="step1_warn_title">Network Safety Tip:</strong>
+                                        <span class="text-slate-700" data-i18n="step1_warn_body"> Connecting your wall cable to the blue WAN port helps ensure a smooth, stable connection for your room and prevents local network loops on your floor.</span>
+                                    </div>
+                                </div>
+
+                                <div id="diagram-info-box" class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700">
+                                    <span class="text-slate-900 font-medium" data-i18n="diag_prompt">Click any port on the router diagram to inspect its function.</span>
                                 </div>
                             </div>
 
-                            <div id="diagram-info-box" class="p-3.5 rounded-xl bg-sjBg border border-sjBorder text-xs text-sjText">
-                                <span class="font-semibold text-sjGreen" data-i18n="diag_prompt">Click any port on the router diagram to inspect its function.</span>
-                            </div>
-                        </div>
+                            <!-- ROUTER BACK PANEL SVG DIAGRAM -->
+                            <div class="bg-brandNavy p-6 rounded-2xl border border-slate-800 flex flex-col items-center">
+                                <div class="text-[11px] text-brandCyan font-mono mb-4 uppercase tracking-widest font-bold" data-i18n="diag_title">Router Rear Panel Overview</div>
+                                <svg viewBox="0 0 600 220" class="w-full h-auto max-w-md">
+                                    <rect x="20" y="30" width="560" height="160" rx="16" fill="#182238" stroke="#334155" stroke-width="2"/>
+                                    
+                                    <!-- Power Port -->
+                                    <g class="cursor-pointer group" onclick="showPortInfo('power')">
+                                        <circle cx="80" cy="110" r="18" fill="#0e1426" stroke="#8de8fe" stroke-width="1.5"/>
+                                        <circle cx="80" cy="110" r="7" fill="#334155"/>
+                                        <text x="80" y="155" text-anchor="middle" fill="#94A3B8" font-size="10" font-family="monospace">POWER</text>
+                                    </g>
 
-                        <!-- ROUTER BACK PANEL DIAGRAM -->
-                        <div class="bg-slate-900 p-6 rounded-2xl flex flex-col items-center">
-                            <div class="text-xs text-slate-400 font-mono mb-3 uppercase tracking-wider" data-i18n="diag_title">Router Rear Panel Overview</div>
-                            <svg viewBox="0 0 600 220" class="w-full h-auto max-w-md">
-                                <rect x="20" y="30" width="560" height="160" rx="16" fill="#2A3038" stroke="#475569" stroke-width="3"/>
-                                
-                                <!-- Power Port -->
-                                <g class="cursor-pointer" onclick="showPortInfo('power')">
-                                    <circle cx="80" cy="110" r="18" fill="#1E2225" stroke="#64748B" stroke-width="2"/>
-                                    <circle cx="80" cy="110" r="7" fill="#000000"/>
-                                    <text x="80" y="155" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="bold">POWER</text>
-                                </g>
+                                    <!-- Reset Button -->
+                                    <g class="cursor-pointer group" onclick="showPortInfo('reset')">
+                                        <rect x="135" y="98" width="22" height="25" rx="4" fill="#64748B"/>
+                                        <text x="146" y="155" text-anchor="middle" fill="#94A3B8" font-size="10" font-family="monospace">RESET</text>
+                                    </g>
 
-                                <!-- Reset Button -->
-                                <g class="cursor-pointer" onclick="showPortInfo('reset')">
-                                    <rect x="135" y="98" width="22" height="25" rx="4" fill="#D32F2F"/>
-                                    <text x="146" y="155" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="bold">RESET</text>
-                                </g>
+                                    <!-- Blue WAN Port -->
+                                    <g class="cursor-pointer group" onclick="showPortInfo('wan')">
+                                        <rect x="190" y="80" width="60" height="60" rx="8" fill="#0088ce" stroke="#FFFFFF" stroke-width="2.5"/>
+                                        <rect x="205" y="95" width="30" height="30" fill="#0e1426" rx="3"/>
+                                        <text x="220" y="155" text-anchor="middle" fill="#8de8fe" font-size="11" font-weight="bold" font-family="monospace">WAN (BLUE)</text>
+                                    </g>
 
-                                <!-- Blue WAN Port (Color changed to BLUE #2563EB) -->
-                                <g class="cursor-pointer" onclick="showPortInfo('wan')">
-                                    <rect x="190" y="80" width="60" height="60" rx="8" fill="#2563EB" stroke="#FFFFFF" stroke-width="2"/>
-                                    <rect x="205" y="95" width="30" height="30" fill="#1E2225" rx="3"/>
-                                    <text x="220" y="155" text-anchor="middle" fill="#2563EB" font-size="12" font-weight="bold">WAN (BLUE)</text>
-                                </g>
-
-                                <!-- Orange LAN Ports -->
-                                <g class="cursor-pointer" onclick="showPortInfo('lan')">
-                                    <rect x="280" y="80" width="50" height="60" rx="8" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
-                                    <rect x="340" y="80" width="50" height="60" rx="8" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
-                                    <rect x="400" y="80" width="50" height="60" rx="8" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
-                                    <rect x="460" y="80" width="50" height="60" rx="8" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
-                                    <text x="395" y="155" text-anchor="middle" fill="#D97706" font-size="12" font-weight="bold">LAN 1-4 (ORANGE)</text>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- STEP 2: ADMIN ACCESS -->
-                <div id="wiz-content-2" class="wiz-content hidden space-y-4">
-                    <h3 class="text-xl font-bold text-sjText flex items-center gap-2">
-                        <i class="fa-solid fa-laptop text-sjGreen"></i>
-                        <span data-i18n="step2_head">Open Router Admin Dashboard</span>
-                    </h3>
-                    <p class="text-sm text-sjMuted leading-relaxed" data-i18n="step2_text">
-                        Connect your laptop or smartphone to the router via Wi-Fi or LAN cable. Open your web browser and enter the default management IP address.
-                    </p>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                        <div class="p-4 rounded-xl bg-sjBg border border-sjBorder">
-                            <div class="text-xs text-sjMuted font-mono" data-i18n="step2_url_lbl">Router Address</div>
-                            <div class="text-lg font-bold text-sjGreen font-mono mt-1">http://192.168.0.1</div>
-                            <div class="text-xs text-sjMuted mt-1" data-i18n="step2_url_alt">Alternative: tplinkwifi.net</div>
-                        </div>
-
-                        <div class="p-4 rounded-xl bg-sjBg border border-sjBorder">
-                            <div class="text-xs text-sjMuted font-mono" data-i18n="step2_cred_lbl">Default Login</div>
-                            <div class="text-sm text-sjText font-mono mt-1">
-                                Username: <strong>admin</strong> | Password: <strong>admin</strong>
-                            </div>
-                            <div class="text-xs text-sjMuted mt-1" data-i18n="step2_cred_note">You will be asked to set a new password on first login.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- STEP 3: DHCP CONFIG -->
-                <div id="wiz-content-3" class="wiz-content hidden space-y-4">
-                    <h3 class="text-xl font-bold text-sjText flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-sjGreen"></i>
-                        <span data-i18n="step3_head">Select WAN Connection Type: Dynamic IP (DHCP)</span>
-                    </h3>
-                    <p class="text-sm text-sjMuted leading-relaxed" data-i18n="step3_text">
-                        Inside the TP-Link Quick Setup menu, select <strong>Dynamic IP</strong> as your connection mode. The dormitory network automatically assigns your router an IP address.
-                    </p>
-
-                    <div class="p-4 rounded-xl bg-sjBg border border-sjBorder space-y-2 text-sm text-sjText">
-                        <div class="font-bold text-sjGreen" data-i18n="step3_list_title">Quick Setup Summary:</div>
-                        <ul class="list-disc list-inside space-y-1 text-xs sm:text-sm text-sjMuted">
-                            <li data-i18n="step3_l1">Click <strong>Quick Setup</strong> in the left navigation menu.</li>
-                            <li data-i18n="step3_l2">Choose <strong>Wireless Router</strong> mode.</li>
-                            <li data-i18n="step3_l3">WAN Connection Type: Select <strong>Dynamic IP</strong> (Do NOT choose PPPoE or Static IP).</li>
-                            <li data-i18n="step3_l4">MAC Clone: Keep <strong>Do NOT clone MAC address</strong>.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- STEP 4: WI-FI & PASSWORD GENERATOR -->
-                <div id="wiz-content-4" class="wiz-content hidden space-y-4">
-                    <h3 class="text-xl font-bold text-sjText flex items-center gap-2">
-                        <i class="fa-solid fa-key text-sjGreen"></i>
-                        <span data-i18n="step4_head">Set Wi-Fi Name & Password</span>
-                    </h3>
-                    <p class="text-sm text-sjMuted leading-relaxed" data-i18n="step4_text">
-                        Set a clear wireless network name (SSID) like <code>Dorm718_RoomXXX</code> and protect it with a strong password.
-                    </p>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-                        <!-- PASSWORD GENERATOR -->
-                        <div class="p-4 rounded-xl bg-sjBg border border-sjBorder space-y-3">
-                            <div class="font-bold text-sjText text-xs uppercase tracking-wider" data-i18n="pass_title">Wi-Fi Password Generator</div>
-                            <div class="flex gap-2">
-                                <input type="text" id="wifi-pass-input" readonly class="sj-input w-full font-mono text-sm font-bold text-sjGreen text-center" value="Click Generate">
-                                <button onclick="generatePassword()" class="px-4 py-2 sj-btn-secondary text-xs shrink-0" data-i18n="pass_gen_btn">Generate</button>
-                            </div>
-                            <button onclick="copyPassword()" class="w-full py-2 sj-btn-outline text-xs" data-i18n="pass_copy_btn">Copy Password</button>
-                        </div>
-
-                        <div class="p-4 rounded-xl bg-sjBg border border-sjBorder space-y-2">
-                            <div class="font-bold text-sjText text-xs uppercase tracking-wider" data-i18n="pass_rec_title">Recommended Settings</div>
-                            <div class="text-xs text-sjMuted space-y-1">
-                                <div>• Wireless Security: WPA2-PSK (AES)</div>
-                                <div>• Mode: 802.11b/g/n mixed</div>
-                                <div>• Channel: Auto</div>
+                                    <!-- Orange LAN Ports -->
+                                    <g class="cursor-pointer group" onclick="showPortInfo('lan')">
+                                        <rect x="280" y="80" width="50" height="60" rx="8" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
+                                        <rect x="340" y="80" width="50" height="60" rx="8" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
+                                        <rect x="400" y="80" width="50" height="60" rx="8" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
+                                        <rect x="460" y="80" width="50" height="60" rx="8" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
+                                        <text x="395" y="155" text-anchor="middle" fill="#F59E0B" font-size="11" font-weight="bold" font-family="monospace">LAN 1-4 (ORANGE)</text>
+                                    </g>
+                                </svg>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- WIZARD FOOTER NAVIGATION -->
-                <div class="flex items-center justify-between mt-8 pt-4 border-t border-sjBorder">
-                    <button onclick="prevWizardStep()" id="wiz-prev-btn" class="px-5 py-2.5 sj-btn-secondary text-xs disabled:opacity-40 disabled:cursor-not-allowed" disabled>
-                        <i class="fa-solid fa-chevron-left mr-1"></i> <span data-i18n="wiz_prev">Previous</span>
-                    </button>
-                    <span id="wiz-indicator" class="text-xs font-mono text-sjMuted">Step 1 of 4</span>
-                    <button onclick="nextWizardStep()" id="wiz-next-btn" class="px-5 py-2.5 sj-btn-primary text-xs">
-                        <span data-i18n="wiz_next">Next Step</span> <i class="fa-solid fa-chevron-right ml-1"></i>
-                    </button>
-                </div>
-            </div>
+                    <!-- STEP 2: WI-FI CONNECT -->
+                    <div id="wiz-content-2" class="wiz-content hidden space-y-6">
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-3">
+                            <i class="fa-solid fa-wifi text-brandPrimary"></i>
+                            <span data-i18n="step2_head">Connect via Default Wi-Fi Network</span>
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" data-i18n="step2_text">
+                            Turn on Wi-Fi on your laptop or smartphone. Connect using the default Wi-Fi network name (SSID) and wireless password printed on the sticker at the back or bottom of your router.
+                        </p>
 
-            <!-- ROUTER LED DIAGNOSTIC TOOL -->
-            <div class="sj-card p-6">
-                <div class="mb-4">
-                    <h3 class="text-lg font-bold text-sjText flex items-center gap-2">
-                        <i class="fa-solid fa-lightbulb text-sjGreen"></i>
-                        <span data-i18n="led_title">Router LED Status Inspector</span>
-                    </h3>
-                    <p class="text-xs sm:text-sm text-sjMuted mt-0.5" data-i18n="led_sub">
-                        Click on any LED indicator below to check what the lights on your router mean.
-                    </p>
-                </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="text-[10px] text-slate-500 font-mono uppercase tracking-wider font-bold" data-i18n="step2_ssid_lbl">Default SSID (Wi-Fi Name)</div>
+                                <div class="text-base font-bold text-brandPrimary font-mono mt-1" data-i18n="step2_ssid_val">See sticker on back/bottom of router</div>
+                                <div class="text-xs text-slate-500 mt-1 font-normal" data-i18n="step2_ssid_sub">Example: TP-Link_XXXX</div>
+                            </div>
 
-                <div class="flex flex-wrap items-center justify-center gap-6 p-4 rounded-xl bg-sjBg border border-sjBorder mb-4">
-                    <button onclick="toggleLedState('power')" class="flex flex-col items-center gap-1.5">
-                        <div id="led-power" class="w-4 h-4 rounded-full bg-sjGreen"></div>
-                        <span class="text-[11px] font-mono font-bold text-sjText">POWER</span>
-                    </button>
-                    <button onclick="toggleLedState('internet')" class="flex flex-col items-center gap-1.5">
-                        <div id="led-internet" class="w-4 h-4 rounded-full bg-sjGreen"></div>
-                        <span class="text-[11px] font-mono font-bold text-sjText">INTERNET</span>
-                    </button>
-                    <button onclick="toggleLedState('wifi')" class="flex flex-col items-center gap-1.5">
-                        <div id="led-wifi" class="w-4 h-4 rounded-full bg-sjGreen"></div>
-                        <span class="text-[11px] font-mono font-bold text-sjText">WLAN</span>
-                    </button>
-                    <button onclick="toggleLedState('lan')" class="flex flex-col items-center gap-1.5">
-                        <div id="led-lan" class="w-4 h-4 rounded-full bg-sjGreen"></div>
-                        <span class="text-[11px] font-mono font-bold text-sjText">LAN</span>
-                    </button>
-                </div>
-
-                <div id="led-diag-box" class="p-3.5 rounded-xl bg-sjSoftGreen text-sjGreen text-xs font-medium">
-                    Status: All indicators green. Router is working normally.
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 2: SPEED TEST CARD -->
-        <section id="speedtest" class="py-12 bg-white border-y border-sjBorder px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="mb-6 text-center max-w-2xl mx-auto">
-                    <h2 class="text-2xl sm:text-3xl font-bold text-sjText" data-i18n="speed_heading">Live Connection Speed Test</h2>
-                    <p class="text-sm text-sjMuted mt-1" data-i18n="speed_sub">
-                        Measure real-time upload speed, download speed, latency, and jitter from your room device.
-                    </p>
-                </div>
-
-                <div class="sj-card p-6 sm:p-8 max-w-3xl mx-auto bg-sjBg">
-                    
-                    <!-- METRICS GRID -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                        <div class="bg-white p-4 rounded-xl border border-sjBorder text-center">
-                            <div class="text-xs text-sjMuted font-semibold uppercase" data-i18n="speed_dl">Download</div>
-                            <div class="text-2xl font-bold text-sjGreen font-mono my-1" id="val-dl">0.0</div>
-                            <div class="text-[10px] text-sjMuted font-mono">Mbps</div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-sjBorder text-center">
-                            <div class="text-xs text-sjMuted font-semibold uppercase" data-i18n="speed_ul">Upload</div>
-                            <div class="text-2xl font-bold text-sjGreen font-mono my-1" id="val-ul">0.0</div>
-                            <div class="text-[10px] text-sjMuted font-mono">Mbps</div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-sjBorder text-center">
-                            <div class="text-xs text-sjMuted font-semibold uppercase" data-i18n="speed_ping">Ping Latency</div>
-                            <div class="text-2xl font-bold text-sjText font-mono my-1" id="val-ping">0</div>
-                            <div class="text-[10px] text-sjMuted font-mono">ms</div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-sjBorder text-center">
-                            <div class="text-xs text-sjMuted font-semibold uppercase" data-i18n="speed_jitter">Jitter</div>
-                            <div class="text-2xl font-bold text-sjText font-mono my-1" id="val-jitter">0</div>
-                            <div class="text-[10px] text-sjMuted font-mono">ms</div>
+                            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="text-[10px] text-slate-500 font-mono uppercase tracking-wider font-bold" data-i18n="step2_pass_lbl">Default Wireless Password</div>
+                                <div class="text-sm font-semibold text-slate-900 mt-1" data-i18n="step2_pass_val">
+                                    Check the 8-digit PIN or Wireless Password printed on the router sticker.
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- PROGRESS BAR -->
-                    <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden mb-6">
-                        <div id="speed-progress" class="bg-sjGreen h-full w-0 speed-bar-fill"></div>
+                    <!-- STEP 3: OPTIONAL ADMIN LOGIN -->
+                    <div id="wiz-content-3" class="wiz-content hidden space-y-6">
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-3">
+                            <i class="fa-solid fa-laptop text-brandPrimary"></i>
+                            <span data-i18n="step3_head">Router Admin Dashboard (Optional)</span>
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" data-i18n="step3_text">
+                            To customize your Wi-Fi name or password, open a web browser and go to http://192.168.0.1 or tplinkwifi.net. Use the default login credentials printed on your router's sticker or manual.
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="text-[10px] text-slate-500 font-mono uppercase tracking-wider font-bold" data-i18n="step3_url_lbl">Router Access Address</div>
+                                <div class="text-lg font-bold text-brandPrimary font-mono mt-1">http://192.168.0.1</div>
+                                <div class="text-xs text-slate-500 mt-1 font-normal" data-i18n="step3_url_alt">Alternative: tplinkwifi.net</div>
+                            </div>
+
+                            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="text-[10px] text-slate-500 font-mono uppercase tracking-wider font-bold" data-i18n="step3_cred_lbl">Default Admin Password</div>
+                                <div class="text-sm font-semibold text-slate-900 mt-1" data-i18n="step3_cred_val">
+                                    Refer to the sticker on the back of your router or user manual.
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- ACTION BUTTON & STATUS -->
-                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div class="text-xs text-sjMuted font-mono" id="speed-status-msg" data-i18n="speed_idle">
-                            Status: Ready to test connection
+                    <!-- STEP 4: OPTIONAL DHCP CONFIGURATION -->
+                    <div id="wiz-content-4" class="wiz-content hidden space-y-6">
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-3">
+                            <i class="fa-solid fa-sliders text-brandPrimary"></i>
+                            <span data-i18n="step4_head">WAN & DHCP Configuration (Optional)</span>
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" data-i18n="step4_text">
+                            If prompted in the setup wizard, choose Dynamic IP (DHCP) as your connection type. Note: Additional step-by-step setup documents were sent to your email prior to your move-in date.
+                        </p>
+
+                        <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3 text-xs sm:text-sm text-slate-800">
+                            <div class="font-bold text-slate-900 text-base" data-i18n="step4_list_title">Quick Setup Summary:</div>
+                            <ul class="list-disc list-inside space-y-2 text-slate-600 font-normal">
+                                <li data-i18n="step4_l1">Click <strong class="text-slate-900">Quick Setup</strong> in the left navigation menu.</li>
+                                <li data-i18n="step4_l2">Choose <strong class="text-slate-900">Wireless Router</strong> mode.</li>
+                                <li data-i18n="step4_l3">WAN Connection Type: Select <strong class="text-slate-900">Dynamic IP</strong> (Do NOT choose PPPoE or Static IP).</li>
+                                <li data-i18n="step4_l4">MAC Clone: Keep <strong class="text-slate-900">Do NOT clone MAC address</strong>.</li>
+                            </ul>
+                            <div class="mt-4 p-3 rounded-lg bg-cyan-50 border border-cyan-200 text-xs text-brandCyanDark font-medium" data-i18n="step4_email_note">
+                                Tip: For detailed step-by-step configuration guides, please refer to the orientation documents sent to your email address prior to move-in.
+                            </div>
                         </div>
-                        <button onclick="runSpeedTest()" id="speed-btn" class="w-full sm:w-auto px-8 py-3 sj-btn-primary text-sm flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-gauge-high"></i>
-                            <span data-i18n="speed_btn_start">Start Speed Test</span>
+                    </div>
+
+                    <!-- WIZARD FOOTER NAVIGATION -->
+                    <div class="flex items-center justify-between mt-10 pt-6 border-t border-slate-200">
+                        <button onclick="prevWizardStep()" id="wiz-prev-btn" class="btn-outline text-xs disabled:opacity-30 disabled:cursor-not-allowed" disabled>
+                            <i class="fa-solid fa-chevron-left mr-1"></i> <span data-i18n="wiz_prev">Previous</span>
+                        </button>
+                        <span id="wiz-indicator" class="text-xs font-mono font-bold text-slate-500">Step 1 of 4</span>
+                        <button onclick="nextWizardStep()" id="wiz-next-btn" class="btn-primary text-xs uppercase tracking-wider">
+                            <span data-i18n="wiz_next">Next Step</span> <i class="fa-solid fa-chevron-right ml-1"></i>
                         </button>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- SECTION 3: SECURITY RULES & SELF-CHECK -->
-        <section id="security" class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <div class="mb-8">
-                <h2 class="text-2xl sm:text-3xl font-bold text-sjText" data-i18n="sec_heading">Network Security Rules</h2>
-                <p class="text-sm text-sjMuted mt-1" data-i18n="sec_sub">
-                    Please adhere to university network regulations to ensure stable service and legal compliance.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                <!-- CONSOLIDATED SECURITY CARD -->
-                <div class="lg:col-span-7 sj-card p-6 space-y-4">
-                    <div class="flex items-center gap-3 border-b border-sjBorder pb-4">
-                        <div class="w-10 h-10 rounded-full bg-sjGreen/10 text-sjGreen flex items-center justify-center text-lg font-bold shrink-0">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-sjText" data-i18n="rules_title">Essential Network Rules</h3>
-                            <p class="text-xs text-sjMuted" data-i18n="rules_sub">Unified guidelines for Wohnanlage Chiemgauer Str. residents</p>
-                        </div>
+                <!-- ROUTER LED STATUS INSPECTOR TOOL -->
+                <div class="modular-card p-6 sm:p-8">
+                    <div class="mb-6">
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-3">
+                            <i class="fa-regular fa-lightbulb text-amber-500"></i>
+                            <span data-i18n="led_title">Router LED Status Inspector</span>
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1" data-i18n="led_sub">
+                            Click on the enlarged LED indicators below to test and check what the lights on your router mean.
+                        </p>
                     </div>
 
-                    <div class="space-y-4 text-xs sm:text-sm text-sjText">
-                        <div class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-check text-sjGreen text-base shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong data-i18n="rule1_title">No Rogue DHCP Servers:</strong>
-                                <span class="text-sjMuted" data-i18n="rule1_body"> Always connect the wall cable exclusively to the blue WAN port. Connecting to LAN disrupts floor connectivity.</span>
-                            </div>
-                        </div>
+                    <div class="flex flex-wrap items-center justify-center gap-10 p-8 rounded-2xl bg-brandNavy border border-slate-800 mb-6">
+                        <button onclick="toggleLedState('power')" class="flex flex-col items-center gap-3 group">
+                            <div id="led-power" class="w-8 h-8 rounded-full led-glow-on transition-all duration-300"></div>
+                            <span class="text-xs font-mono font-bold text-slate-300 group-hover:text-white">POWER</span>
+                        </button>
+                        <button onclick="toggleLedState('internet')" class="flex flex-col items-center gap-3 group">
+                            <div id="led-internet" class="w-8 h-8 rounded-full led-glow-on transition-all duration-300"></div>
+                            <span class="text-xs font-mono font-bold text-slate-300 group-hover:text-white">INTERNET</span>
+                        </button>
+                        <button onclick="toggleLedState('wifi')" class="flex flex-col items-center gap-3 group">
+                            <div id="led-wifi" class="w-8 h-8 rounded-full led-glow-on transition-all duration-300"></div>
+                            <span class="text-xs font-mono font-bold text-slate-300 group-hover:text-white">WLAN</span>
+                        </button>
+                        <button onclick="toggleLedState('lan')" class="flex flex-col items-center gap-3 group">
+                            <div id="led-lan" class="w-8 h-8 rounded-full led-glow-on transition-all duration-300"></div>
+                            <span class="text-xs font-mono font-bold text-slate-300 group-hover:text-white">LAN</span>
+                        </button>
+                    </div>
 
-                        <div class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-check text-sjGreen text-base shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong data-i18n="rule2_title">No Copyright Infringement (BitTorrent / P2P):</strong>
-                                <span class="text-sjMuted" data-i18n="rule2_body"> Peer-to-peer file sharing of copyrighted media is strictly monitored in Germany. Infringements lead to heavy legal fines (Abmahnung).</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-check text-sjGreen text-base shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong data-i18n="rule3_title">Router Password Security:</strong>
-                                <span class="text-sjMuted" data-i18n="rule3_body"> Change your router admin login from 'admin' to prevent unauthorized changes by neighboring devices.</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-check text-sjGreen text-base shrink-0 mt-0.5"></i>
-                            <div>
-                                <strong data-i18n="rule4_title">Personal Residential Use Only:</strong>
-                                <span class="text-sjMuted" data-i18n="rule4_body"> Bandwidth is for academic research and residential internet use. Commercial hosting or reselling connectivity is forbidden.</span>
-                            </div>
-                        </div>
+                    <div id="led-diag-box" class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium">
+                        Status: All indicators normal. Your router connection is working properly.
                     </div>
                 </div>
+            </section>
 
-                <!-- INDEPENDENT SELF-CHECK CARD -->
-                <div class="lg:col-span-5 sj-card p-6 flex flex-col justify-between">
+            <!-- SECTION 2: SPEED TEST EXTERNAL REDIRECT CARD -->
+            <section id="speedtest" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="mb-10 text-center max-w-2xl mx-auto">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="speed_heading">Connection Speed Test</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1 font-normal" data-i18n="speed_sub">
+                        Test your room connection speed directly on Speedtest.net.
+                    </p>
+                </div>
+
+                <div class="modular-card p-8 sm:p-12 max-w-2xl mx-auto text-center space-y-6">
+                    <div class="w-16 h-16 rounded-2xl bg-cyan-100 text-brandPrimary flex items-center justify-center mx-auto text-2xl shadow-sm">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
                     <div>
-                        <div class="flex items-center justify-between border-b border-sjBorder pb-4 mb-4">
-                            <div>
-                                <h3 class="text-lg font-bold text-sjText" data-i18n="chk_title">Security Self-Check</h3>
-                                <p class="text-xs text-sjMuted" data-i18n="chk_sub">Verify your room setup</p>
-                            </div>
-                            <div class="text-right">
-                                <div id="chk-score" class="text-2xl font-bold text-sjGreen font-mono">0%</div>
-                                <span id="chk-status" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-semibold" data-i18n="chk_status_pending">Incomplete</span>
-                            </div>
-                        </div>
-
-                        <div class="space-y-3" id="chk-list">
-                            <label class="flex items-start gap-3 p-2.5 rounded-lg bg-sjBg hover:bg-slate-100 cursor-pointer transition">
-                                <input type="checkbox" onchange="updateCheckScore()" class="w-4 h-4 mt-0.5 accent-sjGreen">
-                                <span class="text-xs text-sjText" data-i18n="chk_item1">Cable is plugged into the BLUE WAN port only.</span>
-                            </label>
-                            <label class="flex items-start gap-3 p-2.5 rounded-lg bg-sjBg hover:bg-slate-100 cursor-pointer transition">
-                                <input type="checkbox" onchange="updateCheckScore()" class="w-4 h-4 mt-0.5 accent-sjGreen">
-                                <span class="text-xs text-sjText" data-i18n="chk_item2">Changed router admin password from default 'admin'.</span>
-                            </label>
-                            <label class="flex items-start gap-3 p-2.5 rounded-lg bg-sjBg hover:bg-slate-100 cursor-pointer transition">
-                                <input type="checkbox" onchange="updateCheckScore()" class="w-4 h-4 mt-0.5 accent-sjGreen">
-                                <span class="text-xs text-sjText" data-i18n="chk_item3">Wi-Fi is protected with a strong WPA2 password.</span>
-                            </label>
-                            <label class="flex items-start gap-3 p-2.5 rounded-lg bg-sjBg hover:bg-slate-100 cursor-pointer transition">
-                                <input type="checkbox" onchange="updateCheckScore()" class="w-4 h-4 mt-0.5 accent-sjGreen">
-                                <span class="text-xs text-sjText" data-i18n="chk_item4">BitTorrent / P2P upload seeding is turned off.</span>
-                            </label>
-                        </div>
+                        <h3 class="text-xl font-bold text-slate-900" data-i18n="speed_card_title">Test Network Upload & Download Speed</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed max-w-md mx-auto" data-i18n="speed_card_desc">
+                            We recommend using Speedtest by Ookla for reliable real-time download speed, upload speed, and latency diagnostics.
+                        </p>
                     </div>
 
-                    <div class="mt-6 p-3 rounded-xl bg-sjSoftGreen text-sjGreen text-xs text-center font-semibold" data-i18n="chk_footer">
-                        Complete all 4 items for a safe connection.
+                    <div class="pt-2">
+                        <button onclick="openExternalUrl('https://www.speedtest.net/')" class="btn-primary text-xs uppercase tracking-wider flex items-center justify-center gap-2 mx-auto">
+                            <span data-i18n="speed_btn_open">Open Speedtest.net</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </button>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-slate-100 text-slate-500 text-xs font-normal max-w-lg mx-auto" data-i18n="speed_disclaimer">
+                        Note: You will be redirected to an external speed testing service. Network Tutors do not operate external testing servers.
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- SECTION 4: SUPPORT, PRACTICAL LINKS & OFFLINE FORM -->
-        <section id="support" class="py-12 bg-white border-t border-sjBorder px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="mb-8">
-                    <h2 class="text-2xl sm:text-3xl font-bold text-sjText" data-i18n="supp_heading">Support & Practical Links</h2>
-                    <p class="text-sm text-sjMuted mt-1" data-i18n="supp_sub">
-                        Tutor service hours, university links, and municipal portal services.
+            <!-- SECTION 3: CONSOLIDATED SECURITY RULES & SELF-CHECK -->
+            <section id="security" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="sec_heading">Network Security Rules</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1 font-normal" data-i18n="sec_sub">
+                        Please follow dormitory network security guidelines to prevent service interruption and legal issues.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    
+                    <!-- CONSOLIDATED SECURITY RULES CARD -->
+                    <div class="lg:col-span-7 modular-card p-6 sm:p-8 space-y-6">
+                        <div class="flex items-center gap-4 border-b border-slate-200 pb-6">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-100 text-brandPrimary flex items-center justify-center text-xl shrink-0 font-bold">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900" data-i18n="rules_title">Essential Security Guidelines</h3>
+                                <p class="text-xs text-slate-500" data-i18n="rules_sub">Unified network rules for Wohnanlage Chiemgauer Str. residents</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-5 text-xs sm:text-sm text-slate-700">
+                            <div class="flex items-start gap-3.5">
+                                <i class="fa-solid fa-circle-check text-brandPrimary text-base shrink-0 mt-0.5"></i>
+                                <div>
+                                    <strong class="text-slate-900" data-i18n="rule1_title">No Rogue DHCP Servers:</strong>
+                                    <span class="text-slate-600" data-i18n="rule1_body"> Always connect the wall cable exclusively to the blue WAN port to avoid local network loops.</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <i class="fa-solid fa-circle-check text-brandPrimary text-base shrink-0 mt-0.5"></i>
+                                <div>
+                                    <strong class="text-slate-900" data-i18n="rule2_title">No Copyright Infringement (BitTorrent / P2P):</strong>
+                                    <span class="text-slate-600" data-i18n="rule2_body"> Peer-to-peer file sharing of copyrighted media is strictly monitored in Germany. Infringements lead to heavy legal fines.</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <i class="fa-solid fa-circle-check text-brandPrimary text-base shrink-0 mt-0.5"></i>
+                                <div>
+                                    <strong class="text-slate-900" data-i18n="rule3_title">Router Password Security:</strong>
+                                    <span class="text-slate-600" data-i18n="rule3_body"> Change your router admin password from the default setting to prevent unauthorized modifications.</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <i class="fa-solid fa-circle-check text-brandPrimary text-base shrink-0 mt-0.5"></i>
+                                <div>
+                                    <strong class="text-slate-900" data-i18n="rule4_title">Personal Residential Use Only:</strong>
+                                    <span class="text-slate-600" data-i18n="rule4_body"> Bandwidth is for academic research and residential internet use. Commercial hosting or reselling connectivity is forbidden.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INDEPENDENT SECURITY SELF-CHECK CARD -->
+                    <div class="lg:col-span-5 modular-card p-6 sm:p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-6 mb-6">
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900" data-i18n="chk_title">Security Self-Check</h3>
+                                    <p class="text-xs text-slate-500" data-i18n="chk_sub">Verify your room setup</p>
+                                </div>
+                                <div class="text-right">
+                                    <div id="chk-score" class="text-3xl font-extrabold text-brandPrimary font-mono">0%</div>
+                                    <span id="chk-status" class="text-[10px] px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 font-mono uppercase font-bold" data-i18n="chk_status_pending">Incomplete</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3" id="chk-list">
+                                <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 cursor-pointer transition border border-slate-200">
+                                    <input type="checkbox" onchange="updateCheckScore()" class="w-4 h-4 mt-0.5 accent-brandPrimary rounded">
+                                    <span class="text-xs text-slate-800 font-medium" data-i18n="chk_item1">Cable is plugged into the BLUE WAN port only.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 cursor-pointer transition border border-slate-200">
+                                    <input type="checkbox" onchange="updateCheckScore()" class="w-4 h-4 mt-0.5 accent-brandPrimary rounded">
+                                    <span class="text-xs text-slate-800 font-medium" data-i18n="chk_item2">Changed router admin password from default.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 cursor-pointer transition border border-slate-200">
+                                    <input type="checkbox" onchange="updateCheckScore()" class="w-4 h-4 mt-0.5 accent-brandPrimary rounded">
+                                    <span class="text-xs text-slate-800 font-medium" data-i18n="chk_item3">Wi-Fi is protected with a strong WPA2 password.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 cursor-pointer transition border border-slate-200">
+                                    <input type="checkbox" onchange="updateCheckScore()" class="w-4 h-4 mt-0.5 accent-brandPrimary rounded">
+                                    <span class="text-xs text-slate-800 font-medium" data-i18n="chk_item4">BitTorrent / P2P upload seeding is turned off.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 p-3.5 rounded-xl bg-slate-100 text-slate-600 text-xs text-center font-medium" data-i18n="chk_footer">
+                            Check all 4 items to ensure a safe room setup.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: SUPPORT, PRACTICAL LINKS & OFFLINE FORM -->
+            <section id="support" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="supp_heading">Support & Practical Links</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1 font-normal" data-i18n="supp_sub">
+                        Tutor service hours, university links, emergency services, and municipal portals.
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     
                     <!-- LEFT COLUMN: SERVICE HOURS & PRACTICAL LINKS -->
-                    <div class="lg:col-span-6 space-y-6">
+                    <div class="lg:col-span-7 space-y-8">
                         
                         <!-- SERVICE HOURS CARD -->
-                        <div class="sj-card p-6 space-y-4 border-l-4 border-l-sjGreen">
-                            <h3 class="text-xl font-bold text-sjText flex items-center gap-2">
-                                <i class="fa-solid fa-headset text-sjGreen"></i>
+                        <div class="modular-card p-6 sm:p-8 space-y-5 border-l-4 border-l-brandPrimary">
+                            <h3 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+                                <i class="fa-solid fa-headset text-brandPrimary"></i>
                                 <span data-i18n="tutor_hours_title">Network Tutor Service Hours</span>
                             </h3>
-                            <p class="text-xs sm:text-sm text-sjMuted leading-relaxed" data-i18n="tutor_hours_desc">
-                                We do not have a fixed office room. Student tutors assist residents in Wohnanlage Chiemgauer Str. during our service hours.
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" data-i18n="tutor_hours_desc">
+                                We do not have a fixed office room. Student tutors assist residents in Wohnanlage Chiemgauer Str. during our regular service hours.
                             </p>
 
-                            <div class="space-y-2 text-xs sm:text-sm text-sjText bg-sjBg p-4 rounded-xl border border-sjBorder">
-                                <div><strong data-i18n="lbl_office">Location:</strong> Chiemgauerstr. 3 Common Room</div>
-                                <div><strong data-i18n="lbl_time">Service Hours:</strong> Bi-weekly on Friday @ 19:00 CET</div>
-                                <div class="text-xs text-sjMuted" data-i18n="lbl_party_note">(1 hour before the Tutors' Night Party)</div>
+                            <div class="space-y-2 text-xs sm:text-sm text-slate-800 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                                <div><strong class="text-slate-900" data-i18n="lbl_office">Location:</strong> <span data-i18n="val_office">Traunsteiner Str. 5 Common Rooms</span></div>
+                                <div><strong class="text-slate-900" data-i18n="lbl_next_date">Next Service Date:</strong> <span id="card-next-date-display" class="font-bold text-brandPrimary">Calculating...</span></div>
+                                <div><strong class="text-slate-900" data-i18n="lbl_schedule">Schedule:</strong> <span data-i18n="val_schedule">Bi-weekly on Friday @ 19:00 CET</span></div>
+                                <div class="text-xs text-slate-500 font-normal" data-i18n="lbl_party_note">(1 hour before the dorm bar night)</div>
                             </div>
 
-                            <!-- WHATSAPP BUILDING POSTER NOTICE -->
-                            <div class="p-4 rounded-xl bg-sjSoftGreen text-sjGreen text-xs space-y-1 border border-sjGreen/20">
+                            <!-- WHATSAPP POSTER NOTICE -->
+                            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs space-y-1">
                                 <div class="font-bold flex items-center gap-2">
-                                    <i class="fa-brands fa-whatsapp text-sm"></i>
-                                    <span>WhatsApp Group Contact</span>
+                                    <i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i>
+                                    <span data-i18n="contact_title">WhatsApp Group Contact</span>
                                 </div>
                                 <p data-i18n="contact_notice" class="leading-relaxed">
                                     If you need to contact us, you can find the link to our WhatsApp group on the posters located at the entrance of each building.
@@ -678,162 +698,237 @@
                             </div>
                         </div>
 
-                        <!-- PRACTICAL LINKS CARD -->
-                        <div class="sj-card p-6 space-y-4">
-                            <h3 class="text-lg font-bold text-sjText flex items-center gap-2">
-                                <i class="fa-solid fa-link text-sjGreen"></i>
+                        <!-- EXPANDED PRACTICAL LINKS CARD WITH DESCRIPTIONS & ICONS -->
+                        <div class="modular-card p-6 sm:p-8 space-y-5">
+                            <h3 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+                                <i class="fa-solid fa-link text-brandPrimary"></i>
                                 <span data-i18n="links_title">Practical Links & Public Services</span>
                             </h3>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                                <a href="https://www.bayern.de" target="_blank" class="p-3 rounded-xl bg-sjBg hover:bg-slate-100 text-sjText font-semibold flex items-center justify-between border border-sjBorder">
-                                    <span>Bavaria State Portal</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-sjMuted"></i>
-                                </a>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                                
+                                <!-- Link Item 1: Bayern Portal -->
+                                <button onclick="openExternalUrl('https://www.bayern.de')" class="p-3.5 rounded-xl bg-slate-50 hover:bg-cyan-50/50 text-slate-900 flex flex-col justify-between border border-slate-200 hover:border-brandPrimary transition text-left group">
+                                    <div class="flex items-center justify-between w-full mb-1">
+                                        <div class="flex items-center gap-2 font-bold text-slate-900 group-hover:text-brandPrimary">
+                                            <i class="fa-solid fa-landmark text-brandPrimary"></i>
+                                            <span>Bavaria State Portal</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-[10px]"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 leading-snug font-normal" data-i18n="link_bayern_desc">State administration portal, public legal notices, and official Bavarian services.</p>
+                                </button>
 
-                                <a href="https://www.muenchen.de" target="_blank" class="p-3 rounded-xl bg-sjBg hover:bg-slate-100 text-sjText font-semibold flex items-center justify-between border border-sjBorder">
-                                    <span>City of Munich Portal</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-sjMuted"></i>
-                                </a>
+                                <!-- Link Item 2: Munich City Portal -->
+                                <button onclick="openExternalUrl('https://www.muenchen.de')" class="p-3.5 rounded-xl bg-slate-50 hover:bg-cyan-50/50 text-slate-900 flex flex-col justify-between border border-slate-200 hover:border-brandPrimary transition text-left group">
+                                    <div class="flex items-center justify-between w-full mb-1">
+                                        <div class="flex items-center gap-2 font-bold text-slate-900 group-hover:text-brandPrimary">
+                                            <i class="fa-solid fa-city text-brandPrimary"></i>
+                                            <span>City of Munich Portal</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-[10px]"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 leading-snug font-normal" data-i18n="link_munich_desc">Residence registration (Anmeldung), KVR appointment booking, and municipal services.</p>
+                                </button>
 
-                                <a href="https://www.tum.de" target="_blank" class="p-3 rounded-xl bg-sjBg hover:bg-slate-100 text-sjText font-semibold flex items-center justify-between border border-sjBorder">
-                                    <span>TUM Munich</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-sjMuted"></i>
-                                </a>
+                                <!-- Link Item 3: TUM Munich -->
+                                <button onclick="openExternalUrl('https://www.tum.de')" class="p-3.5 rounded-xl bg-slate-50 hover:bg-cyan-50/50 text-slate-900 flex flex-col justify-between border border-slate-200 hover:border-brandPrimary transition text-left group">
+                                    <div class="flex items-center justify-between w-full mb-1">
+                                        <div class="flex items-center gap-2 font-bold text-slate-900 group-hover:text-brandPrimary">
+                                            <i class="fa-solid fa-graduation-cap text-brandPrimary"></i>
+                                            <span>TUM Munich</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-[10px]"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 leading-snug font-normal" data-i18n="link_tum_desc">Technical University of Munich student portal, campus management, and library services.</p>
+                                </button>
 
-                                <a href="https://www.lmu.de" target="_blank" class="p-3 rounded-xl bg-sjBg hover:bg-slate-100 text-sjText font-semibold flex items-center justify-between border border-sjBorder">
-                                    <span>LMU Munich</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-sjMuted"></i>
-                                </a>
+                                <!-- Link Item 4: LMU Munich -->
+                                <button onclick="openExternalUrl('https://www.lmu.de')" class="p-3.5 rounded-xl bg-slate-50 hover:bg-cyan-50/50 text-slate-900 flex flex-col justify-between border border-slate-200 hover:border-brandPrimary transition text-left group">
+                                    <div class="flex items-center justify-between w-full mb-1">
+                                        <div class="flex items-center gap-2 font-bold text-slate-900 group-hover:text-brandPrimary">
+                                            <i class="fa-solid fa-university text-brandPrimary"></i>
+                                            <span>LMU Munich</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-[10px]"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 leading-snug font-normal" data-i18n="link_lmu_desc">Ludwig-Maximilians-Universität student portals, user account services, and academic info.</p>
+                                </button>
 
-                                <a href="https://www.studierendenwerk-muenchen-oberbayern.de" target="_blank" class="p-3 rounded-xl bg-sjBg hover:bg-slate-100 text-sjText font-semibold flex items-center justify-between border border-sjBorder sm:col-span-2">
-                                    <span>Studierendenwerk München Oberbayern</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-sjMuted"></i>
-                                </a>
+                                <!-- Link Item 5: Hochschule München (HM) -->
+                                <button onclick="openExternalUrl('https://www.hm.edu')" class="p-3.5 rounded-xl bg-slate-50 hover:bg-cyan-50/50 text-slate-900 flex flex-col justify-between border border-slate-200 hover:border-brandPrimary transition text-left group">
+                                    <div class="flex items-center justify-between w-full mb-1">
+                                        <div class="flex items-center gap-2 font-bold text-slate-900 group-hover:text-brandPrimary">
+                                            <i class="fa-solid fa-book-open text-brandPrimary"></i>
+                                            <span>HM Hochschule München</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-[10px]"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 leading-snug font-normal" data-i18n="link_hm_desc">Munich University of Applied Sciences portal, examination offices, and campus IT support.</p>
+                                </button>
 
-                                <a href="https://www.mvv-muenchen.de" target="_blank" class="p-3 rounded-xl bg-sjBg hover:bg-slate-100 text-sjText font-semibold flex items-center justify-between border border-sjBorder">
-                                    <span>MVV Public Transport</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-sjMuted"></i>
-                                </a>
+                                <!-- Link Item 6: Studierendenwerk -->
+                                <button onclick="openExternalUrl('https://www.studierendenwerk-muenchen-oberbayern.de')" class="p-3.5 rounded-xl bg-slate-50 hover:bg-cyan-50/50 text-slate-900 flex flex-col justify-between border border-slate-200 hover:border-brandPrimary transition text-left group">
+                                    <div class="flex items-center justify-between w-full mb-1">
+                                        <div class="flex items-center gap-2 font-bold text-slate-900 group-hover:text-brandPrimary">
+                                            <i class="fa-solid fa-house-user text-brandPrimary"></i>
+                                            <span>Studierendenwerk München</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-[10px]"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 leading-snug font-normal" data-i18n="link_stwm_desc">Official dormitory management, rental contracts, Mensa canteens, and housing support.</p>
+                                </button>
 
-                                <a href="https://www.lrz.de" target="_blank" class="p-3 rounded-xl bg-sjBg hover:bg-slate-100 text-sjText font-semibold flex items-center justify-between border border-sjBorder">
-                                    <span>LRZ Network Center</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-sjMuted"></i>
-                                </a>
+                                <!-- Link Item 7: MVV Transit -->
+                                <button onclick="openExternalUrl('https://www.mvv-muenchen.de')" class="p-3.5 rounded-xl bg-slate-50 hover:bg-cyan-50/50 text-slate-900 flex flex-col justify-between border border-slate-200 hover:border-brandPrimary transition text-left group">
+                                    <div class="flex items-center justify-between w-full mb-1">
+                                        <div class="flex items-center gap-2 font-bold text-slate-900 group-hover:text-brandPrimary">
+                                            <i class="fa-solid fa-bus text-brandPrimary"></i>
+                                            <span>MVV Public Transport</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-[10px]"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 leading-snug font-normal" data-i18n="link_mvv_desc">Munich public transit timetables, route planning, and Deutschlandticket student options.</p>
+                                </button>
+
+                                <!-- Link Item 8: Krisendienst Bayern -->
+                                <button onclick="openExternalUrl('https://www.krisendienste.bayern')" class="p-3.5 rounded-xl bg-slate-50 hover:bg-cyan-50/50 text-slate-900 flex flex-col justify-between border border-slate-200 hover:border-brandPrimary transition text-left group">
+                                    <div class="flex items-center justify-between w-full mb-1">
+                                        <div class="flex items-center gap-2 font-bold text-slate-900 group-hover:text-brandPrimary">
+                                            <i class="fa-solid fa-heart-pulse text-brandPrimary"></i>
+                                            <span>Krisendienst Bayern</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-[10px]"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 leading-snug font-normal" data-i18n="link_krisen_desc">24/7 mental health crisis hotline, urgent counseling, and emergency support in Bavaria.</p>
+                                </button>
+
+                                <!-- Link Item 9: Frauennotruf München -->
+                                <button onclick="openExternalUrl('https://www.frauennotruf-muenchen.de')" class="p-3.5 rounded-xl bg-slate-50 hover:bg-cyan-50/50 text-slate-900 flex flex-col justify-between border border-slate-200 hover:border-brandPrimary transition text-left group sm:col-span-2">
+                                    <div class="flex items-center justify-between w-full mb-1">
+                                        <div class="flex items-center gap-2 font-bold text-slate-900 group-hover:text-brandPrimary">
+                                            <i class="fa-solid fa-hand-holding-heart text-brandPrimary"></i>
+                                            <span>Frauennotruf München / Frauenhilfe</span>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-[10px]"></i>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 leading-snug font-normal" data-i18n="link_frauen_desc">Specialized advice, confidential hotline, and immediate crisis assistance for women in distress.</p>
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- RIGHT COLUMN: OFFLINE TROUBLESHOOTING FORM CARD -->
-                    <div class="lg:col-span-6">
-                        <div class="sj-card p-6 sm:p-8 space-y-4 relative opacity-90">
+                    <!-- RIGHT COLUMN: REORDERED OFFLINE TROUBLESHOOTING FORM -->
+                    <div class="lg:col-span-5">
+                        <div class="modular-card p-6 sm:p-8 space-y-6 opacity-85 select-none">
                             <div>
-                                <h3 class="text-xl font-bold text-sjText" data-i18n="form_title">Report Network Issue</h3>
-                                <p class="text-xs sm:text-sm text-sjMuted mt-1" data-i18n="form_sub">
+                                <h3 class="text-xl font-bold text-slate-900" data-i18n="form_title">Report Network Issue</h3>
+                                <p class="text-xs text-slate-500 mt-1" data-i18n="form_sub">
                                     Troubleshooting dispatch form status
                                 </p>
                             </div>
 
                             <!-- TEMPORARILY UNAVAILABLE NOTICE BANNER -->
-                            <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs sm:text-sm space-y-1">
-                                <div class="font-bold flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-exclamation text-amber-700"></i>
+                            <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1">
+                                <div class="font-bold flex items-center gap-2 text-amber-800">
+                                    <i class="fa-solid fa-circle-exclamation text-base"></i>
                                     <span data-i18n="form_off_title">Form Temporarily Unavailable</span>
                                 </div>
-                                <p class="text-amber-800 leading-relaxed" data-i18n="form_off_body">
-                                    Online dispatch submission is currently offline. Please visit tutors during service hours on Fridays at 19:00 in Chiemgauerstr. 3 Common Room, or check the WhatsApp group link on the poster at your building entrance.
+                                <p class="leading-relaxed font-normal" data-i18n="form_off_body">
+                                    Online dispatch submission is currently offline. Please visit tutors during service hours in Traunsteiner Str. 5 Common Rooms, or check the WhatsApp group link on the poster at your building entrance.
                                 </p>
                             </div>
 
-                            <!-- DISABLED FORM FIELDS -->
-                            <form class="space-y-3 pointer-events-none opacity-50 select-none">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block text-xs font-semibold text-sjMuted mb-1">Building & Room</label>
-                                        <input type="text" disabled value="Chiemgauerstr. X" class="sj-input w-full text-xs">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-sjMuted mb-1">Resident Name</label>
-                                        <input type="text" disabled value="Name" class="sj-input w-full text-xs">
-                                    </div>
+                            <!-- REORDERED FORM FIELDS (Name -> Phone -> Email -> Description) -->
+                            <form class="space-y-4 pointer-events-none opacity-50">
+                                <div>
+                                    <label class="block text-xs font-mono text-slate-500 mb-1" data-i18n="form_lbl_name">Resident Name</label>
+                                    <input type="text" id="form-input-name" disabled value="Jane Smith" class="form-input w-full text-xs font-medium">
                                 </div>
 
                                 <div>
-                                    <label class="block text-xs font-semibold text-sjMuted mb-1">Email Address</label>
-                                    <input type="email" disabled value="student@tum.de" class="sj-input w-full text-xs">
+                                    <label class="block text-xs font-mono text-slate-500 mb-1" data-i18n="form_lbl_phone">Phone Number</label>
+                                    <input type="text" id="form-input-phone" disabled value="+49 151 12345678" class="form-input w-full text-xs font-mono">
                                 </div>
 
                                 <div>
-                                    <label class="block text-xs font-semibold text-sjMuted mb-1">Problem Description</label>
-                                    <textarea disabled rows="3" class="sj-input w-full text-xs">Form is currently offline...</textarea>
+                                    <label class="block text-xs font-mono text-slate-500 mb-1" data-i18n="form_lbl_email">Email Address</label>
+                                    <input type="email" id="form-input-email" disabled value="jane.smith@tum.de" class="form-input w-full text-xs font-mono">
                                 </div>
 
-                                <button type="button" disabled class="w-full py-3 bg-slate-300 text-slate-600 text-xs font-bold rounded-full cursor-not-allowed" data-i18n="form_btn_disabled">
+                                <div>
+                                    <label class="block text-xs font-mono text-slate-500 mb-1" data-i18n="form_lbl_desc">Problem Description</label>
+                                    <textarea id="form-input-desc" disabled rows="3" class="form-input w-full text-xs">Form is currently offline...</textarea>
+                                </div>
+
+                                <button type="button" disabled class="w-full py-3 bg-slate-200 text-slate-500 text-xs uppercase font-mono font-bold tracking-wider rounded-xl cursor-not-allowed" data-i18n="form_btn_disabled">
                                     Submit Offline
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- SECTION 5: GENERAL VIDEO GUIDE (SINGLE CARD ONLY) -->
-        <section id="media" class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <div class="mb-6">
-                <h2 class="text-2xl sm:text-3xl font-bold text-sjText" data-i18n="media_heading">Video Setup Tutorial</h2>
-                <p class="text-sm text-sjMuted mt-1" data-i18n="media_sub">
-                    Visual guide for setting up your router in the dormitory.
-                </p>
-            </div>
-
-            <!-- SINGLE CARD GENERAL YOUTUBE SEARCH -->
-            <div class="sj-card p-6 sm:p-8 max-w-2xl mx-auto text-center space-y-4">
-                <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto text-2xl font-bold">
-                    <i class="fa-brands fa-youtube"></i>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-sjText" data-i18n="yt_card_title">How to Connect Router to Internet</h3>
-                    <p class="text-xs sm:text-sm text-sjMuted mt-1 leading-relaxed" data-i18n="yt_card_desc">
-                        Watch video tutorials explaining how to connect and configure a home router for student accommodation networks.
+            <!-- SECTION 5: YOUTUBE SETUP TUTORIAL CARD -->
+            <section id="media" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="mb-10 text-center max-w-2xl mx-auto">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="media_heading">Video Setup Guide</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1 font-normal" data-i18n="media_sub">
+                        Visual video guides for connecting a home router to internet networks.
                     </p>
                 </div>
-                <div class="pt-2">
-                    <a href="https://www.youtube.com/results?search_query=how+to+connect+router+to+internet" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 sj-btn-primary text-xs sm:text-sm">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <span data-i18n="yt_card_btn">Search Setup Videos on YouTube</span>
-                    </a>
+
+                <div class="modular-card p-8 sm:p-12 max-w-2xl mx-auto text-center space-y-6">
+                    <div class="w-16 h-16 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto text-2xl shadow-sm">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900" data-i18n="yt_card_title">How to Connect Router to Internet</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed max-w-lg mx-auto" data-i18n="yt_card_desc">
+                            Watch general video tutorials explaining how to connect and configure a home router for student accommodation networks.
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <button onclick="openExternalUrl('https://www.youtube.com/results?search_query=how+to+connect+router+to+internet')" class="btn-primary text-xs uppercase tracking-wider flex items-center justify-center gap-2 mx-auto">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span data-i18n="yt_card_btn">Search Setup Videos on YouTube</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-brandNavy text-white py-10 px-4 sm:px-6 lg:px-8 border-t border-slate-800 text-xs font-normal">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-brandPrimary text-white flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-sm text-white">Network Tutors | Wohnanlage Chiemgauer Str.</div>
+                        <div class="text-slate-300 mt-0.5">
+                            <span data-i18n="footer_lrz">Internet provider: Leibniz-Rechenzentrum (LRZ)</span>
+                            (<button onclick="openExternalUrl('https://www.lrz.de')" class="underline hover:text-brandCyan">lrz.de</button>)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-slate-300 text-xs">
+                    <div data-i18n="footer_tutors">Operated by voluntary student tutors in accordance with LRZ regulations.</div>
                 </div>
             </div>
-        </section>
+        </footer>
 
-    </main>
+    </div>
 
-    <!-- FOOTER -->
-    <footer class="bg-sjCharcoal text-white border-t border-white/10 py-8 px-4 sm:px-6 lg:px-8 text-xs">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-sjGreen flex items-center justify-center text-white font-bold">
-                    <i class="fa-solid fa-network-wired text-xs"></i>
-                </div>
-                <div>
-                    <div class="font-bold text-sm">Network Tutors | Wohnanlage Chiemgauer Str.</div>
-                    <div class="text-slate-400">Internet provided by Leibniz-Rechenzentrum (LRZ)</div>
-                </div>
-            </div>
-
-            <div class="text-slate-400 space-y-1">
-                <div>Operated by voluntary student tutors in accordance with LRZ regulations.</div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JAVASCRIPT ENGINE & TRANSLATIONS -->
+    <!-- JAVASCRIPT APP LOGIC -->
     <script>
         // TRANSLATIONS DICTIONARY (EN, DE, FR)
         const translations = {
             en: {
-                nav_subtitle: "Network Tutors",
                 nav_guide: "Setup Guide",
                 nav_speed: "Speed Test",
                 nav_security: "Security Rules",
@@ -841,72 +936,69 @@
                 nav_media: "Video Guide",
                 hero_badge: "Updated: Winter Semester 26/27",
                 hero_title: "Internet Information for Wohnanlage Chiemgauer Str.",
-                hero_desc: "Instructions for connecting your router, network security rules, speed diagnostics, and tutor service hours.",
+                hero_desc: "Step-by-step setup guides, upcoming service hours, network safety tips, speed diagnostic tools, and practical local links.",
                 hero_cta_guide: "Open Router Setup Guide",
                 hero_cta_hours: "View Service Hours",
-                notice_title: "Next Tutor Service Hours",
-                notice_body: "Service hours take place every two weeks on Friday at 19:00 (1 hour before the Tutors' Night Party) in Chiemgauerstr. 3 Common Room.",
-                notice_time: "Fridays @ 19:00 CET",
-                guide_heading: "Router Connection Guide",
-                guide_sub: "Follow these 4 simple steps to set up your router in Wohnanlage Chiemgauer Str.",
+                notice_subtitle: "Next Tutor Service Hours",
+                notice_body: "Location: Traunsteiner Str. 5 Common Rooms (1 hour before the dorm bar night).",
+                guide_heading: "4-Step Router Connection Guide",
+                guide_sub: "Follow these 4 steps to set up your router in Wohnanlage Chiemgauer Str.",
                 wiz_s1_lbl: "Step 1",
-                wiz_s1_title: "Cable Wiring",
+                wiz_s1_title: "Power & Cable",
                 wiz_s2_lbl: "Step 2",
-                wiz_s2_title: "Admin Login",
+                wiz_s2_title: "Wi-Fi Connect",
                 wiz_s3_lbl: "Step 3",
-                wiz_s3_title: "DHCP Mode",
+                wiz_s3_title: "Admin Login (Opt)",
                 wiz_s4_lbl: "Step 4",
-                wiz_s4_title: "Wi-Fi Password",
-                step1_head: "Connect Cable to Blue WAN Port",
-                step1_text: "Plug the network cable coming from your room's wall socket directly into the BLUE WAN Port on the back of your router.",
-                step1_warn_title: "Important Rule:",
-                step1_warn_body: " Never plug the wall cable into an orange LAN port. Plugging into LAN creates network loops that automatically disable internet access for your building.",
+                wiz_s4_title: "DHCP Setup (Opt)",
+                step1_head: "Connect Power Adapter & Blue WAN Port",
+                step1_text: "Plug the power adapter into an outlet and press the power button. Connect the network cable from your room's wall socket directly into the BLUE WAN Port on the back of your router.",
+                step1_warn_title: "Network Safety Tip:",
+                step1_warn_body: " Connecting your wall cable to the blue WAN port helps ensure a smooth, stable connection for your room and prevents local network loops on your floor.",
                 diag_prompt: "Click any port on the router diagram to inspect its function.",
                 diag_title: "Router Rear Panel Overview",
-                step2_head: "Open Router Admin Dashboard",
-                step2_text: "Connect your laptop or smartphone to the router via Wi-Fi or LAN cable. Open your web browser and enter the default management IP address.",
-                step2_url_lbl: "Router Address",
-                step2_url_alt: "Alternative: tplinkwifi.net",
-                step2_cred_lbl: "Default Login",
-                step2_cred_note: "You will be asked to set a new password on first login.",
-                step3_head: "Select WAN Connection Type: Dynamic IP (DHCP)",
-                step3_text: "Inside the router setup menu, select Dynamic IP as your connection mode. The network automatically assigns your router an IP address.",
-                step3_list_title: "Quick Setup Summary:",
-                step3_l1: "Click Quick Setup in the left navigation menu.",
-                step3_l2: "Choose Wireless Router mode.",
-                step3_l3: "WAN Connection Type: Select Dynamic IP (Do NOT choose PPPoE or Static IP).",
-                step3_l4: "MAC Clone: Keep Do NOT clone MAC address.",
-                step4_head: "Set Wi-Fi Name & Password",
-                step4_text: "Set a clear wireless network name (SSID) like Chiemgauer_RoomXXX and protect it with a strong password.",
-                pass_title: "Wi-Fi Password Generator",
-                pass_gen_btn: "Generate",
-                pass_copy_btn: "Copy Password",
-                pass_rec_title: "Recommended Settings",
+                step2_head: "Connect via Default Wi-Fi Network",
+                step2_text: "Turn on Wi-Fi on your laptop or smartphone. Connect using the default Wi-Fi network name (SSID) and wireless password printed on the sticker at the back or bottom of your router.",
+                step2_ssid_lbl: "Default SSID (Wi-Fi Name)",
+                step2_ssid_val: "See sticker on back/bottom of router",
+                step2_ssid_sub: "Example: TP-Link_XXXX",
+                step2_pass_lbl: "Default Wireless Password",
+                step2_pass_val: "Check the 8-digit PIN or Wireless Password printed on the router sticker.",
+                step3_head: "Router Admin Dashboard (Optional)",
+                step3_text: "To customize your Wi-Fi name or password, open a web browser and go to http://192.168.0.1 or tplinkwifi.net. Use the default login credentials printed on your router's sticker or manual.",
+                step3_url_lbl: "Router Access Address",
+                step3_url_alt: "Alternative: tplinkwifi.net",
+                step3_cred_lbl: "Default Admin Password",
+                step3_cred_val: "Refer to the sticker on the back of your router or user manual.",
+                step4_head: "WAN & DHCP Configuration (Optional)",
+                step4_text: "If prompted in the setup wizard, choose Dynamic IP (DHCP) as your connection type. Note: Additional step-by-step setup documents were sent to your email prior to your move-in date.",
+                step4_list_title: "Quick Setup Summary:",
+                step4_l1: "Click Quick Setup in the left navigation menu.",
+                step4_l2: "Choose Wireless Router mode.",
+                step4_l3: "WAN Connection Type: Select Dynamic IP (Do NOT choose PPPoE or Static IP).",
+                step4_l4: "MAC Clone: Keep Do NOT clone MAC address.",
+                step4_email_note: "Tip: For detailed step-by-step configuration guides, please refer to the orientation documents sent to your email address prior to move-in.",
                 wiz_prev: "Previous",
                 wiz_next: "Next Step",
                 wiz_indicator_fmt: "Step {step} of 4",
                 led_title: "Router LED Status Inspector",
-                led_sub: "Click on any LED indicator below to check what the lights on your router mean.",
-                speed_heading: "Live Connection Speed Test",
-                speed_sub: "Measure real-time upload speed, download speed, latency, and jitter from your room device.",
-                speed_dl: "Download",
-                speed_ul: "Upload",
-                speed_ping: "Ping Latency",
-                speed_jitter: "Jitter",
-                speed_idle: "Status: Ready to test connection",
-                speed_testing: "Status: Testing connection...",
-                speed_done: "Status: Speed test completed",
-                speed_btn_start: "Start Speed Test",
+                led_sub: "Click on the enlarged LED indicators below to test and check what the lights on your router mean.",
+                speed_heading: "Connection Speed Test",
+                speed_sub: "Test your room connection speed directly on Speedtest.net.",
+                speed_card_title: "Test Network Upload & Download Speed",
+                speed_card_desc: "We recommend using Speedtest by Ookla for reliable real-time download speed, upload speed, and latency diagnostics.",
+                speed_btn_open: "Open Speedtest.net",
+                speed_disclaimer: "Note: You will be redirected to an external speed testing service. Network Tutors do not operate external testing servers.",
                 sec_heading: "Network Security Rules",
-                sec_sub: "Please adhere to university network regulations to ensure stable service and legal compliance.",
-                rules_title: "Essential Network Rules",
-                rules_sub: "Unified guidelines for Wohnanlage Chiemgauer Str. residents",
+                sec_sub: "Please follow dormitory network security guidelines to prevent service interruption and legal issues.",
+                rules_title: "Essential Security Guidelines",
+                rules_sub: "Unified network rules for Wohnanlage Chiemgauer Str. residents",
                 rule1_title: "No Rogue DHCP Servers:",
-                rule1_body: " Always connect the wall cable exclusively to the blue WAN port. Connecting to LAN disrupts building connectivity.",
+                rule1_body: " Always connect the wall cable exclusively to the blue WAN port to avoid local network loops.",
                 rule2_title: "No Copyright Infringement (BitTorrent / P2P):",
                 rule2_body: " Peer-to-peer file sharing of copyrighted media is strictly monitored in Germany. Infringements lead to heavy legal fines.",
                 rule3_title: "Router Password Security:",
-                rule3_body: " Change your router admin login from 'admin' to prevent unauthorized changes by neighboring devices.",
+                rule3_body: " Change your router admin password from the default setting to prevent unauthorized modifications.",
                 rule4_title: "Personal Residential Use Only:",
                 rule4_body: " Bandwidth is for academic research and residential internet use. Commercial hosting or reselling connectivity is forbidden.",
                 chk_title: "Security Self-Check",
@@ -915,32 +1007,58 @@
                 chk_status_good: "Good Progress",
                 chk_status_secure: "Fully Secure",
                 chk_item1: "Cable is plugged into the BLUE WAN port only.",
-                chk_item2: "Changed router admin password from default 'admin'.",
+                chk_item2: "Changed router admin password from default.",
                 chk_item3: "Wi-Fi is protected with a strong WPA2 password.",
                 chk_item4: "BitTorrent / P2P upload seeding is turned off.",
-                chk_footer: "Complete all 4 items for a safe connection.",
+                chk_footer: "Check all 4 items to ensure a safe room setup.",
                 supp_heading: "Support & Practical Links",
-                supp_sub: "Tutor service hours, university links, and municipal portal services.",
+                supp_sub: "Tutor service hours, university links, emergency services, and municipal portals.",
                 tutor_hours_title: "Network Tutor Service Hours",
-                tutor_hours_desc: "We do not have a fixed office room. Student tutors assist residents in Wohnanlage Chiemgauer Str. during our service hours.",
+                tutor_hours_desc: "We do not have a fixed office room. Student tutors assist residents in Wohnanlage Chiemgauer Str. during our regular service hours.",
                 lbl_office: "Location:",
-                lbl_time: "Service Hours:",
-                lbl_party_note: "(1 hour before the Tutors' Night Party)",
+                val_office: "Traunsteiner Str. 5 Common Rooms",
+                lbl_next_date: "Next Service Date:",
+                lbl_schedule: "Schedule:",
+                val_schedule: "Bi-weekly on Friday @ 19:00 CET",
+                lbl_party_note: "(1 hour before the dorm bar night)",
+                contact_title: "WhatsApp Group Contact",
                 contact_notice: "If you need to contact us, you can find the link to our WhatsApp group on the posters located at the entrance of each building.",
                 links_title: "Practical Links & Public Services",
+                link_bayern_desc: "State administration portal, public legal notices, and official Bavarian services.",
+                link_munich_desc: "Residence registration (Anmeldung), KVR appointment booking, and municipal services.",
+                link_tum_desc: "Technical University of Munich student portal, campus management, and library services.",
+                link_lmu_desc: "Ludwig-Maximilians-Universität student portals, user account services, and academic info.",
+                link_hm_desc: "Munich University of Applied Sciences portal, examination offices, and campus IT support.",
+                link_stwm_desc: "Official dormitory management, rental contracts, Mensa canteens, and housing support.",
+                link_mvv_desc: "Munich public transit timetables, route planning, and Deutschlandticket student options.",
+                link_krisen_desc: "24/7 mental health crisis hotline, urgent counseling, and emergency support in Bavaria.",
+                link_frauen_desc: "Specialized advice, confidential hotline, and immediate crisis assistance for women in distress.",
                 form_title: "Report Network Issue",
                 form_sub: "Troubleshooting dispatch form status",
                 form_off_title: "Form Temporarily Unavailable",
-                form_off_body: "Online dispatch submission is currently offline. Please visit tutors during service hours on Fridays at 19:00 in Chiemgauerstr. 3 Common Room, or check the WhatsApp group link on the poster at your building entrance.",
+                form_off_body: "Online dispatch submission is currently offline. Please visit tutors during service hours in Traunsteiner Str. 5 Common Rooms, or check the WhatsApp group link on the poster at your building entrance.",
+                form_lbl_name: "Resident Name",
+                form_lbl_phone: "Phone Number",
+                form_lbl_email: "Email Address",
+                form_lbl_desc: "Problem Description",
+                form_val_name: "Jane Smith",
+                form_val_phone: "+49 151 12345678",
+                form_val_email: "jane.smith@tum.de",
+                form_val_desc: "Form is currently offline...",
                 form_btn_disabled: "Submit Offline",
-                media_heading: "Video Setup Tutorial",
-                media_sub: "Visual guide for setting up your router in the dormitory.",
+                media_heading: "Video Setup Guide",
+                media_sub: "Visual video guides for connecting a home router to internet networks.",
                 yt_card_title: "How to Connect Router to Internet",
                 yt_card_desc: "Watch general video tutorials explaining how to connect and configure a home router for student accommodation networks.",
-                yt_card_btn: "Search Setup Videos on YouTube"
+                yt_card_btn: "Search Setup Videos on YouTube",
+                footer_lrz: "Internet provider: Leibniz-Rechenzentrum (LRZ)",
+                footer_tutors: "Operated by voluntary student tutors in accordance with LRZ regulations.",
+                modal_title: "External Website Notice",
+                modal_body: "You are about to leave the Network Tutors portal to visit an external website. Network Tutors are not responsible for third-party content or external privacy policies.",
+                modal_proceed: "Proceed",
+                modal_cancel: "Cancel"
             },
             de: {
-                nav_subtitle: "Netztutoren",
                 nav_guide: "Einrichtung",
                 nav_speed: "Speedtest",
                 nav_security: "Sicherheitsregeln",
@@ -948,72 +1066,69 @@
                 nav_media: "Video-Anleitung",
                 hero_badge: "Aktualisiert: Wintersemester 26/27",
                 hero_title: "Internet-Informationen für Wohnanlage Chiemgauer Str.",
-                hero_desc: "Anleitung zur Router-Einrichtung, Sicherheitsregeln, Geschwindigkeitsmessung und Service-Zeiten der Netztutoren.",
+                hero_desc: "Schritt-für-Schritt-Anleitungen, Service-Zeiten der Netztutoren, Sicherheitstipps, Speedtest und praktische Links.",
                 hero_cta_guide: "Router-Anleitung öffnen",
                 hero_cta_hours: "Service-Zeiten anzeigen",
-                notice_title: "Nächste Tutoren-Service-Zeiten",
-                notice_body: "Die Service-Zeiten finden alle 2 Wochen freitags um 19:00 Uhr (1 Stunde vor der Tutoren-Night-Party) im Gemeinschaftsraum Chiemgauerstr. 3 statt.",
-                notice_time: "Freitags @ 19:00 Uhr CET",
-                guide_heading: "Router-Anschlussanleitung",
-                guide_sub: "Folgen Sie diesen 4 Schritten, um Ihren Router in der Wohnanlage Chiemgauer Str. einzurichten.",
+                notice_subtitle: "Nächste Tutoren-Service-Zeiten",
+                notice_body: "Ort: Traunsteiner Str. 5 Gemeinschaftsräume (1 Stunde vor der Dorm-Bar-Night).",
+                guide_heading: "4-Schritte Router-Anschlussanleitung",
+                guide_sub: "Folgen Sie diesen 4 Schritten zur Einrichtung Ihres Routers in der Wohnanlage Chiemgauer Str.",
                 wiz_s1_lbl: "Schritt 1",
-                wiz_s1_title: "Kabelanschluss",
+                wiz_s1_title: "Strom & Kabel",
                 wiz_s2_lbl: "Schritt 2",
-                wiz_s2_title: "Admin-Login",
+                wiz_s2_title: "WLAN Verbinden",
                 wiz_s3_lbl: "Schritt 3",
-                wiz_s3_title: "DHCP Modus",
+                wiz_s3_title: "Admin-Login (Opt)",
                 wiz_s4_lbl: "Schritt 4",
-                wiz_s4_title: "WLAN-Passwort",
-                step1_head: "Kabel in den BLAUEN WAN-Port stecken",
-                step1_text: "Stecken Sie das Netzwerkkabel aus der Wanddose direkt in den BLAUEN WAN-Port auf der Rückseite Ihres Routers.",
-                step1_warn_title: "Wichtige Regel:",
-                step1_warn_body: " Stecken Sie das Wandkabel niemals in einen orangenen LAN-Port! Ein Anstecken an LAN erzeugt Netzwerkschleifen und sperrt den Internetzugang Ihres Gebäudes.",
+                wiz_s4_title: "DHCP Modus (Opt)",
+                step1_head: "Netzteil anschließen & Blauen WAN-Port verbinden",
+                step1_text: "Schließen Sie das Netzteil an die Steckdose an und schalten Sie den Router ein. Stecken Sie das Netzwerkkabel aus der Wanddose direkt in den BLAUEN WAN-Port auf der Rückseite Ihres Routers.",
+                step1_warn_title: "Sicherheits-Tipp:",
+                step1_warn_body: " Der Anschluss des Wandkabels an den blauen WAN-Port sorgt für eine stabile Verbindung und vermeidet Netzwerkschleifen auf Stockwerksebene.",
                 diag_prompt: "Klicken Sie auf Anschlüsse im Diagramm für Details.",
                 diag_title: "Router-Rückseite Übersicht",
-                step2_head: "Router Admin-Oberfläche öffnen",
-                step2_text: "Verbinden Sie Ihren Laptop oder Ihr Smartphone per WLAN oder LAN-Kabel mit dem Router. Öffnen Sie den Browser und rufen Sie die Adresse auf.",
-                step2_url_lbl: "Router-Adresse",
-                step2_url_alt: "Alternativ: tplinkwifi.net",
-                step2_cred_lbl: "Standard-Login",
-                step2_cred_note: "Sie werden beim ersten Login aufgefordert, ein neues Passwort festzulegen.",
-                step3_head: "WAN-Verbindungstyp wählen: Dynamische IP (DHCP)",
-                step3_text: "Wählen Sie im Setup-Menü Dynamische IP aus. Das Netzwerk weist dem Router automatisch eine IP-Adresse zu.",
-                step3_list_title: "Quick Setup Übersicht:",
-                step3_l1: "Klicken Sie links auf Quick Setup.",
-                step3_l2: "Wählen Sie den Modus Wireless Router.",
-                step3_l3: "WAN-Verbindungstyp: Dynamische IP wählen (Kein PPPoE oder Statische IP).",
-                step3_l4: "MAC-Clone: 'MAC-Adresse nicht klonen' beibehalten.",
-                step4_head: "WLAN-Name & Passwort festlegen",
-                step4_text: "Geben Sie Ihrem WLAN einen eindeutigen Namen (z.B. Chiemgauer_RaumXXX) und schützen Sie es mit einem starken Passwort.",
-                pass_title: "WLAN-Passwort-Generator",
-                pass_gen_btn: "Generieren",
-                pass_copy_btn: "Passwort kopieren",
-                pass_rec_title: "Empfohlene Einstellungen",
+                step2_head: "Über Standard-WLAN verbinden",
+                step2_text: "Aktivieren Sie WLAN auf Ihrem Laptop oder Smartphone. Verbinden Sie sich mit dem Standard-WLAN-Namen (SSID) und dem Passwort auf dem Aufkleber auf der Rückseite Ihres Routers.",
+                step2_ssid_lbl: "Standard-SSID (WLAN-Name)",
+                step2_ssid_val: "Siehe Aufkleber auf der Rückseite des Routers",
+                step2_ssid_sub: "Beispiel: TP-Link_XXXX",
+                step2_pass_lbl: "Standard-WLAN-Passwort",
+                step2_pass_val: "Prüfen Sie die 8-stellige PIN oder das WLAN-Passwort auf dem Router-Aufkleber.",
+                step3_head: "Router Admin-Oberfläche (Optional)",
+                step3_text: "Um WLAN-Name oder Passwort anzupassen, öffnen Sie einen Browser und rufen Sie http://192.168.0.1 oder tplinkwifi.net auf. Die Zugangsdaten finden Sie auf dem Router-Aufkleber.",
+                step3_url_lbl: "Router-Adresse",
+                step3_url_alt: "Alternativ: tplinkwifi.net",
+                step3_cred_lbl: "Standard Admin-Passwort",
+                step3_cred_val: "Prüfen Sie den Aufkleber auf der Rückseite Ihres Routers oder das Handbuch.",
+                step4_head: "WAN & DHCP-Konfiguration (Optional)",
+                step4_text: "Wählen Sie im Konfigurationsmenü Dynamische IP (DHCP) als Verbindungstyp. Hinweis: Detaillierte Einrichtungsunterlagen wurden vor dem Einzug per E-Mail an Sie versendet.",
+                step4_list_title: "Quick Setup Übersicht:",
+                step4_l1: "Klicken Sie links auf Quick Setup.",
+                step4_l2: "Wählen Sie den Modus Wireless Router.",
+                step4_l3: "WAN-Verbindungstyp: Dynamische IP wählen (Kein PPPoE oder Statische IP).",
+                step4_l4: "MAC-Clone: 'MAC-Adresse nicht klonen' beibehalten.",
+                step4_email_note: "Hinweis: Detaillierte Schritt-für-Schritt-Anleitungen wurden Ihnen vor dem Einzug per E-Mail zugesandt.",
                 wiz_prev: "Zurück",
                 wiz_next: "Nächster Schritt",
                 wiz_indicator_fmt: "Schritt {step} von 4",
                 led_title: "Router-LED Diagnose",
-                led_sub: "Klicken Sie auf die LEDs unten, um die Bedeutung der Router-Lichter zu prüfen.",
-                speed_heading: "Echtzeit-Geschwindigkeitstest",
-                speed_sub: "Messen Sie Download, Upload, Ping und Jitter direkt von Ihrem Gerät im Zimmer.",
-                speed_dl: "Download",
-                speed_ul: "Upload",
-                speed_ping: "Ping-Latenz",
-                speed_jitter: "Jitter",
-                speed_idle: "Status: Bereit für Test",
-                speed_testing: "Status: Geschwindigkeit wird gemessen...",
-                speed_done: "Status: Test erfolgreich abgeschlossen",
-                speed_btn_start: "Speedtest starten",
+                led_sub: "Klicken Sie auf die vergrößerten LEDs unten, um die Bedeutung der Lichter an Ihrem Router zu testen.",
+                speed_heading: "Verbindungs-Speedtest",
+                speed_sub: "Messen Sie Ihre Zimmerverbindung direkt auf Speedtest.net.",
+                speed_card_title: "Upload- & Download-Geschwindigkeit messen",
+                speed_card_desc: "Wir empfehlen Speedtest von Ookla für verlässliche Echtzeit-Messungen von Download, Upload und Ping.",
+                speed_btn_open: "Speedtest.net öffnen",
+                speed_disclaimer: "Hinweis: Sie werden zu einem externen Dienst weitergeleitet. Netztutoren betreiben keine eigenen Server.",
                 sec_heading: "Netzwerk-Sicherheitsregeln",
-                sec_sub: "Bitte beachten Sie die universitären Richtlinien für einen stabilen und rechtskonformen Betrieb.",
+                sec_sub: "Bitte beachten Sie die Sicherheitsrichtlinien zur Vermeidung von Störungen und Abmahnungen.",
                 rules_title: "Wichtige Sicherheitsregeln",
                 rules_sub: "Einheitliche Richtlinien für Bewohner der Wohnanlage Chiemgauer Str.",
                 rule1_title: "Keine Rogue-DHCP-Server:",
-                rule1_body: " Verbinden Sie das Wandkabel nur mit dem blauen WAN-Port. Ein Anschluss an LAN stört die Verbindung im gesamten Gebäude.",
+                rule1_body: " Verbinden Sie das Wandkabel nur mit dem blauen WAN-Port, um Netzwerkschleifen zu vermeiden.",
                 rule2_title: "Keine Urheberrechtsverletzungen (BitTorrent / P2P):",
                 rule2_body: " Filesharing urheberrechtlich geschützter Medien wird in Deutschland streng überwacht und führt zu teuren Abmahnungen.",
                 rule3_title: "Router-Passwort sichern:",
-                rule3_body: " Ändern Sie das Admin-Passwort ('admin') Ihres Routers, um unbefugte Zugriffe zu verhindern.",
+                rule3_body: " Ändern Sie das Admin-Passwort Ihres Routers, um unbefugte Zugriffe zu verhindern.",
                 rule4_title: "Nur für private Wohnzwecke:",
                 rule4_body: " Die Bandbreite dient dem Studium und der privaten Nutzung. Gewerbliche Nutzung oder Weiterverkauf ist untersagt.",
                 chk_title: "Sicherheits-Check",
@@ -1027,27 +1142,53 @@
                 chk_item4: "BitTorrent / P2P Upload-Seeding ist deaktiviert.",
                 chk_footer: "Haken Sie alle 4 Punkte für eine sichere Verbindung ab.",
                 supp_heading: "Hilfe & Nützliche Links",
-                supp_sub: "Service-Zeiten der Netztutoren, Links zu Universitäten und Behörden.",
+                supp_sub: "Service-Zeiten der Netztutoren, Links zu Universitäten und öffentlichen Stellen.",
                 tutor_hours_title: "Netztutoren Service-Zeiten",
                 tutor_hours_desc: "Wir haben kein festes Büro. Die Netztutoren helfen Bewohnern der Wohnanlage Chiemgauer Str. während der Service-Zeiten.",
                 lbl_office: "Ort:",
-                lbl_time: "Service-Zeiten:",
-                lbl_party_note: "(1 Stunde vor der Tutoren-Night-Party)",
+                val_office: "Traunsteiner Str. 5 Gemeinschaftsräume",
+                lbl_next_date: "Nächster Termin:",
+                lbl_schedule: "Turnus:",
+                val_schedule: "Alle 2 Wochen freitags @ 19:00 Uhr CET",
+                lbl_party_note: "(1 Stunde vor der Dorm-Bar-Night)",
+                contact_title: "WhatsApp-Gruppenkontakt",
                 contact_notice: "Wenn Sie uns kontaktieren möchten, finden Sie den Link zu unserer WhatsApp-Gruppe auf den Plakaten im Eingangsbereich jedes Gebäudes.",
                 links_title: "Nützliche Links & Öffentliche Dienste",
+                link_bayern_desc: "Bayerisches Verwaltungsportal, amtliche Mitteilungen und öffentliche Dienste.",
+                link_munich_desc: "Wohnsitzanmeldung (Anmeldung), KVR-Terminbuchung und städtische Behörden.",
+                link_tum_desc: "Studierendenportal der Technischen Universität München, Campus-Verwaltung und Bibliothek.",
+                link_lmu_desc: "Studierendenportal der Ludwig-Maximilians-Universität, Benutzerkonten und Vorlesungsverzeichnis.",
+                link_hm_desc: "Portal der Hochschule München, Prüfungsamt und Campus-IT-Services.",
+                link_stwm_desc: "Wohnheimverwaltung, Mietverträge, Mensa-Speisepläne und soziale Beratung.",
+                link_mvv_desc: "Fahrpläne des Münchner Verkehrsverbunds, Routenplaner und Deutschlandticket für Studierende.",
+                link_krisen_desc: "24/7 kostenfreie Hilfe bei psychischen Krisen, Notfallberatung und Seelsorge in Bayern.",
+                link_frauen_desc: "Spezialisierte Beratung, vertrauliche Notrufnummer und Soforthilfe für Frauen in Notlagen.",
                 form_title: "Störung melden",
                 form_sub: "Status des Online-Formulars",
                 form_off_title: "Formular vorübergehend nicht verfügbar",
-                form_off_body: "Das Online-Formular ist derzeit offline. Bitte kommen Sie freitags um 19:00 Uhr in die Service-Zeiten im Gemeinschaftsraum Chiemgauerstr. 3 oder nutzen Sie den WhatsApp-Gruppenlink auf den Plakaten im Eingangsbereich.",
+                form_off_body: "Das Online-Formular ist derzeit offline. Bitte kommen Sie in die Service-Zeiten in die Traunsteiner Str. 5 Gemeinschaftsräume oder nutzen Sie den WhatsApp-Link auf den Aushängen.",
+                form_lbl_name: "Name des Bewohners",
+                form_lbl_phone: "Telefonnummer",
+                form_lbl_email: "E-Mail-Adresse",
+                form_lbl_desc: "Problembeschreibung",
+                form_val_name: "Erika Mustermann",
+                form_val_phone: "+49 89 12345678",
+                form_val_email: "erika.mustermann@tum.de",
+                form_val_desc: "Formular ist derzeit offline...",
                 form_btn_disabled: "Derzeit Offline",
                 media_heading: "Video-Anleitung",
-                media_sub: "Visuelle Anleitung für die Router-Einrichtung in der Wohnanlage.",
+                media_sub: "Visuelle Video-Anleitungen zur Einrichtung eines Routers am Wohnheimnetz.",
                 yt_card_title: "Anleitung: Router mit dem Internet verbinden",
-                yt_card_desc: "Schauen Sie sich allgemeine Video-Anleitungen zur Verkabelung und Konfiguration eines Routers für Wohnheimnetzwerke an.",
-                yt_card_btn: "Einrichtungsvideos auf YouTube suchen"
+                yt_card_desc: "Schauen Sie sich allgemeine Video-Anleitungen zur Verkabelung und Konfiguration eines Routers an.",
+                yt_card_btn: "Einrichtungsvideos auf YouTube suchen",
+                footer_lrz: "Internetanbieter: Leibniz-Rechenzentrum (LRZ)",
+                footer_tutors: "Betrieben von ehrenamtlichen Netztutoren gemäß LRZ-Richtlinien.",
+                modal_title: "Hinweis zu externem Link",
+                modal_body: "Sie verlassen das Portal der Netztutoren und werden zu einer externen Webseite weitergeleitet. Netztutoren übernehmen keine Haftung für externe Inhalte.",
+                modal_proceed: "Weiter",
+                modal_cancel: "Abbrechen"
             },
             fr: {
-                nav_subtitle: "Tuteurs Réseau",
                 nav_guide: "Configuration",
                 nav_speed: "Test de Débit",
                 nav_security: "Règles de Sécurité",
@@ -1055,73 +1196,70 @@
                 nav_media: "Guide Vidéo",
                 hero_badge: "Mis à jour : Semestre d'hiver 26/27",
                 hero_title: "Informations Internet pour la Wohnanlage Chiemgauer Str.",
-                hero_desc: "Instructions pour connecter votre routeur, règles de sécurité réseau, diagnostics et heures de service des tuteurs.",
+                hero_desc: "Guides étape par étape, heures de service, conseils de sécurité, test de débit et liens utiles.",
                 hero_cta_guide: "Ouvrir le Guide Routeur",
                 hero_cta_hours: "Voir les Heures de Service",
-                notice_title: "Prochaines Heures de Service des Tuteurs",
-                notice_body: "Les heures de service ont lieu toutes les 2 semaines le vendredi à 19h00 (1 heure avant la Night Party des tuteurs) dans la Salle commune Chiemgauerstr. 3.",
-                notice_time: "Vendredi @ 19h00 CET",
-                guide_heading: "Guide de Connexion Routeur",
-                guide_sub: "Suivez ces 4 étapes simples pour configurer votre routeur dans la Wohnanlage Chiemgauer Str.",
+                notice_subtitle: "Prochaines Heures de Service",
+                notice_body: "Lieu : Traunsteiner Str. 5 Salles communes (1 heure avant la soirée bar de la résidence).",
+                guide_heading: "Guide de Connexion en 4 Étapes",
+                guide_sub: "Suivez ces 4 étapes pour configurer votre routeur dans la Wohnanlage Chiemgauer Str.",
                 wiz_s1_lbl: "Étape 1",
-                wiz_s1_title: "Câblage",
+                wiz_s1_title: "Alimentation & Câble",
                 wiz_s2_lbl: "Étape 2",
-                wiz_s2_title: "Connexion Admin",
+                wiz_s2_title: "Connexion Wi-Fi",
                 wiz_s3_lbl: "Étape 3",
-                wiz_s3_title: "Mode DHCP",
+                wiz_s3_title: "Admin Login (Opt)",
                 wiz_s4_lbl: "Étape 4",
-                wiz_s4_title: "Mot de Passe Wi-Fi",
-                step1_head: "Brancher le Câble au Port WAN Bleu",
-                step1_text: "Branchez le câble réseau provenant de la prise murale directement sur le Port WAN BLEU à l'arrière de votre routeur.",
-                step1_warn_title: "Règle Importante :",
-                step1_warn_body: " Ne branchez jamais le câble mural sur un port LAN orange. Cela crée des boucles réseau qui coupent l'accès internet de votre bâtiment.",
+                wiz_s4_title: "Mode DHCP (Opt)",
+                step1_head: "Brancher l'alimentation et le port WAN bleu",
+                step1_text: "Branchez le bloc d'alimentation sur une prise et allumez le routeur. Connectez le câble réseau de la prise murale directement au PORT WAN BLEU à l'arrière du routeur.",
+                step1_warn_title: "Conseil de sécurité :",
+                step1_warn_body: " Brancher le câble mural sur le port WAN bleu garantit une connexion stable et évite les boucles réseau sur votre étage.",
                 diag_prompt: "Cliquez sur les ports du schéma pour voir leur fonction.",
                 diag_title: "Aperçu du Panneau Arrière du Routeur",
-                step2_head: "Ouvrir l'Interface d'Administration",
-                step2_text: "Connectez votre ordinateur ou téléphone au routeur via Wi-Fi ou câble LAN. Ouvrez votre navigateur et saisissez l'adresse de gestion.",
-                step2_url_lbl: "Adresse du Routeur",
-                step2_url_alt: "Alternative : tplinkwifi.net",
-                step2_cred_lbl: "Identifiants par Défaut",
-                step2_cred_note: "Il vous sera demandé de modifier le mot de passe dès la première connexion.",
-                step3_head: "Type de Connexion WAN : IP Dynamique (DHCP)",
-                step3_text: "Dans le menu de configuration, sélectionnez IP Dynamique. Le réseau attribue automatiquement une adresse IP à votre routeur.",
-                step3_list_title: "Résumé Quick Setup :",
-                step3_l1: "Cliquez sur Quick Setup dans le menu de gauche.",
-                step3_l2: "Choisissez le mode Wireless Router.",
-                step3_l3: "Type de connexion WAN : Choisissez IP Dynamique (Pas de PPPoE ni d'IP Statique).",
-                step3_l4: "Clonage MAC : Conservez 'Ne pas cloner l'adresse MAC'.",
-                step4_head: "Définir le Nom Wi-Fi & Mot de Passe",
-                step4_text: "Définissez un nom Wi-Fi clair (ex : Chiemgauer_ChambreXXX) et protégez-le avec un mot de passe fort.",
-                pass_title: "Générateur de Mot de Passe Wi-Fi",
-                pass_gen_btn: "Générer",
-                pass_copy_btn: "Copier le Mot de Passe",
-                pass_rec_title: "Paramètres Recommandés",
+                step2_head: "Se connecter via le Wi-Fi par défaut",
+                step2_text: "Activez le Wi-Fi sur votre appareil. Connectez-vous en utilisant le nom Wi-Fi (SSID) et le mot de passe par défaut inscrits sur l'étiquette au dos ou sous le routeur.",
+                step2_ssid_lbl: "SSID par défaut (Nom Wi-Fi)",
+                step2_ssid_val: "Voir l'étiquette sous/au dos du routeur",
+                step2_ssid_sub: "Exemple : TP-Link_XXXX",
+                step2_pass_lbl: "Mot de passe Wi-Fi par défaut",
+                step2_pass_val: "Vérifiez le code PIN à 8 chiffres ou le mot de passe Wi-Fi sur l'étiquette du routeur.",
+                step3_head: "Interface Administration (Optionnel)",
+                step3_text: "Pour personnaliser votre Wi-Fi, ouvrez un navigateur vers http://192.168.0.1 ou tplinkwifi.net. Utilisez les identifiants par défaut figurant sur l'étiquette du routeur.",
+                step3_url_lbl: "Adresse du Routeur",
+                step3_url_alt: "Alternative : tplinkwifi.net",
+                step3_cred_lbl: "Mot de Passe Admin par Défaut",
+                step3_cred_val: "Consultez l'étiquette au dos du routeur ou le manuel.",
+                step4_head: "Configuration WAN & DHCP (Optionnel)",
+                step4_text: "Sélectionnez IP Dynamique (DHCP) comme type de connexion WAN. Remarque : Des guides de configuration détaillés vous ont été envoyés par e-mail avant votre emménagement.",
+                step4_list_title: "Résumé Quick Setup :",
+                step4_l1: "Cliquez sur Quick Setup dans le menu de gauche.",
+                step4_l2: "Choisissez le mode Wireless Router.",
+                step4_l3: "Type de connexion WAN : Choisissez IP Dynamique (Pas de PPPoE ni d'IP Statique).",
+                step4_l4: "Clonage MAC : Conservez 'Ne pas cloner l'adresse MAC'.",
+                step4_email_note: "Conseil : Des guides de configuration détaillés vous ont été envoyés par e-mail avant votre emménagement.",
                 wiz_prev: "Précédent",
                 wiz_next: "Étape Suivante",
                 wiz_indicator_fmt: "Étape {step} sur 4",
                 led_title: "Inspecteur des Voyants LED",
-                led_sub: "Cliquez sur les voyants LED ci-dessous pour vérifier la signification des témoins lumineux.",
-                speed_heading: "Test de Débit en Direct",
-                speed_sub: "Mesurez en temps réel la vitesse d'envoi, de téléchargement, la latence et le jitter depuis votre chambre.",
-                speed_dl: "Téléchargement",
-                speed_ul: "Envoi (Upload)",
-                speed_ping: "Latence Ping",
-                speed_jitter: "Jitter",
-                speed_idle: "Statut : Prêt à tester",
-                speed_testing: "Statut : Mesure du débit en cours...",
-                speed_done: "Statut : Test terminé avec succès",
-                speed_btn_start: "Démarrer le Test",
+                led_sub: "Cliquez sur les voyants LED agrandis ci-dessous pour tester et vérifier la signification des témoins lumineux.",
+                speed_heading: "Test de Débit Connexion",
+                speed_sub: "Testez votre vitesse de connexion directement sur Speedtest.net.",
+                speed_card_title: "Mesurer les Débits d'Envoi et de Téléchargement",
+                speed_card_desc: "Nous recommandons Speedtest par Ookla pour des mesures fiables en temps réel de votre débit et de votre latence.",
+                speed_btn_open: "Ouvrir Speedtest.net",
+                speed_disclaimer: "Remarque : Vous serez réorienté vers un service externe. Les tuteurs ne gèrent pas de serveurs de test.",
                 sec_heading: "Règles de Sécurité Réseau",
-                sec_sub: "Veuillez respecter les règles réseau universitaires pour garantir un service stable et conforme.",
-                rules_title: "Règles Réseau Essentielles",
-                rules_sub: "Consignes unifiées pour les résidents de la Wohnanlage Chiemgauer Str.",
+                sec_sub: "Veuillez respecter les consignes de sécurité pour éviter les interruptions et les amendes.",
+                rules_title: "Consignes de Sécurité Essentielles",
+                rules_sub: "Règles unifiées pour les résidents de la Wohnanlage Chiemgauer Str.",
                 rule1_title: "Pas de Serveurs Rogue DHCP :",
-                rule1_body: " Branchez toujours le câble mural exclusivement sur le port WAN bleu. Le branchement sur LAN perturbe le réseau du bâtiment.",
+                rule1_body: " Branchez toujours le câble mural exclusivement sur le port WAN bleu pour éviter les boucles réseau.",
                 rule2_title: "Pas de Violation des Droits d'Auteur (P2P / Torrent) :",
                 rule2_body: " Le partage P2P de fichiers sous copyright est strictement surveillé en Allemagne et entraîne de lourdes amendes.",
                 rule3_title: "Sécurité du Mot de Passe Admin :",
-                rule3_body: " Modifiez le mot de passe administrateur ('admin') de votre routeur pour éviter les modifications non autorisées.",
-                rule4_title: "Usage Résidentiel Personnel Uniquement :",
+                rule3_body: " Modifiez le mot de passe administrateur par défaut de votre routeur pour éviter les accès non autorisés.",
+                rule4_title: "Personal Residential Use Only:",
                 rule4_body: " La bande passante est réservée aux études et à l'usage personnel. Tout hébergement commercial est interdit.",
                 chk_title: "Auto-Évaluation de Sécurité",
                 chk_sub: "Vérifiez votre installation",
@@ -1138,35 +1276,99 @@
                 tutor_hours_title: "Heures de Service des Tuteurs Réseau",
                 tutor_hours_desc: "Nous n'avons pas de bureau fixe. Les tuteurs aident les résidents de la Wohnanlage Chiemgauer Str. pendant les heures de service.",
                 lbl_office: "Lieu :",
-                lbl_time: "Heures de service :",
-                lbl_party_note: "(1 heure avant la Night Party des tuteurs)",
+                val_office: "Traunsteiner Str. 5 Salles communes",
+                lbl_next_date: "Prochaine date :",
+                lbl_schedule: "Fréquence :",
+                val_schedule: "Toutes les 2 semaines le vendredi à 19h00 CET",
+                lbl_party_note: "(1 heure avant la soirée bar de la résidence)",
+                contact_title: "Contact Groupe WhatsApp",
                 contact_notice: "Si vous souhaitez nous contacter, le lien vers notre groupe WhatsApp est affiché sur les affiches situées à l'entrée de chaque bâtiment.",
                 links_title: "Liens Utiles & Services Publics",
+                link_bayern_desc: "Portail de l'administration bavaroise, avis juridiques et services publics officiels.",
+                link_munich_desc: "Enregistrement de domicile (Anmeldung), réservation de rendez-vous KVR et services municipaux.",
+                link_tum_desc: "Portail étudiant TUM, gestion de campus et services de bibliothèque.",
+                link_lmu_desc: "Portail étudiant LMU, services de compte utilisateur et informations académiques.",
+                link_hm_desc: "Portail de l'Université des sciences appliquées de Munich et services IT.",
+                link_stwm_desc: "Gestion de la résidence, contrats de location, menus des cantines Mensa et soutien au logement.",
+                link_mvv_desc: "Horaires des transports publics de Munich, planificateur d'itinéraires et options étudiant.",
+                link_krisen_desc: "Ligne d'assistance 24/7 pour les crises de santé mentale et soutien d'urgence en Bavière.",
+                link_frauen_desc: "Conseil spécialisé, ligne confidentielle et assistance d'urgence immédiate pour les femmes.",
                 form_title: "Signaler un Problème Réseau",
                 form_sub: "Statut du formulaire de signalement",
                 form_off_title: "Formulaire Temporairement Indisponible",
-                form_off_body: "L'envoi en ligne est actuellement hors ligne. Retrouvez les tuteurs pendant les heures de service le vendredi à 19h00 dans la Salle commune Chiemgauerstr. 3, ou utilisez le lien du groupe WhatsApp sur l'affiche à l'entrée.",
+                form_off_body: "L'envoi en ligne est actuellement hors ligne. Retrouvez les tuteurs pendant les heures de service dans les salles communes Traunsteiner Str. 5, ou utilisez le lien WhatsApp à l'entrée.",
+                form_lbl_name: "Nom du Résident",
+                form_lbl_phone: "Numéro de Téléphone",
+                form_lbl_email: "Adresse E-mail",
+                form_lbl_desc: "Description du Problème",
+                form_val_name: "Marie Dupont",
+                form_val_phone: "+33 6 12 34 56 78",
+                form_val_email: "marie.dupont@tum.de",
+                form_val_desc: "Formulaire actuellement hors ligne...",
                 form_btn_disabled: "Actuellement Hors Ligne",
                 media_heading: "Tutoriel Vidéo",
-                media_sub: "Guide visuel pour la configuration de votre routeur dans la résidence.",
+                media_sub: "Guides vidéo visuels pour la connexion d'un routeur à internet.",
                 yt_card_title: "Comment Connecter son Routeur à Internet",
-                yt_card_desc: "Regardez des tutoriels vidéo généraux expliquant comment brancher et configurer un routeur domestique pour un réseau étudiant.",
-                yt_card_btn: "Rechercher des Vidéos sur YouTube"
+                yt_card_desc: "Regardez des tutoriels vidéo généraux expliquant comment brancher et configurer un routeur pour un réseau étudiant.",
+                yt_card_btn: "Rechercher des Vidéos sur YouTube",
+                footer_lrz: "Fournisseur d'accès Internet : Leibniz-Rechenzentrum (LRZ)",
+                footer_tutors: "Géré par des tuteurs étudiants bénévoles conformément aux règles du LRZ.",
+                modal_title: "Avertissement Lien Externe",
+                modal_body: "Vous quittez le portail des Tuteurs Réseau pour consulter un site externe. Les Tuteurs Réseau ne sont pas responsables des contenus externes.",
+                modal_proceed: "Continuer",
+                modal_cancel: "Annuler"
             }
         };
 
-        // GLOBAL APPLICATION STATE
+        // GLOBAL APP STATE
         let currentLang = 'en';
         let currentStep = 1;
-        let isTestingSpeed = false;
+        let pendingTargetUrl = '';
         const ledStates = { power: true, internet: true, wifi: true, lan: true };
 
-        // 1. LANGUAGE SWITCHER FUNCTION
+        // DYNAMIC BI-WEEKLY FRIDAY DATE CALCULATION
+        function calculateNextServiceDate() {
+            // Base Date: Friday, October 23, 2026 @ 19:00 CET
+            const baseDate = new Date(2026, 9, 23, 19, 0, 0); 
+            const now = new Date();
+            let targetDate = new Date(baseDate.getTime());
+
+            while (targetDate < now) {
+                targetDate.setDate(targetDate.getDate() + 14);
+            }
+
+            return targetDate;
+        }
+
+        function formatServiceDate(dateObj, lang) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = dateObj.toLocaleDateString(lang === 'de' ? 'de-DE' : (lang === 'fr' ? 'fr-FR' : 'en-US'), options);
+            
+            if (lang === 'de') {
+                return `${dateStr} um 19:00 Uhr CET`;
+            } else if (lang === 'fr') {
+                return `${dateStr} à 19h00 CET`;
+            } else {
+                return `${dateStr} @ 19:00 CET`;
+            }
+        }
+
+        function updateDynamicDates() {
+            const nextDate = calculateNextServiceDate();
+            const formatted = formatServiceDate(nextDate, currentLang);
+
+            const heroDisplay = document.getElementById('hero-next-date-display');
+            const cardDisplay = document.getElementById('card-next-date-display');
+
+            if (heroDisplay) heroDisplay.textContent = formatted;
+            if (cardDisplay) cardDisplay.textContent = formatted;
+        }
+
+        // LANGUAGE SWITCHER
         function setLanguage(lang) {
             if (!translations[lang]) return;
             currentLang = lang;
 
-            // Update language pills UI
             ['en', 'de', 'fr'].forEach(l => {
                 const btn = document.getElementById(`lang-${l}`);
                 if (btn) {
@@ -1178,7 +1380,6 @@
                 }
             });
 
-            // Update all elements with data-i18n attribute
             document.querySelectorAll('[data-i18n]').forEach(elem => {
                 const key = elem.getAttribute('data-i18n');
                 if (translations[lang][key]) {
@@ -1186,12 +1387,23 @@
                 }
             });
 
-            // Update Wizard Step Indicator text dynamically
+            // Update Offline Form Inputs for Active Language
+            const nameInput = document.getElementById('form-input-name');
+            const phoneInput = document.getElementById('form-input-phone');
+            const emailInput = document.getElementById('form-input-email');
+            const descInput = document.getElementById('form-input-desc');
+
+            if (nameInput) nameInput.value = translations[lang]?.form_val_name || "Jane Smith";
+            if (phoneInput) phoneInput.value = translations[lang]?.form_val_phone || "+49 151 12345678";
+            if (emailInput) emailInput.value = translations[lang]?.form_val_email || "jane.smith@tum.de";
+            if (descInput) descInput.value = translations[lang]?.form_val_desc || "Form is currently offline...";
+
             updateWizardIndicator();
             updateCheckScore();
+            updateDynamicDates();
         }
 
-        // 2. MOBILE MENU TOGGLE
+        // MOBILE MENU TOGGLE
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             if (menu) {
@@ -1199,7 +1411,7 @@
             }
         }
 
-        // 3. WIZARD STEP NAVIGATION
+        // 4-STEP WIZARD NAVIGATION
         function switchWizardStep(step) {
             currentStep = step;
             for (let i = 1; i <= 4; i++) {
@@ -1208,45 +1420,31 @@
                 if (content && tab) {
                     if (i === step) {
                         content.classList.remove('hidden');
-                        tab.className = "p-4 rounded-xl sj-card text-left flex items-center gap-3 border-sjGreen bg-sjSoftGreen";
-                        tab.querySelector('span').className = "w-7 h-7 rounded-full bg-sjGreen text-white font-bold flex items-center justify-center text-xs shrink-0";
+                        tab.className = "p-4 rounded-xl modular-card text-left flex items-center gap-3.5 border-brandPrimary bg-cyan-50/50";
+                        tab.querySelector('span').className = "w-8 h-8 rounded-lg bg-brandPrimary text-white font-bold flex items-center justify-center text-xs shrink-0 shadow-sm";
                     } else {
                         content.classList.add('hidden');
-                        tab.className = "p-4 rounded-xl sj-card text-left flex items-center gap-3 opacity-70 hover:opacity-100";
-                        tab.querySelector('span').className = "w-7 h-7 rounded-full bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-xs shrink-0";
+                        tab.className = "p-4 rounded-xl modular-card text-left flex items-center gap-3.5 opacity-70 hover:opacity-100";
+                        tab.querySelector('span').className = "w-8 h-8 rounded-lg bg-slate-200 border border-slate-300 text-slate-700 font-bold flex items-center justify-center text-xs shrink-0";
                     }
                 }
             }
 
-            // Update Previous Button State
             const prevBtn = document.getElementById('wiz-prev-btn');
-            if (prevBtn) {
-                prevBtn.disabled = (step === 1);
-            }
+            if (prevBtn) prevBtn.disabled = (step === 1);
 
-            // Update Next Button State / Action
             const nextBtn = document.getElementById('wiz-next-btn');
-            if (nextBtn) {
-                if (step === 4) {
-                    nextBtn.disabled = true;
-                } else {
-                    nextBtn.disabled = false;
-                }
-            }
+            if (nextBtn) nextBtn.disabled = (step === 4);
 
             updateWizardIndicator();
         }
 
         function nextWizardStep() {
-            if (currentStep < 4) {
-                switchWizardStep(currentStep + 1);
-            }
+            if (currentStep < 4) switchWizardStep(currentStep + 1);
         }
 
         function prevWizardStep() {
-            if (currentStep > 1) {
-                switchWizardStep(currentStep - 1);
-            }
+            if (currentStep > 1) switchWizardStep(currentStep - 1);
         }
 
         function updateWizardIndicator() {
@@ -1257,149 +1455,74 @@
             }
         }
 
-        // 4. ROUTER REAR PANEL INTERACTIVE HOTSPOTS
+        // ROUTER DIAGRAM HOTSPOT INSPECTOR
         function showPortInfo(portType) {
             const box = document.getElementById('diagram-info-box');
             if (!box) return;
 
             const info = {
                 power: {
-                    en: "<strong>Power Port:</strong> Connects to the provided 9V/12V power adapter. Ensure the power switch next to it is turned ON.",
+                    en: "<strong>Power Port:</strong> Connects to the provided power adapter. Ensure the power button next to it is turned ON.",
                     de: "<strong>Stromanschluss:</strong> Wird mit dem Netzteil verbunden. Stellen Sie sicher, dass der Ein/Aus-Schalter gedrückt ist.",
                     fr: "<strong>Port d'alimentation:</strong> Se connecte au bloc d'alimentation. Vérifiez que l'interrupteur est sur ON."
                 },
                 reset: {
-                    en: "<strong>Reset Button:</strong> Press and hold for 10 seconds to restore the router to factory default settings if you forget your password.",
+                    en: "<strong>Reset Button:</strong> Press and hold for 10 seconds to restore factory default settings if needed.",
                     de: "<strong>Reset-Taste:</strong> 10 Sekunden gedrückt halten, um den Router auf Werkseinstellungen zurückzusetzen.",
                     fr: "<strong>Bouton Reset:</strong> Maintenez enfoncé pendant 10 secondes pour réinitialiser le routeur aux paramètres d'usine."
                 },
                 wan: {
-                    en: "<strong>BLUE WAN Port (CORRECT):</strong> Connect your room wall socket cable HERE. This receives the IP address from the dormitory network.",
-                    de: "<strong>BLAUER WAN-Port (RICHTIG):</strong> Verbinden Sie das Wandkabel HIER. Hierüber erhält der Router seine IP-Adresse.",
+                    en: "<strong>BLUE WAN Port (CORRECT):</strong> Connect your room wall socket cable HERE. This receives internet from the dormitory network.",
+                    de: "<strong>BLAUER WAN-Port (RICHTIG):</strong> Verbinden Sie das Wandkabel HIER. Hierüber erhält der Router das Internet.",
                     fr: "<strong>Port WAN BLEU (CORRECT):</strong> Branchez le câble réseau mural ICI pour recevoir la connexion de la résidence."
                 },
                 lan: {
-                    en: "<strong>ORANGE LAN Ports (WARNING):</strong> Connect local PCs/consoles here. DO NOT plug the room wall cable here as it creates network loops!",
-                    de: "<strong>ORANGENE LAN-Ports (WARNUNG):</strong> Für Ihre PCs/Konsolen. NIEMALS das Wandkabel hier einstecken (verursacht Netzwerksperren)!",
-                    fr: "<strong>Ports LAN ORANGE (ATTENTION):</strong> Pour vos appareils locaux. NE BRANCHEZ JAMAIS le câble mural ici!"
+                    en: "<strong>ORANGE LAN Ports:</strong> Connect local PCs or consoles here. Do not plug the room wall cable here.",
+                    de: "<strong>ORANGENE LAN-Ports:</strong> Für Ihre PCs oder Konsolen. Das Wandkabel nicht hier einstecken.",
+                    fr: "<strong>Ports LAN ORANGE:</strong> Pour vos appareils locaux. Ne branchez pas le câble mural ici."
                 }
             };
 
-            box.innerHTML = `<span class="text-sjText">${info[portType][currentLang] || info[portType]['en']}</span>`;
+            box.innerHTML = `<span class="text-slate-900">${info[portType][currentLang] || info[portType]['en']}</span>`;
         }
 
-        // 5. WI-FI PASSWORD GENERATOR & COPY
-        function generatePassword() {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%';
-            let result = '';
-            for (let i = 0; i < 14; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            const input = document.getElementById('wifi-pass-input');
-            if (input) {
-                input.value = result;
-            }
-        }
-
-        function copyPassword() {
-            const input = document.getElementById('wifi-pass-input');
-            if (!input || input.value === 'Click Generate' || !input.value) return;
-
-            input.select();
-            document.execCommand('copy');
-
-            // Feedback logic
-            const copyBtn = document.querySelector('button[onclick="copyPassword()"]');
-            if (copyBtn) {
-                const originalText = copyBtn.textContent;
-                copyBtn.textContent = (currentLang === 'de') ? "Kopiert!" : (currentLang === 'fr' ? "Copié!" : "Copied!");
-                setTimeout(() => {
-                    copyBtn.textContent = originalText;
-                }, 2000);
-            }
-        }
-
-        // 6. ROUTER LED DIAGNOSTIC TOOL
+        // ENLARGED LED DIAGNOSTIC TOOL
         function toggleLedState(led) {
             ledStates[led] = !ledStates[led];
             const el = document.getElementById(`led-${led}`);
             if (el) {
-                el.className = `w-4 h-4 rounded-full ${ledStates[led] ? 'bg-sjGreen' : 'bg-red-500'}`;
+                el.className = `w-8 h-8 rounded-full transition-all duration-300 ${ledStates[led] ? 'led-glow-on' : 'led-glow-off'}`;
             }
 
             const diagBox = document.getElementById('led-diag-box');
             if (!diagBox) return;
 
             if (!ledStates.power) {
-                diagBox.className = "p-3.5 rounded-xl bg-red-100 text-red-800 text-xs font-medium";
+                diagBox.className = "p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm font-medium";
                 diagBox.textContent = "Diagnostic: Power off. Check the power adapter and button switch.";
             } else if (!ledStates.internet) {
-                diagBox.className = "p-3.5 rounded-xl bg-amber-100 text-amber-900 text-xs font-medium";
+                diagBox.className = "p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs sm:text-sm font-medium";
                 diagBox.textContent = "Diagnostic: No Internet. Verify cable is plugged into BLUE WAN port and DHCP mode is active.";
             } else if (!ledStates.wifi) {
-                diagBox.className = "p-3.5 rounded-xl bg-amber-100 text-amber-900 text-xs font-medium";
+                diagBox.className = "p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs sm:text-sm font-medium";
                 diagBox.textContent = "Diagnostic: Wi-Fi broadcast is disabled. Check router wireless settings.";
             } else if (!ledStates.lan) {
-                diagBox.className = "p-3.5 rounded-xl bg-slate-100 text-slate-800 text-xs font-medium";
+                diagBox.className = "p-4 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 text-xs sm:text-sm font-medium";
                 diagBox.textContent = "Diagnostic: No wired LAN clients connected.";
             } else {
-                diagBox.className = "p-3.5 rounded-xl bg-sjSoftGreen text-sjGreen text-xs font-medium";
+                diagBox.className = "p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium";
                 diagBox.textContent = "Status: All indicators normal. Your router connection is working properly.";
             }
         }
 
-        // 7. REAL-TIME CLIENT SPEED TEST SIMULATOR
-        function runSpeedTest() {
-            if (isTestingSpeed) return;
-            isTestingSpeed = true;
-
-            const btn = document.getElementById('speed-btn');
-            const statusMsg = document.getElementById('speed-status-msg');
-            const progress = document.getElementById('speed-progress');
-            const valDl = document.getElementById('val-dl');
-            const valUl = document.getElementById('val-ul');
-            const valPing = document.getElementById('val-ping');
-            const valJitter = document.getElementById('val-jitter');
-
-            if (btn) btn.disabled = true;
-            if (statusMsg) statusMsg.textContent = translations[currentLang]?.speed_testing || "Status: Testing connection...";
-
-            let step = 0;
-            const interval = setInterval(() => {
-                step += 5;
-                if (progress) progress.style.width = `${step}%`;
-
-                if (step <= 40) {
-                    // Ping & Jitter
-                    valPing.textContent = Math.floor(Math.random() * 5 + 3);
-                    valJitter.textContent = Math.floor(Math.random() * 2 + 1);
-                } else if (step <= 70) {
-                    // Download
-                    valDl.textContent = (Math.random() * 15 + 85).toFixed(1);
-                } else {
-                    // Upload
-                    valUl.textContent = (Math.random() * 15 + 80).toFixed(1);
-                }
-
-                if (step >= 100) {
-                    clearInterval(interval);
-                    isTestingSpeed = false;
-                    if (btn) btn.disabled = false;
-                    if (statusMsg) statusMsg.textContent = translations[currentLang]?.speed_done || "Status: Speed test completed";
-                }
-            }, 120);
-        }
-
-        // 8. SECURITY SELF-CHECK PROGRESS TRACKER
+        // SECURITY SELF-CHECK PROGRESS TRACKER
         function updateCheckScore() {
             const list = document.getElementById('chk-list');
             if (!list) return;
 
             const checkboxes = list.querySelectorAll('input[type="checkbox"]');
             let checkedCount = 0;
-            checkboxes.forEach(cb => {
-                if (cb.checked) checkedCount++;
-            });
+            checkboxes.forEach(cb => { if (cb.checked) checkedCount++; });
 
             const percent = Math.round((checkedCount / checkboxes.length) * 100);
             const scoreEl = document.getElementById('chk-score');
@@ -1410,18 +1533,40 @@
             if (statusEl) {
                 if (percent === 100) {
                     statusEl.textContent = translations[currentLang]?.chk_status_secure || "Fully Secure";
-                    statusEl.className = "text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold";
+                    statusEl.className = "text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-mono font-bold uppercase";
                 } else if (percent >= 50) {
                     statusEl.textContent = translations[currentLang]?.chk_status_good || "Good Progress";
-                    statusEl.className = "text-[10px] px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold";
+                    statusEl.className = "text-[10px] px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 font-mono font-bold uppercase";
                 } else {
                     statusEl.textContent = translations[currentLang]?.chk_status_pending || "Incomplete";
-                    statusEl.className = "text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold";
+                    statusEl.className = "text-[10px] px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-mono font-bold uppercase";
                 }
             }
         }
 
-        // INITIALIZE ON DOM LOADED
+        // EXTERNAL LINK WARNING MODAL LOGIC
+        function openExternalUrl(url) {
+            pendingTargetUrl = url;
+            const modal = document.getElementById('ext-modal');
+            const urlDisplay = document.getElementById('modal-url-display');
+            if (urlDisplay) urlDisplay.textContent = url;
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function confirmExternalRedirect() {
+            if (pendingTargetUrl) {
+                window.open(pendingTargetUrl, '_blank');
+            }
+            closeExternalModal();
+        }
+
+        function closeExternalModal() {
+            const modal = document.getElementById('ext-modal');
+            if (modal) modal.classList.add('hidden');
+            pendingTargetUrl = '';
+        }
+
+        // INITIALIZE ON DOM LOAD
         window.addEventListener('DOMContentLoaded', () => {
             setLanguage('en');
         });
