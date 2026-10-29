@@ -1,2046 +1,591 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Network Tutors | Wohnanlage Chiemgauer Str.</title>
+  <title>WebGPU Local AI Chat</title>
 
-  <!-- Google Fonts: Noto Sans, Noto Serif & JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Cross-Origin Isolation Script -->
+  <script src="coi-serviceworker.js"></script>
 
-  <!-- Font Awesome 6 Icons -->
+  <!-- Tailwind CSS & Font Awesome Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <script>
-    // Tailwind Configuration: Sharp Geometric Borders & Morandi Palette Tokens
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Noto Sans"', 'sans-serif'],
-            serif: ['"Noto Serif"', 'serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-          colors: {
-            morandi: {
-              mint: '#B9DDB1',
-              pink: '#F0B9CC',
-              blue: '#B8D8E8',
-              yellow: '#E9D77C',
-              slate: '#2A3439',
-              darkbg: '#141618',
-              darkcard: '#1E2225',
-              darkborder: '#33383F',
-            }
-          },
-          borderRadius: {
-            'none': '0px',
-            'DEFAULT': '0px',
-            'sm': '0px',
-            'md': '0px',
-            'lg': '0px',
-            'xl': '0px',
-            '2xl': '0px',
-            'full': '0px'
-          }
-        }
-      }
-    };
-  </script>
-
   <style>
-    /* CSS Root Design Tokens & Variables */
-    :root {
-      --bg-page: #F7F7F3;
-      --text-main: #222222;
-      --bg-card: #FFFFFF;
-      --border-color: #DCE0D8;
-      --accent-mint: #B9DDB1;
-      --accent-pink: #F0B9CC;
-      --accent-blue: #B8D8E8;
-      --accent-yellow: #E9D77C;
-      --accent-slate: #2A3439;
+    .imessage-bubble-user {
+      background-color: #007AFF;
+      color: #FFFFFF;
+      border-radius: 18px;
+      border-bottom-right-radius: 4px;
     }
 
-    .dark {
-      --bg-page: #141618;
-      --text-main: #ECEEEA;
-      --bg-card: #1E2225;
-      --border-color: #33383F;
-      --accent-mint: #244230;
-      --accent-pink: #4B2A36;
-      --accent-blue: #203A4A;
-      --accent-yellow: #473F1F;
-      --accent-slate: #2A3439;
+    .imessage-bubble-ai {
+      background-color: #E9E9EB;
+      color: #000000;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
     }
 
-    body {
-      background-color: var(--bg-page);
-      color: var(--text-main);
-      font-family: 'Noto Sans', sans-serif;
-      transition: background-color 0.25s ease, color 0.25s ease;
+    @media (prefers-color-scheme: dark) {
+      .imessage-bubble-ai {
+        background-color: #262628;
+        color: #FFFFFF;
+      }
     }
 
-    /* Force sharp geometric 0px corners across all components */
-    *, *::before, *::after {
-      border-radius: 0px !important;
-    }
-
-    /* Keyframe Animations for Smooth View Transitions */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-fade-in {
-      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .animate-slide-down {
-      animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    /* Overhauled High Contrast Mode for Absolute Legibility */
-    body.high-contrast {
-      background-color: #FFFFFF !important;
-      color: #000000 !important;
-    }
-
-    body.high-contrast * {
-      background-color: #FFFFFF !important;
-      color: #000000 !important;
-      border-color: #000000 !important;
-      box-shadow: none !important;
-      text-shadow: none !important;
-    }
-
-    body.high-contrast input,
-    body.high-contrast textarea,
-    body.high-contrast button {
-      border: 2px solid #000000 !important;
-    }
-
-    body.high-contrast.dark {
-      background-color: #000000 !important;
-      color: #FFFFFF !important;
-    }
-
-    body.high-contrast.dark * {
-      background-color: #000000 !important;
-      color: #FFFFFF !important;
-      border-color: #FFFFFF !important;
-    }
-
-    body.high-contrast.dark input,
-    body.high-contrast.dark textarea,
-    body.high-contrast.dark button {
-      border: 2px solid #FFFFFF !important;
-    }
-
-    /* Noto Serif Mode Override */
-    body.use-serif {
-      font-family: 'Noto Serif', serif !important;
-    }
-
-    /* Modal Backdrop Overlay Styling */
-    .modal-overlay {
-      background-color: rgba(0, 0, 0, 0.55);
-      backdrop-filter: blur(2px);
-    }
-
-    /* Glowing Router Front Panel LED Effects */
-    .led-glow-green {
-      background-color: #10B981;
-      box-shadow: 0 0 10px #10B981, 0 0 20px #10B981;
-    }
-
-    .led-glow-amber {
-      background-color: #F59E0B;
-      box-shadow: 0 0 10px #F59E0B, 0 0 20px #F59E0B;
-    }
-
-    .led-off {
-      background-color: #374151;
-      box-shadow: none;
-    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
+<body class="h-full bg-slate-100 dark:bg-zinc-950 text-slate-800 dark:text-slate-100 antialiased flex flex-col items-center justify-center p-0 sm:p-4">
 
-<body class="min-h-screen flex flex-col antialiased selection:bg-morandi-blue selection:text-black">
+  <!-- Main Container -->
+  <div class="w-full max-w-md h-full sm:h-[720px] bg-white dark:bg-zinc-900 sm:rounded-3xl shadow-2xl border border-slate-200 dark:border-zinc-800 flex flex-col overflow-hidden relative">
 
-  <!-- ========================================== -->
-  <!-- HEADER & NAVIGATION                        -->
-  <!-- ========================================== -->
-  <header class="sticky top-0 z-40 bg-[#F7F7F3]/95 dark:bg-[#141618]/95 border-b border-[#DCE0D8] dark:border-[#33383F] backdrop-blur-sm transition-colors duration-200">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      
-      <!-- Minimalist Branding Header -->
-      <a href="#" class="flex items-center space-x-3 group">
-        <i class="fa-solid fa-wifi text-morandi-slate dark:text-morandi-blue text-xl"></i>
-        <div class="flex flex-col">
-          <span class="text-base sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white leading-tight">
-            Network Tutors
-          </span>
-          <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">
-            Wohnanlage Chiemgauer Str.
-          </span>
+    <!-- Header -->
+    <header class="px-4 py-3 bg-slate-50/90 dark:bg-zinc-900/90 backdrop-blur border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between shrink-0 z-10">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+          <i class="fa-solid fa-microchip"></i>
         </div>
-      </a>
-
-      <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
-        <a href="#setup-guide" class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-morandi-slate dark:after:bg-morandi-blue hover:after:w-full after:transition-all after:duration-200" data-i18n="nav.setup">Setup Guide</a>
-        <a href="#security" class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-morandi-slate dark:after:bg-morandi-blue hover:after:w-full after:transition-all after:duration-200" data-i18n="nav.security">Security</a>
-        <a href="#support" class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-morandi-slate dark:after:bg-morandi-blue hover:after:w-full after:transition-all after:duration-200" data-i18n="nav.support">Support</a>
-        <a href="#media" class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-morandi-slate dark:after:bg-morandi-blue hover:after:w-full after:transition-all after:duration-200" data-i18n="nav.media">Media</a>
-      </nav>
-
-      <!-- Seamless Icon Controls -->
+        <div>
+          <h1 id="header-model-name" class="text-sm font-semibold leading-none">WebGPU AI Chat</h1>
+          <span id="status-badge" class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="statusNotReady">Not Ready</span>
+        </div>
+      </div>
+      
       <div class="flex items-center space-x-2">
-        <!-- Language Switcher Trigger -->
-        <button onclick="openLanguageModal()" class="p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none" title="Select Language">
-          <i class="fa-solid fa-globe text-lg"></i>
-        </button>
-
-        <!-- Accessibility Modal Trigger -->
-        <button onclick="openAccessibilityModal()" class="p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none" title="Accessibility Settings">
-          <i class="fa-solid fa-universal-access text-lg"></i>
-        </button>
-
-        <!-- Mobile Drawer Toggle -->
-        <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none" title="Toggle Navigation Menu">
-          <i class="fa-solid fa-bars text-lg" id="mobile-menu-icon"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Mobile Drawer -->
-    <div id="mobile-menu" class="hidden md:hidden border-b border-[#DCE0D8] dark:border-[#33383F] bg-[#F7F7F3] dark:bg-[#141618] px-4 py-3 space-y-2 animate-slide-down">
-      <a href="#setup-guide" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-800" data-i18n="nav.setup">Setup Guide</a>
-      <a href="#security" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-800" data-i18n="nav.security">Security</a>
-      <a href="#support" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-800" data-i18n="nav.support">Support</a>
-      <a href="#media" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-gray-800 dark:text-gray-200" data-i18n="nav.media">Media</a>
-    </div>
-  </header>
-
-  <!-- ========================================== -->
-  <!-- MAIN CONTENT CONTAINER                     -->
-  <!-- ========================================== -->
-  <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-12">
-
-    <!-- HERO SECTION & SERVICE HOURS NOTICE -->
-    <section id="hero" class="space-y-6">
-      
-      <!-- Main Hero Header Box -->
-      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 sm:p-10 transition-colors">
-        <div class="max-w-3xl space-y-4">
-          <div class="inline-block px-3 py-1 bg-morandi-mint dark:bg-[#244230] text-gray-900 dark:text-morandi-mint text-xs font-bold uppercase tracking-wider">
-            Resident Information Portal
-          </div>
-          <h1 class="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white" data-i18n="hero.title">
-            Internet Information for You
-          </h1>
-          <p class="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="hero.subtitle">
-            Welcome to the official network guidance page for residents of Wohnanlage Chiemgauer Str. Here you will find step-by-step router setup guides, security rules, and technical assistance.
-          </p>
-        </div>
-      </div>
-
-      <!-- Service Hours Feature Banner -->
-      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-pink/30 dark:bg-morandi-pink/10 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6 transition-colors">
-        <div class="space-y-2">
-          <div class="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-gray-800 dark:text-morandi-pink">
-            <i class="fa-regular fa-clock text-sm"></i>
-            <span data-i18n="service.label">In-Person Assistance</span>
-          </div>
-          <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white" data-i18n="service.heading">
-            Bi-Weekly Service Hours
-          </h2>
-          <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="service.location">
-            Held every two weeks on <strong>Friday at 19:00 CET</strong> (1 hour before the dorm bar night) in <strong>Traunsteiner Str. 5 Common Rooms</strong>.
-          </p>
-        </div>
-
-        <!-- Dynamic Next Date Calculation Badge -->
-        <div class="bg-white dark:bg-morandi-darkbg border border-[#DCE0D8] dark:border-[#33383F] p-4 min-w-[240px] text-center space-y-1">
-          <span class="text-xs text-gray-500 dark:text-gray-400 font-medium block uppercase tracking-wider" data-i18n="service.next">Next Session</span>
-          <span id="next-service-date" class="text-base sm:text-lg font-bold text-gray-900 dark:text-white block font-mono">
-            Calculating...
-          </span>
-          <span class="text-xs text-gray-600 dark:text-gray-400 block" data-i18n="service.time">19:00 - 20:00 CET</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- SECTION 1: ROUTER SETUP GUIDE              -->
-    <!-- ========================================== -->
-    <section id="setup-guide" class="space-y-6 pt-4">
-      <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3 flex items-center justify-between">
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
-          <span class="w-3 h-3 bg-morandi-blue inline-block"></span>
-          <span data-i18n="setup.title">Router Setup Guide</span>
-        </h2>
-        <span class="text-xs text-gray-500 dark:text-gray-400 font-mono" data-i18n="setup.subtitle">Generic Wireless Router</span>
-      </div>
-
-      <!-- Setup Wizard Navigation Tabs -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-        <button onclick="setWizardStep(1)" id="wizard-tab-1" class="p-3 text-left border border-morandi-slate dark:border-white bg-morandi-slate text-white transition-all font-medium text-sm flex items-center space-x-2">
-          <span class="font-mono font-bold">01</span>
-          <span data-i18n="wizard.step1_tab">Cabling & WAN</span>
-        </button>
-        <button onclick="setWizardStep(2)" id="wizard-tab-2" class="p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium text-sm flex items-center space-x-2">
-          <span class="font-mono font-bold">02</span>
-          <span data-i18n="wizard.step2_tab">Wi-Fi Connection</span>
-        </button>
-        <button onclick="setWizardStep(3)" id="wizard-tab-3" class="p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium text-sm flex items-center space-x-2">
-          <span class="font-mono font-bold">03</span>
-          <span data-i18n="wizard.step3_tab">Admin Login (Opt)</span>
-        </button>
-        <button onclick="setWizardStep(4)" id="wizard-tab-4" class="p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium text-sm flex items-center space-x-2">
-          <span class="font-mono font-bold">04</span>
-          <span data-i18n="wizard.step4_tab">Router Manuals</span>
-        </button>
-      </div>
-
-      <!-- Wizard Main Panel -->
-      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 space-y-6">
+        <!-- Language Selector -->
+        <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-slate-100 dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 text-xs text-slate-700 dark:text-slate-200 rounded-lg px-2 py-1 focus:outline-none cursor-pointer">
+          <option value="en" selected>EN</option>
+          <option value="fr">FR</option>
+          <option value="de">DE</option>
+        </select>
         
-        <!-- Step Description Text Content -->
-        <div id="wizard-step-content" class="space-y-3 animate-fade-in">
-          <!-- Populated dynamically via JS -->
-        </div>
-
-        <!-- Dynamic Visual Container -->
-        <div id="wizard-visual-container" class="border border-[#DCE0D8] dark:border-[#33383F] bg-gray-50 dark:bg-morandi-darkbg p-4 sm:p-6 space-y-4">
-          <!-- Step-specific visual mockups rendered via JS -->
-        </div>
-
-        <!-- Wizard Navigation Controls (Previous / Next Buttons) -->
-        <div class="flex items-center justify-between border-t border-[#DCE0D8] dark:border-[#33383F] pt-4">
-          <button onclick="prevWizardStep()" id="btn-prev-step" class="px-5 py-2.5 border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 font-bold text-xs uppercase tracking-wider hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-2">
-            <i class="fa-solid fa-arrow-left text-xs"></i>
-            <span data-i18n="wizard.btn_prev">Previous Step</span>
-          </button>
-
-          <span id="wizard-step-counter" class="text-xs font-mono font-bold text-gray-500">Step 1 of 4</span>
-
-          <button onclick="nextWizardStep()" id="btn-next-step" class="px-5 py-2.5 bg-morandi-slate text-white font-bold text-xs uppercase tracking-wider hover:bg-black transition-colors flex items-center space-x-2">
-            <span data-i18n="wizard.btn_next">Next Step</span>
-            <i class="fa-solid fa-arrow-right text-xs"></i>
-          </button>
-        </div>
-
-        <!-- Interactive Router Front-Panel LED Diagnostic Inspector -->
-        <div class="border-t border-[#DCE0D8] dark:border-[#33383F] pt-6 space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <i class="fa-solid fa-microchip text-morandi-yellow"></i>
-              <span data-i18n="led.title">Interactive LED Diagnostic Inspector</span>
-            </h3>
-            <span class="text-xs text-gray-500 font-mono" data-i18n="led.instruction_hint">Click individual lights below to recreate your router's status</span>
-          </div>
-
-          <!-- Router Front Panel Strip Design -->
-          <div class="bg-[#1E2225] border-2 border-[#33383F] p-6 text-white space-y-4 shadow-inner">
-            <div class="flex items-center justify-between text-xs font-mono text-gray-400 border-b border-gray-700 pb-2">
-              <span>FRONT PANEL STATUS INDICATORS</span>
-              <span id="led-active-label" class="text-emerald-400 font-bold">ALL SYSTEMS NORMAL</span>
-            </div>
-
-            <!-- LED Indicator Bar Array -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 py-2">
-              
-              <!-- Power LED -->
-              <button onclick="toggleLedState('power')" class="flex flex-col items-center space-y-2 group focus:outline-none">
-                <div id="led-dot-power" class="w-6 h-6 rounded-full led-glow-green transition-all duration-300"></div>
-                <span class="text-xs font-mono font-bold tracking-wider text-gray-300 group-hover:text-white">POWER</span>
-                <span id="led-sub-power" class="text-[10px] text-emerald-400 font-mono font-bold">ON (Green)</span>
-              </button>
-
-              <!-- Internet / WAN LED -->
-              <button onclick="toggleLedState('internet')" class="flex flex-col items-center space-y-2 group focus:outline-none">
-                <div id="led-dot-internet" class="w-6 h-6 rounded-full led-glow-green transition-all duration-300"></div>
-                <span class="text-xs font-mono font-bold tracking-wider text-gray-300 group-hover:text-white">INTERNET</span>
-                <span id="led-sub-internet" class="text-[10px] text-emerald-400 font-mono font-bold">Connected (Green)</span>
-              </button>
-
-              <!-- WLAN LED -->
-              <button onclick="toggleLedState('wlan')" class="flex flex-col items-center space-y-2 group focus:outline-none">
-                <div id="led-dot-wlan" class="w-6 h-6 rounded-full led-glow-green transition-all duration-300"></div>
-                <span class="text-xs font-mono font-bold tracking-wider text-gray-300 group-hover:text-white">WLAN</span>
-                <span id="led-sub-wlan" class="text-[10px] text-emerald-400 font-mono font-bold">Active (Green)</span>
-              </button>
-
-              <!-- LAN LED -->
-              <button onclick="toggleLedState('lan')" class="flex flex-col items-center space-y-2 group focus:outline-none">
-                <div id="led-dot-lan" class="w-6 h-6 rounded-full led-glow-green transition-all duration-300"></div>
-                <span class="text-xs font-mono font-bold tracking-wider text-gray-300 group-hover:text-white">LAN PORTS</span>
-                <span id="led-sub-lan" class="text-[10px] text-emerald-400 font-mono font-bold">Port Active (Green)</span>
-              </button>
-
-            </div>
-          </div>
-
-          <!-- Dynamic Analysis Output Card -->
-          <div id="led-diagnostic-output" class="p-5 border transition-colors">
-            <!-- Populated dynamically via JS -->
-          </div>
-        </div>
-
+        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[10px] font-mono font-medium rounded-full" data-i18n="statusWorker">
+          Worker
+        </span>
       </div>
-    </section>
+    </header>
 
-    <!-- ========================================== -->
-    <!-- SECTION 2: SECURITY & RULES                -->
-    <!-- ========================================== -->
-    <section id="security" class="space-y-6 pt-4">
-      <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
-          <span class="w-3 h-3 bg-morandi-yellow inline-block"></span>
-          <span data-i18n="security.title">Network Safety & Guidelines</span>
-        </h2>
-      </div>
+    <!-- Main Content Area -->
+    <div id="main-content" class="flex-1 flex flex-col overflow-hidden relative">
 
-      <div class="grid md:grid-cols-2 gap-6">
+      <!-- View 1: Model Selection -->
+      <div id="view-intro" class="flex-1 p-5 flex flex-col justify-between overflow-y-auto space-y-4">
         
-        <!-- Consolidated Security Rules Card -->
-        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-yellow/20 dark:bg-morandi-yellow/10 p-6 space-y-4">
-          <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 bg-morandi-yellow text-gray-900 flex items-center justify-center font-bold">
-              <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="security.rules_heading">
-              Essential Dormitory Network Rules
-            </h3>
+        <div class="space-y-4">
+          <div class="text-center pt-2">
+            <h2 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="selectModelTitle">Select On-Device AI Model</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" data-i18n="selectModelSubtitle">Runs in background thread with zero UI lag</p>
           </div>
 
-          <ul class="space-y-3 text-sm text-gray-700 dark:text-gray-300">
-            <li class="flex items-start space-x-3">
-              <i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400 mt-1"></i>
-              <span data-i18n="security.rule1">Always connect the wall Ethernet outlet strictly to the <strong>BLUE WAN port</strong> of your router.</span>
-            </li>
-            <li class="flex items-start space-x-3">
-              <i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400 mt-1"></i>
-              <span data-i18n="security.rule2">Avoid plugging wall cables into yellow LAN ports to prevent network loops that might disrupt internet access for your floor.</span>
-            </li>
-            <li class="flex items-start space-x-3">
-              <i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400 mt-1"></i>
-              <span data-i18n="security.rule3">Keep your router administrator password updated and secure to prevent unauthorized network access.</span>
-            </li>
-            <li class="flex items-start space-x-3">
-              <i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400 mt-1"></i>
-              <span data-i18n="security.rule4">Adhere strictly to LRZ acceptable usage policies regarding copyright, legal compliance, and network safety.</span>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Security Self-Check Card (Maintenance Mode) -->
-        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 space-y-4 flex flex-col justify-between">
-          <div class="space-y-4">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-list-check"></i>
+          <div class="space-y-2.5">
+            <!-- Option 1: Qwen2.5 0.5B -->
+            <label class="block p-3 border-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 rounded-xl cursor-pointer transition-all model-option" onclick="selectModelOption(this, 'onnx-community/Qwen2.5-0.5B-Instruct', 'Qwen2.5 0.5B')">
+              <div class="flex items-start justify-between">
+                <div class="space-y-0.5">
+                  <div class="flex items-center gap-1.5 font-bold text-xs text-slate-900 dark:text-white">
+                    <input type="radio" name="model_choice" checked class="text-blue-600 focus:ring-0" />
+                    <span data-i18n="qwenName">Qwen2.5 0.5B</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 text-[9px] font-mono rounded" data-i18n="badgeRecommended">Recommended</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="qwenDesc">Strong general understanding, excellent multilingual capability</p>
                 </div>
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="security.check_heading">
-                  Security Self-Check Tool
-                </h3>
+                <span class="text-[10px] font-mono font-semibold text-slate-400" data-i18n="qwenSize">~350 MB</span>
               </div>
-              <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold uppercase" data-i18n="status.maintenance">Maintenance</span>
-            </div>
+            </label>
 
-            <div class="p-4 bg-gray-100 dark:bg-morandi-darkbg border border-gray-300 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-300 space-y-2">
-              <div class="font-bold flex items-center gap-2">
-                <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
-                <span data-i18n="security.check_offline_title">Tool Temporarily Unavailable</span>
+            <!-- Option 2: Llama 3.2 1B -->
+            <label class="block p-3 border border-slate-200 dark:border-zinc-800 hover:border-slate-300 rounded-xl cursor-pointer transition-all model-option" onclick="selectModelOption(this, 'onnx-community/Llama-3.2-1B-Instruct', 'Llama 3.2 1B')">
+              <div class="flex items-start justify-between">
+                <div class="space-y-0.5">
+                  <div class="flex items-center gap-1.5 font-bold text-xs text-slate-900 dark:text-white">
+                    <input type="radio" name="model_choice" class="text-blue-600 focus:ring-0" />
+                    <span data-i18n="llamaName">Llama 3.2 1B</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="llamaDesc">Meta lightweight model with strong reasoning capability</p>
+                </div>
+                <span class="text-[10px] font-mono font-semibold text-slate-400" data-i18n="llamaSize">~700 MB</span>
               </div>
-              <p class="text-xs leading-relaxed" data-i18n="security.check_offline_desc">
-                The automated security self-check tool is currently undergoing scheduled maintenance. Please refer to the guidelines on the left or visit us during Friday service hours.
-              </p>
-            </div>
+            </label>
           </div>
 
-          <button disabled class="w-full py-2.5 bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500 text-sm font-bold cursor-not-allowed text-center" data-i18n="security.check_disabled_btn">
-            Self-Check Offline
-          </button>
+          <div class="p-2.5 bg-slate-50 dark:bg-zinc-800/50 rounded-lg border border-slate-100 dark:border-zinc-800 text-[11px] text-slate-600 dark:text-slate-400">
+            <i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i>
+            <strong data-i18n="securityNoteTitle">On-Device Security:</strong>
+            <span data-i18n="securityNoteDesc">Data stays in your browser memory and is never sent to any cloud server.</span>
+          </div>
         </div>
 
-      </div>
-    </section>
+        <button id="btn-start" onclick="checkAndStartLoading()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm rounded-xl transition-colors shadow-sm flex items-center justify-center space-x-2">
+          <span data-i18n="btnInit">Initialize & Load Model</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
 
-    <!-- ========================================== -->
-    <!-- SECTION 3: SUPPORT & LINKS                 -->
-    <!-- ========================================== -->
-    <section id="support" class="space-y-6 pt-4">
-      <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
-          <span class="w-3 h-3 bg-morandi-blue inline-block"></span>
-          <span data-i18n="support.title">Support, Assistance & Links</span>
-        </h2>
       </div>
 
-      <!-- Dedicated Support Cards Grid -->
-      <div class="grid md:grid-cols-3 gap-6">
-        
-        <!-- Dedicated Card 1: Service Hours -->
-        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-pink/20 dark:bg-morandi-pink/10 p-6 space-y-3 flex flex-col justify-between">
-          <div class="space-y-2">
-            <div class="w-8 h-8 bg-morandi-pink text-gray-900 flex items-center justify-center font-bold">
-              <i class="fa-solid fa-user-gear"></i>
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="support.card_service_title">
-              In-Person Service Hours
-            </h3>
-            <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="support.card_service_desc">
-              Get direct help from network tutors every two weeks on <strong>Fridays at 19:00 CET</strong> in <strong>Traunsteiner Str. 5 Common Rooms</strong>.
-            </p>
-          </div>
+      <!-- View 2: Progress Screen -->
+      <div id="view-loading" class="hidden flex-1 p-6 flex flex-col items-center justify-center text-center space-y-6">
+        <div class="relative w-16 h-16 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full border-4 border-slate-200 dark:border-zinc-800"></div>
+          <div id="loading-spinner" class="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
+          <i class="fa-solid fa-cube text-blue-600 text-lg"></i>
+        </div>
+
+        <div class="space-y-2 w-full max-w-xs">
+          <h3 id="loading-title" class="text-sm font-semibold" data-i18n="loadingTitle">Initializing...</h3>
+          <p id="loading-subtext" class="text-xs text-slate-500 dark:text-slate-400" data-i18n="loadingSubtext">Starting background Worker thread...</p>
           
-          <!-- Directly Rendered Next Date -->
-          <div class="pt-3 border-t border-[#DCE0D8] dark:border-[#33383F]">
-            <span class="text-[10px] uppercase font-bold text-gray-500 block" data-i18n="service.next">Next Session</span>
-            <span id="support-card-next-date" class="text-sm font-bold font-mono text-gray-900 dark:text-white block">
-              Calculating...
+          <div class="w-full bg-slate-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden mt-3">
+            <div id="progress-bar" class="bg-blue-600 h-full w-0 transition-all duration-200"></div>
+          </div>
+          <div id="progress-percent" class="text-[11px] font-mono text-slate-400 text-right">0%</div>
+        </div>
+
+        <div id="error-box" class="hidden w-full max-w-xs p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-xl text-left text-xs text-red-600 dark:text-red-400 space-y-1">
+          <div class="font-bold flex items-center">
+            <i class="fa-solid fa-circle-xmark mr-1.5"></i>
+            <span data-i18n="errorTitle">Service Temporarily Unavailable</span>
+          </div>
+          <p id="error-message" class="text-[11px] leading-relaxed"></p>
+        </div>
+
+        <button id="btn-cancel" onclick="cancelLoading()" class="px-4 py-2 border border-slate-300 dark:border-zinc-700 text-xs text-slate-600 dark:text-slate-400 rounded-lg" data-i18n="btnReturn">
+          Return
+        </button>
+      </div>
+
+      <!-- View 3: Chat Interface -->
+      <div id="view-chat" class="hidden flex-1 flex flex-col h-full overflow-hidden">
+        
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 no-scrollbar w-full">
+          <div class="text-center my-1">
+            <span id="chat-badge-model" class="text-[10px] text-slate-400 bg-slate-200/50 dark:bg-zinc-800/50 px-2.5 py-1 rounded-full font-mono" data-i18n="chatBadge">
+              WebGPU Worker Ready
             </span>
           </div>
-        </div>
 
-        <!-- Dedicated Card 2: House WhatsApp Notice -->
-        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-mint/20 dark:bg-morandi-mint/10 p-6 space-y-3 flex flex-col justify-between">
-          <div class="space-y-2">
-            <div class="w-8 h-8 bg-morandi-mint text-gray-900 flex items-center justify-center font-bold">
-              <i class="fa-brands fa-whatsapp text-lg"></i>
+          <div class="flex flex-col items-start space-y-1 max-w-[85%] mr-auto w-full">
+            <div class="imessage-bubble-ai px-3.5 py-2 text-xs sm:text-sm leading-snug shadow-sm max-w-[85%] break-words whitespace-pre-wrap overflow-hidden font-sans" data-i18n="welcomeAi">
+              Hello! I am ready to assist you. Type a message to test execution!
             </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="support.card_wa_title">
-              House WhatsApp Group
-            </h3>
-            <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="support.card_wa_desc">
-              Scan the official QR code poster located at the notice board near the main entrance of each building for immediate house updates.
-            </p>
-          </div>
-          <span class="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400 block" data-i18n="support.poster_location">
-            Poster at Building Entrance
-          </span>
-        </div>
-
-        <!-- Dedicated Card 3: Speed Test -->
-        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-blue/20 dark:bg-morandi-blue/10 p-6 space-y-3 flex flex-col justify-between">
-          <div class="space-y-2">
-            <div class="w-8 h-8 bg-morandi-blue text-gray-900 flex items-center justify-center font-bold">
-              <i class="fa-solid fa-gauge-high"></i>
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="speed.title">
-              Internet Speed Test
-            </h3>
-            <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="speed.description">
-              Test your bandwidth, upload speed, and ping directly via Speedtest by Ookla.
-            </p>
-          </div>
-          <button onclick="openExternalNotice('https://www.speedtest.net/')" class="w-full py-2 bg-morandi-slate text-white text-xs font-bold hover:bg-black transition-colors flex items-center justify-center space-x-2">
-            <span data-i18n="speed.button">Launch Speed Test</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Practical Public Services & Links Grid -->
-      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 space-y-4">
-        <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-compass text-morandi-slate dark:text-morandi-blue"></i>
-          <span data-i18n="links.heading">Practical Public Services & Links</span>
-        </h3>
-
-        <!-- 4 Top Featured Cards First (With Icons) -->
-        <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-3">
-          
-          <!-- 1. POLIZEI (Solid Blue Fill + Icon) -->
-          <button onclick="openExternalNotice('https://www.polizei.bayern.de/')" class="p-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-left space-y-1 transition-all shadow-sm group">
-            <div class="flex items-center justify-between">
-              <span class="flex items-center gap-2">
-                <i class="fa-solid fa-shield-halved text-base"></i>
-                <span data-i18n="links.polizei_title">Polizei Bayern</span>
-              </span>
-              <i class="fa-solid fa-chevron-right text-xs opacity-80"></i>
-            </div>
-            <p class="text-xs text-blue-100 font-normal leading-tight" data-i18n="links.polizei_desc">Emergency & police assistance.</p>
-          </button>
-
-          <!-- 2. FRAUENHILFE / FRAUENNOTRUF (Orange-Purple Gradient + Icon) -->
-          <button onclick="openExternalNotice('https://www.frauennotruf-muenchen.de/')" class="p-3.5 border-2 border-purple-400 dark:border-purple-600 bg-gradient-to-r from-orange-100 via-pink-50 to-purple-100 dark:from-orange-950 dark:via-slate-900 dark:to-purple-950 hover:brightness-105 text-left space-y-1 transition-all shadow-sm group">
-            <div class="font-bold text-purple-950 dark:text-purple-100 flex items-center justify-between">
-              <span class="flex items-center gap-2">
-                <i class="fa-solid fa-hand-holding-heart text-purple-600 dark:text-purple-400 text-base"></i>
-                <span data-i18n="links.frauen_title">Frauennotruf</span>
-              </span>
-              <i class="fa-solid fa-chevron-right text-xs text-purple-500"></i>
-            </div>
-            <p class="text-xs text-purple-900 dark:text-purple-200 font-medium leading-tight" data-i18n="links.frauen_desc">Counseling & emergency support for women.</p>
-          </button>
-
-          <!-- 3. KRISENDIENST BAYERN (Blue-Yellow Gradient + Icon) -->
-          <button onclick="openExternalNotice('https://www.krisendienste.bayern/')" class="p-3.5 border-2 border-blue-400 dark:border-blue-600 bg-gradient-to-r from-blue-100 via-sky-50 to-amber-100 dark:from-blue-950 dark:via-slate-900 dark:to-amber-950 hover:brightness-105 text-left space-y-1 transition-all shadow-sm group">
-            <div class="font-bold text-blue-950 dark:text-blue-100 flex items-center justify-between">
-              <span class="flex items-center gap-2">
-                <i class="fa-solid fa-heart-pulse text-blue-600 dark:text-blue-400 text-base"></i>
-                <span data-i18n="links.krisen_title">Krisendienst Bayern</span>
-              </span>
-              <i class="fa-solid fa-chevron-right text-xs text-blue-500"></i>
-            </div>
-            <p class="text-xs text-blue-900 dark:text-blue-200 font-medium leading-tight" data-i18n="links.krisen_desc">24/7 mental health crisis support.</p>
-          </button>
-
-          <!-- 4. LRZ DOKUMENTATION (Solid Blue Fill + Icon) -->
-          <button onclick="openExternalNotice('https://doku.lrz.de/')" class="p-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-left space-y-1 transition-all shadow-sm group">
-            <div class="flex items-center justify-between">
-              <span class="flex items-center gap-2">
-                <i class="fa-solid fa-server text-base"></i>
-                <span data-i18n="links.lrz_title">LRZ Doku</span>
-              </span>
-              <i class="fa-solid fa-chevron-right text-xs opacity-80"></i>
-            </div>
-            <p class="text-xs text-blue-100 font-normal leading-tight" data-i18n="links.lrz_desc">LRZ technical docs & knowledge base.</p>
-          </button>
-
-        </div>
-
-        <!-- Remaining Service Cards (Ordered by Importance, Strictly NO Icons) -->
-        <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-          
-          <!-- 5. Stadt München -->
-          <button onclick="openExternalNotice('https://stadt.muenchen.de/')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.muenchen_title">Stadt München</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.muenchen_desc">Residence registration (KVR) & city services.</p>
-          </button>
-
-          <!-- 6. MVV München -->
-          <button onclick="openExternalNotice('https://www.mvv-muenchen.de/')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.mvv_title">MVV München</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.mvv_desc">Munich public transit network & timetables.</p>
-          </button>
-
-          <!-- 7. Deutsche Bahn -->
-          <button onclick="openExternalNotice('https://www.bahn.de/')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.db_title">Deutsche Bahn (DB)</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.db_desc">Regional & long-distance train connections.</p>
-          </button>
-
-          <!-- 8. Ärztlicher Bereitschaftsdienst 116117 -->
-          <button onclick="openExternalNotice('https://www.116117.de/de/index.php')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.med_title">Ärztlicher Dienst 116117</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.med_desc">Non-emergency medical service & on-call doctors.</p>
-          </button>
-
-          <!-- 9. TU München -->
-          <button onclick="openExternalNotice('https://www.tum.de/')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.tum_title">TU München</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.tum_desc">TUM student portal & university webmail.</p>
-          </button>
-
-          <!-- 10. LMU München -->
-          <button onclick="openExternalNotice('https://www.lmu.de/')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.lmu_title">LMU München</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.lmu_desc">Ludwig-Maximilians-Universität portal.</p>
-          </button>
-
-          <!-- 11. Hochschule München -->
-          <button onclick="openExternalNotice('https://www.hm.edu/')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.hm_title">Hochschule München</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.hm_desc">HM University of Applied Sciences portal.</p>
-          </button>
-
-          <!-- 12. HMTM München -->
-          <button onclick="openExternalNotice('https://hmtm.de/')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.hmtm_title">HMTM München</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.hmtm_desc">University of Music and Performing Arts.</p>
-          </button>
-
-          <!-- 13. Studierendenwerk -->
-          <button onclick="openExternalNotice('https://www.studierendenwerk-muenchen-oberbayern.de/')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.stwm_title">Studierendenwerk</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.stwm_desc">Housing administration & dining halls.</p>
-          </button>
-
-          <!-- 14. BayernPortal -->
-          <button onclick="openExternalNotice('https://www.bayernportal.de/dokumente/behoerde/8888710385')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.bayernportal_title">BayernPortal</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.bayernportal_desc">Bavarian public authority services & forms.</p>
-          </button>
-
-          <!-- 15. Bayern.de -->
-          <button onclick="openExternalNotice('https://www.bayern.de/')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.bayern_title">Bayern.de</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.bayern_desc">Bavarian state government portal.</p>
-          </button>
-
-          <!-- 16. DWD Wettergefahren -->
-          <button onclick="openExternalNotice('https://www.wettergefahren.de/warnungen/warnsituation/warnlagebericht/sued_bayern.html')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.dwd_title">DWD Wettergefahren</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.dwd_desc">Severe weather report for Southern Bavaria.</p>
-          </button>
-
-          <!-- 17. Bayern OpenGeoData -->
-          <button onclick="openExternalNotice('https://geodaten.bayern.de/opengeodata/OpenDataDetail.html?pn=tk50_tk100')" class="p-3 border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg text-left space-y-1 transition-colors group">
-            <div class="font-bold text-gray-900 dark:text-white group-hover:text-morandi-blue flex items-center justify-between">
-              <span data-i18n="links.geodata_title">Bayern OpenGeoData</span>
-              <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="links.geodata_desc">State topographic maps & geodata.</p>
-          </button>
-
-        </div>
-      </div>
-
-      <!-- Report Network Issue Form Container -->
-      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 sm:p-8 space-y-6">
-        
-        <!-- Top Maintenance Notice Banner -->
-        <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 text-sm text-amber-900 dark:text-amber-200 flex items-start space-x-3">
-          <i class="fa-solid fa-wrench text-amber-600 text-base mt-0.5"></i>
-          <div class="space-y-1">
-            <strong class="font-bold block" data-i18n="report.notice_title">Notice: Online Reporting Temporarily Unavailable</strong>
-            <p class="text-xs sm:text-sm text-amber-800 dark:text-amber-300 leading-relaxed" data-i18n="report.notice_desc">
-              Due to scheduled system maintenance, ticket submissions through this web form are currently paused. If you need assistance, please visit our Friday service hours or refer to the house WhatsApp group posted at building entrances.
-            </p>
+            <span class="text-[9px] text-slate-400 px-1">Local AI</span>
           </div>
         </div>
 
-        <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
-          <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white" data-i18n="report.title">
-            Report Network Issue
-          </h3>
-          <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5" data-i18n="report.subtitle">
-            Fill out the details below to submit a technical issue ticket to network tutors.
-          </p>
-        </div>
-
-        <!-- Form Layout (Disabled Inputs) -->
-        <form onsubmit="event.preventDefault();" class="space-y-4">
-          <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1" data-i18n="form.name">Resident Name</label>
-              <input type="text" id="input-name" disabled class="w-full p-2.5 bg-gray-50 dark:bg-morandi-darkbg border border-gray-300 dark:border-gray-700 text-sm text-gray-500 cursor-not-allowed" placeholder="Jane Smith" />
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1" data-i18n="form.room">Building & Room Number</label>
-              <input type="text" id="input-room" disabled class="w-full p-2.5 bg-gray-50 dark:bg-morandi-darkbg border border-gray-300 dark:border-gray-700 text-sm text-gray-500 cursor-not-allowed font-mono" placeholder="Chiemgauerstr. 3, Room 102" />
-            </div>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1" data-i18n="form.phone">Phone Number</label>
-              <input type="text" id="input-phone" disabled class="w-full p-2.5 bg-gray-50 dark:bg-morandi-darkbg border border-gray-300 dark:border-gray-700 text-sm text-gray-500 cursor-not-allowed font-mono" placeholder="+49 151 12345678" />
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1" data-i18n="form.email">Email Address</label>
-              <input type="email" id="input-email" disabled class="w-full p-2.5 bg-gray-50 dark:bg-morandi-darkbg border border-gray-300 dark:border-gray-700 text-sm text-gray-500 cursor-not-allowed font-mono" placeholder="jane.smith@tum.de" />
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1" data-i18n="form.description">Issue Description</label>
-            <textarea disabled rows="3" class="w-full p-2.5 bg-gray-50 dark:bg-morandi-darkbg border border-gray-300 dark:border-gray-700 text-sm text-gray-500 cursor-not-allowed" placeholder="Describe the connection issue, router LED lights, or error messages..."></textarea>
-          </div>
-
-          <button disabled class="px-6 py-3 bg-gray-300 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-xs font-bold cursor-not-allowed uppercase tracking-wider" data-i18n="form.submit_disabled">
-            Submit Ticket (Form Disabled)
+        <form onsubmit="handleSend(event)" class="p-3 bg-slate-50/90 dark:bg-zinc-900/90 border-t border-slate-200 dark:border-zinc-800 flex items-center space-x-2 shrink-0">
+          <input 
+            type="text" 
+            id="chat-input" 
+            placeholder="iMessage" 
+            data-i18n-placeholder="inputPlaceholder"
+            autocomplete="off"
+            class="flex-1 px-4 py-2 bg-white dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 rounded-full text-xs sm:text-sm focus:outline-none focus:border-blue-500 transition-colors placeholder:text-slate-400"
+          />
+          <button 
+            type="submit" 
+            id="btn-send"
+            class="w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors disabled:opacity-40 shrink-0"
+          >
+            <i class="fa-solid fa-arrow-up text-xs"></i>
           </button>
         </form>
-      </div>
-    </section>
 
-    <!-- ========================================== -->
-    <!-- SECTION 4: MULTIMEDIA RESOURCES            -->
-    <!-- ========================================== -->
-    <section id="media" class="space-y-6 pt-4">
-      <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
-          <span class="w-3 h-3 bg-morandi-pink inline-block"></span>
-          <span data-i18n="media.title">Video Setup Guides</span>
-        </h2>
       </div>
 
-      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-        <div class="flex items-start space-x-4">
-          <div class="w-12 h-12 bg-red-600 text-white flex items-center justify-center font-bold text-2xl shrink-0">
-            <i class="fa-brands fa-youtube"></i>
-          </div>
-          <div class="space-y-1">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="media.heading">
-              YouTube Video Connection Search
-            </h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-i18n="media.description">
-              Looking for visual video tutorials? Search general step-by-step router setup guides directly on YouTube.
-            </p>
-          </div>
-        </div>
-
-        <button onclick="openExternalNotice('https://www.youtube.com/results?search_query=how+to+connect+router+to+internet')" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-bold transition-colors shrink-0 flex items-center space-x-2">
-          <span data-i18n="media.button">Search YouTube</span>
-          <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-        </button>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ========================================== -->
-  <!-- FOOTER                                     -->
-  <!-- ========================================== -->
-  <footer class="mt-16 border-t border-[#DCE0D8] dark:border-[#33383F] bg-[#F7F7F3] dark:bg-[#141618] py-8 transition-colors">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600 dark:text-gray-400">
-      <div>
-        <span data-i18n="footer.provider">Network Provider: <strong>Leibniz-Rechenzentrum (LRZ)</strong></span>
-        <span class="mx-2">•</span>
-        <span>Wohnanlage Chiemgauer Str.</span>
-      </div>
-
-      <div class="flex items-center space-x-4">
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-black dark:hover:text-white transition-colors">
-          <i class="fa-solid fa-arrow-up mr-1"></i> <span data-i18n="footer.back_to_top">Back to Top</span>
-        </button>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ========================================== -->
-  <!-- MODAL 1: MULTI-LANGUAGE SELECTION          -->
-  <!-- ========================================== -->
-  <div id="modal-language" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay animate-fade-in">
-    <div class="bg-white dark:bg-morandi-darkcard border border-[#DCE0D8] dark:border-[#33383F] max-w-sm w-full p-6 space-y-4 shadow-xl">
-      <div class="flex items-center justify-between border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
-        <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-globe text-morandi-blue"></i>
-          <span>Select Language / Sprache</span>
-        </h3>
-        <button onclick="closeLanguageModal()" class="text-gray-400 hover:text-black dark:hover:text-white text-lg">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div class="space-y-2">
-        <button onclick="setLanguage('en')" class="w-full p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg font-medium text-sm flex items-center justify-between group">
-          <span>English (EN)</span>
-          <i class="fa-solid fa-check text-emerald-500 opacity-0 group-hover:opacity-100" id="lang-check-en"></i>
-        </button>
-
-        <button onclick="setLanguage('de')" class="w-full p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg font-medium text-sm flex items-center justify-between group">
-          <span>Deutsch (DE)</span>
-          <i class="fa-solid fa-check text-emerald-500 opacity-0 group-hover:opacity-100" id="lang-check-de"></i>
-        </button>
-
-        <button onclick="setLanguage('fr')" class="w-full p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg font-medium text-sm flex items-center justify-between group">
-          <span>Français (FR)</span>
-          <i class="fa-solid fa-check text-emerald-500 opacity-0 group-hover:opacity-100" id="lang-check-fr"></i>
-        </button>
-      </div>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- MODAL 2: ACCESSIBILITY & DISPLAY SETTINGS  -->
-  <!-- ========================================== -->
-  <div id="modal-accessibility" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay animate-fade-in">
-    <div class="bg-white dark:bg-morandi-darkcard border border-[#DCE0D8] dark:border-[#33383F] max-w-md w-full p-6 space-y-6 shadow-xl">
-      <div class="flex items-center justify-between border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
-        <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-universal-access text-morandi-blue"></i>
-          <span data-i18n="a11y.title">Accessibility Settings</span>
-        </h3>
-        <button onclick="closeAccessibilityModal()" class="text-gray-400 hover:text-black dark:hover:text-white text-lg">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div class="space-y-4 text-sm">
-        <div class="space-y-2">
-          <label class="block font-bold text-gray-800 dark:text-gray-200" data-i18n="a11y.theme_label">Color Mode</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="toggleDarkMode(false)" id="theme-btn-light" class="p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-medium text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg">
-              Light Mode
-            </button>
-            <button onclick="toggleDarkMode(true)" id="theme-btn-dark" class="p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-medium text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg">
-              Dark Mode
-            </button>
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          <label class="block font-bold text-gray-800 dark:text-gray-200" data-i18n="a11y.font_label">Typography Style</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="toggleSerifFont(false)" class="p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-sans font-medium text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg">
-              Noto Sans
-            </button>
-            <button onclick="toggleSerifFont(true)" class="p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-serif font-medium text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg">
-              Noto Serif
-            </button>
-          </div>
-        </div>
-
-        <!-- Dynamic High Contrast Toggle Button -->
-        <div class="space-y-2">
-          <label class="block font-bold text-gray-800 dark:text-gray-200" data-i18n="a11y.contrast_label">High Contrast Mode</label>
-          <button onclick="toggleHighContrast()" id="contrast-toggle-btn" class="w-full p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-bold text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg" data-i18n="a11y.contrast_activate">
-            Activate High Contrast
-          </button>
-        </div>
-      </div>
-
-      <div class="pt-2">
-        <button onclick="closeAccessibilityModal()" class="w-full py-2.5 bg-morandi-slate text-white font-bold text-sm">
-          Save & Close
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================== -->
-  <!-- MODAL 3: EXTERNAL LINK DISCLAIMER          -->
-  <!-- ========================================== -->
-  <div id="modal-external" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay animate-fade-in">
-    <div class="bg-white dark:bg-morandi-darkcard border border-[#DCE0D8] dark:border-[#33383F] max-w-md w-full p-6 space-y-4 shadow-xl">
-      <div class="flex items-center justify-between border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
-        <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-arrow-up-right-from-square text-morandi-blue"></i>
-          <span data-i18n="disclaimer.title">External Link Notice</span>
-        </h3>
-        <button onclick="closeExternalModal()" class="text-gray-400 hover:text-black dark:hover:text-white text-lg">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-        <p data-i18n="disclaimer.body">
-          You are about to leave the Network Tutors resident portal and proceed to an external website:
-        </p>
-        <div class="p-3 bg-gray-100 dark:bg-morandi-darkbg font-mono text-xs text-gray-900 dark:text-white break-all" id="external-url-display">
-          https://www.example.com
-        </div>
-        <p class="text-xs text-gray-500" data-i18n="disclaimer.note">
-          Network Tutors are not responsible for external content or privacy policies.
-        </p>
-      </div>
-
-      <div class="flex items-center space-x-3 pt-2">
-        <button onclick="closeExternalModal()" class="w-1/2 py-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-bold text-sm hover:bg-gray-100 dark:hover:bg-gray-800" data-i18n="disclaimer.cancel">
-          Cancel
-        </button>
-        <a id="external-proceed-btn" href="#" target="_blank" rel="noopener noreferrer" onclick="closeExternalModal()" class="w-1/2 py-2.5 bg-morandi-slate text-white text-center font-bold text-sm hover:bg-black transition-colors" data-i18n="disclaimer.proceed">
-          Proceed
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC                           -->
-  <!-- ========================================== -->
   <script>
-    /* -------------------------------------------------------------------------- */
-    /* 1. TRILINGUAL DICTIONARY                                                   */
-    /* -------------------------------------------------------------------------- */
+    // Embedded Web Worker Logic
+    const workerScriptCode = `
+      import { pipeline, TextStreamer, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3';
+
+      env.allowLocalModels = false;
+      env.useBrowserCache = true;
+
+      let generator = null;
+      let fileProgressMap = {};
+
+      self.addEventListener('message', async (e) => {
+        const { type, data } = e.data;
+
+        if (type === 'load') {
+          try {
+            fileProgressMap = {};
+            generator = await pipeline('text-generation', data.modelId, {
+              device: 'webgpu',
+              dtype: 'q4',
+              progress_callback: (p) => {
+                if (p.status === 'progress') {
+                  fileProgressMap[p.file || 'model'] = p.progress || 0;
+                  const files = Object.keys(fileProgressMap);
+                  const pct = Math.round(files.reduce((sum, k) => sum + fileProgressMap[k], 0) / (files.length || 1));
+                  self.postMessage({ status: 'progress', percent: pct });
+                }
+              }
+            });
+
+            self.postMessage({ status: 'ready' });
+          } catch (err) {
+            self.postMessage({ status: 'error', error: err.message || String(err) });
+          }
+        } else if (type === 'generate') {
+          try {
+            const streamer = new TextStreamer(generator.tokenizer, {
+              skip_prompt: true,
+              skip_special_tokens: true,
+              callback_function: (tokenText) => {
+                self.postMessage({ status: 'update', token: tokenText });
+              }
+            });
+
+            const messages = [
+              { role: 'system', content: 'You are a helpful assistant.' },
+              ...(data.history || []),
+              { role: 'user', content: data.text }
+            ];
+
+            await generator(messages, {
+              max_new_tokens: 128,
+              temperature: 0.6,
+              do_sample: true,
+              streamer: streamer
+            });
+
+            self.postMessage({ status: 'complete' });
+          } catch (err) {
+            self.postMessage({ status: 'error', error: err.message || String(err) });
+          }
+        }
+      });
+    `;
+
+    // Multilingual Translations Dictionary (EN, FR, DE)
     const translations = {
       en: {
-        "nav.setup": "Setup Guide",
-        "nav.security": "Security",
-        "nav.support": "Support",
-        "nav.media": "Media",
-        "hero.title": "Internet Information for You",
-        "hero.subtitle": "Welcome to the official network guidance page for residents of Wohnanlage Chiemgauer Str. Here you will find step-by-step router setup guides, security rules, and technical assistance.",
-        "service.label": "In-Person Assistance",
-        "service.heading": "Bi-Weekly Service Hours",
-        "service.location": "Held every two weeks on Friday at 19:00 CET (1 hour before the dorm bar night) in Traunsteiner Str. 5 Common Rooms.",
-        "service.next": "Next Session",
-        "service.time": "19:00 - 20:00 CET",
-        "setup.title": "Router Setup Guide",
-        "setup.subtitle": "Generic Wireless Router",
-        "wizard.step1_tab": "Cabling & WAN",
-        "wizard.step2_tab": "Wi-Fi Connection",
-        "wizard.step3_tab": "Admin Login (Opt)",
-        "wizard.step4_tab": "Router Manuals",
-        "wizard.btn_prev": "Previous Step",
-        "wizard.btn_next": "Next Step",
-        "led.title": "Interactive LED Diagnostic Inspector",
-        "led.instruction_hint": "Click individual lights below to recreate your router's status",
-        "security.title": "Network Safety & Guidelines",
-        "security.rules_heading": "Essential Dormitory Network Rules",
-        "security.rule1": "Always connect the wall Ethernet outlet strictly to the BLUE WAN port of your router.",
-        "security.rule2": "Avoid plugging wall cables into yellow LAN ports to prevent network loops that might disrupt internet access for your floor.",
-        "security.rule3": "Keep your router administrator password updated and secure to prevent unauthorized network access.",
-        "security.rule4": "Adhere strictly to LRZ acceptable usage policies regarding copyright, legal compliance, and network safety.",
-        "security.check_heading": "Security Self-Check Tool",
-        "status.maintenance": "Maintenance",
-        "security.check_offline_title": "Tool Temporarily Unavailable",
-        "security.check_offline_desc": "The automated security self-check tool is currently undergoing scheduled maintenance. Please refer to the guidelines on the left or visit us during Friday service hours.",
-        "security.check_disabled_btn": "Self-Check Offline",
-        "support.title": "Support, Assistance & Links",
-        "support.card_service_title": "In-Person Service Hours",
-        "support.card_service_desc": "Get direct help from network tutors every two weeks on Fridays at 19:00 CET in Traunsteiner Str. 5 Common Rooms.",
-        "support.card_wa_title": "House WhatsApp Group",
-        "support.card_wa_desc": "Scan the official QR code poster located at the notice board near the main entrance of each building for immediate house updates.",
-        "support.poster_location": "Poster at Building Entrance",
-        "speed.title": "Internet Speed Test",
-        "speed.description": "Test your bandwidth, upload speed, and ping directly via Speedtest by Ookla.",
-        "speed.button": "Launch Speed Test",
-        "links.heading": "Practical Public Services & Links",
-        "links.polizei_title": "Polizei Bayern",
-        "links.polizei_desc": "Emergency & police assistance.",
-        "links.frauen_title": "Frauennotruf",
-        "links.frauen_desc": "Counseling & emergency support for women.",
-        "links.krisen_title": "Krisendienst Bayern",
-        "links.krisen_desc": "24/7 mental health crisis support.",
-        "links.lrz_title": "LRZ Doku",
-        "links.lrz_desc": "LRZ technical docs & knowledge base.",
-        "links.muenchen_title": "Stadt München",
-        "links.muenchen_desc": "Residence registration (KVR) & city services.",
-        "links.mvv_title": "MVV München",
-        "links.mvv_desc": "Munich public transit network & timetables.",
-        "links.db_title": "Deutsche Bahn (DB)",
-        "links.db_desc": "Regional & long-distance train connections.",
-        "links.med_title": "Ärztlicher Dienst 116117",
-        "links.med_desc": "Non-emergency medical service & on-call doctors.",
-        "links.tum_title": "TU München",
-        "links.tum_desc": "TUM student portal & university webmail.",
-        "links.lmu_title": "LMU München",
-        "links.lmu_desc": "Ludwig-Maximilians-Universität portal.",
-        "links.hm_title": "Hochschule München",
-        "links.hm_desc": "HM University of Applied Sciences portal.",
-        "links.hmtm_title": "HMTM München",
-        "links.hmtm_desc": "University of Music and Performing Arts.",
-        "links.stwm_title": "Studierendenwerk",
-        "links.stwm_desc": "Housing administration & dining halls.",
-        "links.bayernportal_title": "BayernPortal",
-        "links.bayernportal_desc": "Bavarian public authority services & forms.",
-        "links.bayern_title": "Bayern.de",
-        "links.bayern_desc": "Bavarian state government portal.",
-        "links.dwd_title": "DWD Wettergefahren",
-        "links.dwd_desc": "Severe weather report for Southern Bavaria.",
-        "links.geodata_title": "Bayern OpenGeoData",
-        "links.geodata_desc": "State topographic maps & geodata.",
-        "report.notice_title": "Notice: Online Reporting Temporarily Unavailable",
-        "report.notice_desc": "Due to scheduled system maintenance, ticket submissions through this web form are currently paused. If you need assistance, please visit our Friday service hours or refer to the house WhatsApp group posted at building entrances.",
-        "report.title": "Report Network Issue",
-        "report.subtitle": "Fill out the details below to submit a technical issue ticket to network tutors.",
-        "form.name": "Resident Name",
-        "form.room": "Building & Room Number",
-        "form.phone": "Phone Number",
-        "form.email": "Email Address",
-        "form.description": "Issue Description",
-        "form.submit_disabled": "Submit Ticket (Form Disabled)",
-        "media.title": "Video Setup Guides",
-        "media.heading": "YouTube Video Connection Search",
-        "media.description": "Looking for visual video tutorials? Search general step-by-step router setup guides directly on YouTube.",
-        "media.button": "Search YouTube",
-        "footer.provider": "Network Provider: <strong>Leibniz-Rechenzentrum (LRZ)</strong>",
-        "footer.back_to_top": "Back to Top",
-        "a11y.title": "Accessibility Settings",
-        "a11y.theme_label": "Color Mode",
-        "a11y.font_label": "Typography Style",
-        "a11y.contrast_label": "High Contrast Mode",
-        "a11y.contrast_activate": "Activate High Contrast",
-        "a11y.contrast_deactivate": "Deactivate High Contrast",
-        "disclaimer.title": "External Link Notice",
-        "disclaimer.body": "You are about to leave the Network Tutors resident portal and proceed to an external website:",
-        "disclaimer.note": "Network Tutors are not responsible for external content or privacy policies.",
-        "disclaimer.cancel": "Cancel",
-        "disclaimer.proceed": "Proceed"
-      },
-      de: {
-        "nav.setup": "Einrichtung",
-        "nav.security": "Sicherheit",
-        "nav.support": "Support",
-        "nav.media": "Medien",
-        "hero.title": "Internet-Informationen für Dich",
-        "hero.subtitle": "Willkommen auf der offiziellen Netzwerk-Informationsseite für Bewohner der Wohnanlage Chiemgauer Str. Hier findest Du Schritt-für-Schritt-Anleitungen zur Router-Einrichtung, Sicherheitsregeln und Hilfe.",
-        "service.label": "Persönliche Hilfe",
-        "service.heading": "Zweiwöchentliche Sprechzeiten",
-        "service.location": "Alle zwei Wochen am Freitag um 19:00 Uhr (1 Stunde vor der Dorm Bar Night) in den Gemeinschaftsräumen, Traunsteiner Str. 5.",
-        "service.next": "Nächster Termin",
-        "service.time": "19:00 - 20:00 Uhr",
-        "setup.title": "Router-Einrichtungsanleitung",
-        "setup.subtitle": "Generischer WLAN-Router",
-        "wizard.step1_tab": "Kabel & WAN",
-        "wizard.step2_tab": "WLAN-Verbindung",
-        "wizard.step3_tab": "Admin-Login (Opt)",
-        "wizard.step4_tab": "Router-Anleitungen",
-        "wizard.btn_prev": "Vorheriger Schritt",
-        "wizard.btn_next": "Nächster Schritt",
-        "led.title": "Interaktiver LED-Diagnose-Inspektor",
-        "led.instruction_hint": "Klicke auf einzelne Lampen, um den Status Deines Routers nachzubilden",
-        "security.title": "Netzwerksicherheit & Regeln",
-        "security.rules_heading": "Wichtige Wohnheim-Netzwerkregeln",
-        "security.rule1": "Schließe die Ethernet-Wanddose ausschließlich an den BLAUEN WAN-Port Deines Routers an.",
-        "security.rule2": "Vermeide das Anstecken von Wandkabeln an gelbe LAN-Ports, um Netzwerkschleifen auf Deinem Stockwerk zu verhindern.",
-        "security.rule3": "Halte Dein Router-Administrator-Passwort stets geheim und aktualisiert.",
-        "security.rule4": "Halte Dich strikt an die LRZ-Nutzungsrichtlinien bezüglich Urheberrecht und Sicherheit.",
-        "security.check_heading": "Sicherheits-Selbsttest",
-        "status.maintenance": "Wartung",
-        "security.check_offline_title": "Werkzeug vorübergehend nicht verfügbar",
-        "security.check_offline_desc": "Der automatische Selbsttest wird derzeit gewartet. Bitte beachte die Richtlinien links oder besuche uns in der Freitags-Sprechstunde.",
-        "security.check_disabled_btn": "Selbsttest Offline",
-        "support.title": "Support, Hilfe & Links",
-        "support.card_service_title": "Persönliche Sprechzeiten",
-        "support.card_service_desc": "Hole Dir alle zwei Wochen freitags um 19:00 Uhr in Traunsteiner Str. 5 Hilfe von Netzwerk-Tutoren.",
-        "support.card_wa_title": "Haus-WhatsApp-Gruppe",
-        "support.card_wa_desc": "Scanne den offiziellen QR-Code am Aushang neben dem Haupteingang jedes Gebäudes für direkte Updates.",
-        "support.poster_location": "Aushang am Gebäudeeingang",
-        "speed.title": "Internet-Geschwindigkeitstest",
-        "speed.description": "Teste Deine Bandbreite, Upload-Geschwindigkeit und Latenz direkt über Speedtest von Ookla.",
-        "speed.button": "Speedtest starten",
-        "links.heading": "Nützliche Links & Öffentliche Dienste",
-        "links.polizei_title": "Polizei Bayern",
-        "links.polizei_desc": "Notruf & Polizeidienststellen.",
-        "links.frauen_title": "Frauennotruf",
-        "links.frauen_desc": "Beratung & Notruf für Frauen.",
-        "links.krisen_title": "Krisendienst Bayern",
-        "links.krisen_desc": "24/7 Krisendienst für seelische Gesundheit.",
-        "links.lrz_title": "LRZ Doku",
-        "links.lrz_desc": "Technische Dokumentation & LRZ-Wissen.",
-        "links.muenchen_title": "Stadt München",
-        "links.muenchen_desc": "Wohnsitzanmeldung (KVR) & städtische Services.",
-        "links.mvv_title": "MVV München",
-        "links.mvv_desc": "Münchner Verkehrs- und Tarifverbund & Fahrpläne.",
-        "links.db_title": "Deutsche Bahn (DB)",
-        "links.db_desc": "Regional- & Fernverkehrsverbindungen.",
-        "links.med_title": "Ärztlicher Dienst 116117",
-        "links.med_desc": "Ärztlicher Bereitschaftsdienst rund um die Uhr.",
-        "links.tum_title": "TU München",
-        "links.tum_desc": "TUM Studentenportal & Hochschul-E-Mail.",
-        "links.lmu_title": "LMU München",
-        "links.lmu_desc": "LMU Hauptportal & Universitätsdienste.",
-        "links.hm_title": "Hochschule München",
-        "links.hm_desc": "Studentenportal der Hochschule München.",
-        "links.hmtm_title": "HMTM München",
-        "links.hmtm_desc": "Hochschule für Musik und Theater München.",
-        "links.stwm_title": "Studierendenwerk",
-        "links.stwm_desc": "Wohnheimverwaltung & Mensen.",
-        "links.bayernportal_title": "BayernPortal",
-        "links.bayernportal_desc": "Offizielle bayerische Behördendienste & Formulare.",
-        "links.bayern_title": "Bayern.de",
-        "links.bayern_desc": "Bayerisches Landesportal & Staatsregierung.",
-        "links.dwd_title": "DWD Wettergefahren",
-        "links.dwd_desc": "Amtlicher Wetterwarnbericht für Südbayern.",
-        "links.geodata_title": "Bayern OpenGeoData",
-        "links.geodata_desc": "Topographische Karten & Geodaten Bayerns.",
-        "report.notice_title": "Hinweis: Online-Meldung vorübergehend nicht verfügbar",
-        "report.notice_desc": "Aufgrund von Wartungsarbeiten sind Ticket-Einsendungen derzeit pausiert. Bitte besuche unsere Freitags-Sprechstunde oder nutze die WhatsApp-Gruppe am Aushang.",
-        "report.title": "Netzwerkproblem melden",
-        "report.subtitle": "Fülle die Felder aus, um ein Support-Ticket an die Netzwerktutoren zu senden.",
-        "form.name": "Name des Bewohners",
-        "form.room": "Gebäude & Zimmernummer",
-        "form.phone": "Telefonnummer",
-        "form.email": "E-Mail-Adresse",
-        "form.description": "Problembeschreibung",
-        "form.submit_disabled": "Ticket senden (Formular deaktiviert)",
-        "media.title": "Video-Einrichtungsanleitungen",
-        "media.heading": "YouTube Video-Suche",
-        "media.description": "Suchst Du nach anschaulichen Video-Anleitungen? Suche allgemeine Schritte zur Router-Einrichtung direkt auf YouTube.",
-        "media.button": "Auf YouTube suchen",
-        "footer.provider": "Netzwerkanbieter: <strong>Leibniz-Rechenzentrum (LRZ)</strong>",
-        "footer.back_to_top": "Nach oben",
-        "a11y.title": "Barrierefreiheit-Einstellungen",
-        "a11y.theme_label": "Farbmodus",
-        "a11y.font_label": "Schriftstil",
-        "a11y.contrast_label": "Hoher Kontrast",
-        "a11y.contrast_activate": "Hohen Kontrast aktivieren",
-        "a11y.contrast_deactivate": "Hohen Kontrast deaktivieren",
-        "disclaimer.title": "Hinweis zu externem Link",
-        "disclaimer.body": "Du verlässt nun das Portal der Network Tutors und wirst zu einer externen Webseite weitergeleitet:",
-        "disclaimer.note": "Die Network Tutors sind nicht für Inhalte externer Seiten verantwortlich.",
-        "disclaimer.cancel": "Abbrechen",
-        "disclaimer.proceed": "Weiter"
+        appTitle: "WebGPU AI Chat",
+        statusNotReady: "Not Ready",
+        statusWorker: "Worker",
+        statusLoading: "Starting Worker...",
+        statusDownloading: "Downloading Weights...",
+        statusReady: "Online (WebGPU)",
+        statusFailed: "Load Failed",
+        selectModelTitle: "Select On-Device AI Model",
+        selectModelSubtitle: "Runs in background thread with zero UI lag",
+        qwenName: "Qwen2.5 0.5B",
+        qwenDesc: "Strong general understanding, excellent multilingual capability",
+        qwenSize: "~350 MB",
+        llamaName: "Llama 3.2 1B",
+        llamaDesc: "Meta lightweight model with strong reasoning capability",
+        llamaSize: "~700 MB",
+        badgeRecommended: "Recommended",
+        securityNoteTitle: "On-Device Security:",
+        securityNoteDesc: "Data stays in your browser memory and is never sent to any cloud server.",
+        btnInit: "Initialize & Load Model",
+        loadingTitle: "Initializing...",
+        loadingSubtext: "Starting background Worker thread...",
+        errorTitle: "Service Temporarily Unavailable",
+        btnReturn: "Return",
+        chatBadge: "WebGPU Worker Ready",
+        welcomeAi: "Hello! I am ready to assist you. Type a message to test execution!",
+        inputPlaceholder: "iMessage",
+        errTryOther: "Failed to load {currentModel}. Please try loading {otherModel} instead.",
+        errTryLater: "Both models failed to load. Please try again later or verify WebGPU support."
       },
       fr: {
-        "nav.setup": "Guide d'installation",
-        "nav.security": "Sécurité",
-        "nav.support": "Support",
-        "nav.media": "Médias",
-        "hero.title": "Informations Internet pour vous",
-        "hero.subtitle": "Bienvenue sur la page d'information réseau officielle pour les résidents de Wohnanlage Chiemgauer Str. Vous y trouverez des guides de configuration de routeur, des règles de sécurité et de l'assistance.",
-        "service.label": "Assistance en personne",
-        "service.heading": "Heures de service bimensuelles",
-        "service.location": "Organisées un vendredi sur deux à 19h00 (1 heure avant la soirée bar du foyer) dans les salles communes de Traunsteiner Str. 5.",
-        "service.next": "Prochaine session",
-        "service.time": "19:00 - 20:00 CET",
-        "setup.title": "Guide de configuration du routeur",
-        "setup.subtitle": "Routeur Wi-Fi générique",
-        "wizard.step1_tab": "Câblage & WAN",
-        "wizard.step2_tab": "Connexion Wi-Fi",
-        "wizard.step3_tab": "Admin Login (Opt)",
-        "wizard.step4_tab": "Manuels routeur",
-        "wizard.btn_prev": "Étape précédente",
-        "wizard.btn_next": "Étape suivante",
-        "led.title": "Inspecteur interactif de diagnostic LED",
-        "led.instruction_hint": "Cliquez sur les voyants ci-dessous pour recréer l'état de votre routeur",
-        "security.title": "Sécurité réseau & Règles",
-        "security.rules_heading": "Règles réseau essentielles de la résidence",
-        "security.rule1": "Branchez toujours la prise murale Ethernet exclusivement sur le port WAN BLEU de votre routeur.",
-        "security.rule2": "Évitez de brancher des câbles muraux sur les ports LAN jaunes afin d'éviter les boucles réseau sur votre étage.",
-        "security.rule3": "Conservez le mot de passe administrateur de votre routeur à jour et sécurisé.",
-        "security.rule4": "Respectez strictement les conditions d'utilisation du LRZ concernant les droits d'auteur et la sécurité.",
-        "security.check_heading": "Auto-évaluation de sécurité",
-        "status.maintenance": "Maintenance",
-        "security.check_offline_title": "Outil temporairement indisponible",
-        "security.check_offline_desc": "L'outil d'auto-évaluation automatique est actuellement en maintenance programmée. Veuillez vous référer aux consignes à gauche ou nous rendre visite le vendredi.",
-        "security.check_disabled_btn": "Auto-évaluation hors ligne",
-        "support.title": "Support, Assistance & Liens",
-        "support.card_service_title": "Heures de service en personne",
-        "support.card_service_desc": "Obtenez de l'aide directe un vendredi sur deux à 19h00 dans les salles communes de Traunsteiner Str. 5.",
-        "support.card_wa_title": "Groupe WhatsApp du bâtiment",
-        "support.card_wa_desc": "Scannez l'affiche avec le code QR officiel située à l'entrée principale de chaque immeuble.",
-        "support.poster_location": "Affiche à l'entrée de l'immeuble",
-        "speed.title": "Test de vitesse Internet",
-        "speed.description": "Testez votre débit, votre envoi et votre latence directement via Speedtest de Ookla.",
-        "speed.button": "Lancer le test",
-        "links.heading": "Services publics & Liens utiles",
-        "links.polizei_title": "Police de Bavière",
-        "links.polizei_desc": "Urgences & services de police.",
-        "links.frauen_title": "Urgence Femmes",
-        "links.frauen_desc": "Conseil & soutien d'urgence pour femmes.",
-        "links.krisen_title": "Krisendienst Bayern",
-        "links.krisen_desc": "Ligne d'assistance santé mentale 24h/24.",
-        "links.lrz_title": "Documentation LRZ",
-        "links.lrz_desc": "Documentation technique & base LRZ.",
-        "links.muenchen_title": "Stadt München",
-        "links.muenchen_desc": "Inscription de résidence (KVR) & services municipaux.",
-        "links.mvv_title": "MVV München",
-        "links.mvv_desc": "Transports publics de Munich & horaires.",
-        "links.db_title": "Deutsche Bahn (DB)",
-        "links.db_desc": "Lignes de train régionales & grande vitesse.",
-        "links.med_title": "Service Médical 116117",
-        "links.med_desc": "Service médical de garde non urgent 24/7.",
-        "links.tum_title": "TU München",
-        "links.tum_desc": "Portail étudiant & e-mail TUM.",
-        "links.lmu_title": "LMU München",
-        "links.lmu_desc": "Portail principal de la LMU.",
-        "links.hm_title": "Hochschule München",
-        "links.hm_desc": "Portail étudiant de la HM.",
-        "links.hmtm_title": "HMTM München",
-        "links.hmtm_desc": "Haute École de Musique et de Théâtre.",
-        "links.stwm_title": "Studierendenwerk",
-        "links.stwm_desc": "Gestion du logement & restauration.",
-        "links.bayernportal_title": "BayernPortal",
-        "links.bayernportal_desc": "Services administratifs & formulaires.",
-        "links.bayern_title": "Bayern.de",
-        "links.bayern_desc": "Portail du gouvernement bavarois.",
-        "links.dwd_title": "DWD Wettergefahren",
-        "links.dwd_desc": "Bulletin d'alerte météo pour la Bavière du Sud.",
-        "links.geodata_title": "Bayern OpenGeoData",
-        "links.geodata_desc": "Cartes topographiques & données ouvertes.",
-        "report.notice_title": "Avis : Signalement en ligne temporairement indisponible",
-        "report.notice_desc": "En raison de travaux de maintenance, la soumission de tickets est en pause. Veuillez venir lors des permanences du vendredi ou consulter le groupe WhatsApp.",
-        "report.title": "Signaler un problème réseau",
-        "report.subtitle": "Remplissez les détails ci-dessous pour soumettre un ticket aux tuteurs réseau.",
-        "form.name": "Nom du résident",
-        "form.room": "Bâtiment & numéro de chambre",
-        "form.phone": "Numéro de téléphone",
-        "form.email": "Adresse e-mail",
-        "form.description": "Description du problème",
-        "form.submit_disabled": "Soumettre le ticket (Formulaire désactivé)",
-        "media.title": "Guides d'installation vidéo",
-        "media.heading": "Recherche vidéo YouTube",
-        "media.description": "Vous cherchez des tutoriels vidéo ? Recherchez des guides généraux d'installation de routeur directement sur YouTube.",
-        "media.button": "Rechercher sur YouTube",
-        "footer.provider": "Fournisseur réseau : <strong>Leibniz-Rechenzentrum (LRZ)</strong>",
-        "footer.back_to_top": "Retour en haut",
-        "a11y.title": "Paramètres d'accessibilité",
-        "a11y.theme_label": "Mode couleur",
-        "a11y.font_label": "Style typographique",
-        "a11y.contrast_label": "Mode contraste élevé",
-        "a11y.contrast_activate": "Activer le contraste élevé",
-        "a11y.contrast_deactivate": "Désactiver le contraste élevé",
-        "disclaimer.title": "Avis de lien externe",
-        "disclaimer.body": "Vous allez quitter le portail Network Tutors pour vous rendre sur un site externe :",
-        "disclaimer.note": "Les Network Tutors ne sont pas responsables du contenu des sites externes.",
-        "disclaimer.cancel": "Annuler",
-        "disclaimer.proceed": "Poursuivre"
+        appTitle: "Chat IA WebGPU",
+        statusNotReady: "Non prêt",
+        statusWorker: "Worker",
+        statusLoading: "Démarrage...",
+        statusDownloading: "Téléchargement...",
+        statusReady: "En ligne (WebGPU)",
+        statusFailed: "Échec",
+        selectModelTitle: "Sélectionner un modèle local",
+        selectModelSubtitle: "S'exécute en arrière-plan sans ralentissement de l'interface",
+        qwenName: "Qwen2.5 0.5B",
+        qwenDesc: "Excellente compréhension générale et capacités multilingues",
+        qwenSize: "~350 Mo",
+        llamaName: "Llama 3.2 1B",
+        llamaDesc: "Modèle léger de Meta avec une forte capacité de raisonnement",
+        llamaSize: "~700 Mo",
+        badgeRecommended: "Recommandé",
+        securityNoteTitle: "Sécurité locale :",
+        securityNoteDesc: "Les données restent dans la mémoire du navigateur et ne sont jamais envoyées à un serveur.",
+        btnInit: "Initialiser et charger le modèle",
+        loadingTitle: "Initialisation...",
+        loadingSubtext: "Démarrage du thread Worker en arrière-plan...",
+        errorTitle: "Service temporairement indisponible",
+        btnReturn: "Retour",
+        chatBadge: "WebGPU Worker Prêt",
+        welcomeAi: "Bonjour ! Je suis prêt à vous aider. Tapez un message pour tester !",
+        inputPlaceholder: "iMessage",
+        errTryOther: "Échec du chargement de {currentModel}. Veuillez essayer de charger {otherModel}.",
+        errTryLater: "Échec du chargement des deux modèles. Veuillez réessayer plus tard."
+      },
+      de: {
+        appTitle: "WebGPU KI-Chat",
+        statusNotReady: "Nicht bereit",
+        statusWorker: "Worker",
+        statusLoading: "Worker startet...",
+        statusDownloading: "Gewichte herunterladen...",
+        statusReady: "Online (WebGPU)",
+        statusFailed: "Fehlgeschlagen",
+        selectModelTitle: "Lokales KI-Modell auswählen",
+        selectModelSubtitle: "Läuft im Hintergrund ohne UI-Verzögerung",
+        qwenName: "Qwen2.5 0.5B",
+        qwenDesc: "Starkes allgemeines Verständnis, hervorragend mehrsprachig",
+        qwenSize: "~350 MB",
+        llamaName: "Llama 3.2 1B",
+        llamaDesc: "Leichtes Meta-Modell mit starker Argumentationsfähigkeit",
+        llamaSize: "~700 MB",
+        badgeRecommended: "Empfohlen",
+        securityNoteTitle: "Lokale Sicherheit:",
+        securityNoteDesc: "Daten verbleiben im Speichers des Browsers und werden nicht an Server gesendet.",
+        btnInit: "Initialisieren & Modell laden",
+        loadingTitle: "Initialisierung...",
+        loadingSubtext: "Starten des Hintergrund-Worker-Threads...",
+        errorTitle: "Dienst vorübergehend nicht verfügbar",
+        btnReturn: "Zurück",
+        chatBadge: "WebGPU Worker Bereit",
+        welcomeAi: "Hallo! Ich bin bereit, Ihnen zu helfen. Schreiben Sie eine Nachricht, um zu testen!",
+        inputPlaceholder: "iMessage",
+        errTryOther: "Laden von {currentModel} fehlgeschlagen. Bitte versuchen Sie stattdessen {otherModel} zu laden.",
+        errTryLater: "Beide Modelle konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
       }
     };
 
     let currentLang = 'en';
+    let selectedModelId = 'onnx-community/Qwen2.5-0.5B-Instruct';
+    let selectedModelName = 'Qwen2.5 0.5B';
 
-    function setLanguage(lang) {
+    // Track failed model loads
+    const failedModels = new Set();
+
+    let aiWorker = null;
+    let chatHistory = [];
+    let currentAiBubble = null;
+    let accumulatedResponse = '';
+
+    // Language Switcher Function
+    function changeLanguage(lang) {
       if (!translations[lang]) return;
       currentLang = lang;
 
-      document.querySelectorAll('[data-i18n]').forEach(elem => {
-        const key = elem.getAttribute('data-i18n');
+      // Update all data-i18n elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
         if (translations[lang][key]) {
-          elem.innerHTML = translations[lang][key];
+          el.innerText = translations[lang][key];
         }
       });
 
-      ['en', 'de', 'fr'].forEach(l => {
-        const checkElem = document.getElementById(`lang-check-${l}`);
-        if (checkElem) checkElem.style.opacity = (l === lang) ? '1' : '0';
+      // Update placeholder attributes
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang][key]) {
+          el.placeholder = translations[lang][key];
+        }
+      });
+    }
+
+    // Format text to fix missing space after punctuation
+    function formatTextSpacing(text) {
+      if (!text) return '';
+      // Ensure a space exists after punctuation marks (. , ! ? ; :) if followed immediately by a letter or digit
+      return text.replace(/([.,!?;:])([A-Za-z0-9])/g, '$1 $2');
+    }
+
+    function selectModelOption(elem, modelId, modelName) {
+      document.querySelectorAll('.model-option').forEach(el => {
+        el.className = 'block p-3 border border-slate-200 dark:border-zinc-800 hover:border-slate-300 rounded-xl cursor-pointer transition-all model-option';
+        const radio = el.querySelector('input[type="radio"]');
+        if (radio) radio.checked = false;
       });
 
-      // Update sample placeholder values cleanly
-      const nameInput = document.getElementById('input-name');
-      const roomInput = document.getElementById('input-room');
-      const phoneInput = document.getElementById('input-phone');
-      const emailInput = document.getElementById('input-email');
+      elem.className = 'block p-3 border-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 rounded-xl cursor-pointer transition-all model-option';
+      const currentRadio = elem.querySelector('input[type="radio"]');
+      if (currentRadio) currentRadio.checked = true;
 
-      if (lang === 'de') {
-        if (nameInput) nameInput.placeholder = "Erika Mustermann";
-        if (roomInput) roomInput.placeholder = "Chiemgauerstr. 3, Zimmer 102";
-        if (phoneInput) phoneInput.placeholder = "+49 89 12345678";
-        if (emailInput) emailInput.placeholder = "erika.mustermann@tum.de";
-      } else if (lang === 'fr') {
-        if (nameInput) nameInput.placeholder = "Marie Dupont";
-        if (roomInput) roomInput.placeholder = "Chiemgauerstr. 3, Chambre 102";
-        if (phoneInput) phoneInput.placeholder = "+33 6 12 34 56 78";
-        if (emailInput) emailInput.placeholder = "marie.dupont@tum.de";
-      } else {
-        if (nameInput) nameInput.placeholder = "Jane Smith";
-        if (roomInput) roomInput.placeholder = "Chiemgauerstr. 3, Room 102";
-        if (phoneInput) phoneInput.placeholder = "+49 151 12345678";
-        if (emailInput) emailInput.placeholder = "jane.smith@tum.de";
-      }
-
-      updateWizardStepUI(currentWizardStep);
-      calculateNextServiceDate();
-      analyzeLedStates();
-      updateHighContrastButtonText();
-      closeLanguageModal();
+      selectedModelId = modelId;
+      selectedModelName = modelName;
     }
 
-    /* -------------------------------------------------------------------------- */
-    /* 2. DYNAMIC BI-WEEKLY SERVICE DATE CALCULATOR                               */
-    /* -------------------------------------------------------------------------- */
-    function calculateNextServiceDate() {
-      const baseDate = new Date('2026-10-23T19:00:00');
-      const now = new Date();
-      let targetDate = new Date(baseDate);
+    async function checkAndStartLoading() {
+      switchView('view-loading');
+      document.getElementById('loading-title').innerText = `${translations[currentLang].loadingTitle} (${selectedModelName})`;
+      document.getElementById('status-badge').innerText = translations[currentLang].statusLoading;
+      document.getElementById('error-box').classList.add('hidden');
 
-      while (targetDate <= now) {
-        targetDate.setDate(targetDate.getDate() + 14);
+      if (!('gpu' in navigator)) {
+        handleLoadFailure('WebGPU not supported by browser');
+        return;
       }
 
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      const formattedDate = targetDate.toLocaleDateString(currentLang === 'de' ? 'de-DE' : (currentLang === 'fr' ? 'fr-FR' : 'en-US'), options);
-
-      const displayElem = document.getElementById('next-service-date');
-      if (displayElem) {
-        displayElem.innerText = formattedDate;
-      }
-
-      const supportCardElem = document.getElementById('support-card-next-date');
-      if (supportCardElem) {
-        supportCardElem.innerText = formattedDate;
-      }
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /* 3. ROUTER SETUP WIZARD & MOCKUP RENDERING ENGINE                           */
-    /* -------------------------------------------------------------------------- */
-    let currentWizardStep = 1;
-
-    const stepDetails = {
-      en: {
-        1: {
-          title: "Step 1: Connecting Power Adapter & Wall Ethernet",
-          desc: "Plug your router's power adapter into an electrical outlet and turn the power switch ON. Take an Ethernet network cable and plug one end into your room's wall Ethernet socket, and connect the other end strictly into the <strong>BLUE WAN PORT</strong> on the back of your router."
-        },
-        2: {
-          title: "Step 2: Connecting Devices to Default Wi-Fi",
-          desc: "Allow 60 seconds for the router to boot up. Search for available Wi-Fi networks on your laptop or smartphone. The default network name (SSID) and Wireless Password / PIN are printed on the sticker located on the back or underside of your router."
-        },
-        3: {
-          title: "Step 3 (Optional): Accessing Router Web Management",
-          desc: "To customize your Wi-Fi name or password, open a web browser and enter your router's default gateway IP (typically <code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.0.1</code> or <code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.1.1</code>). Log in using the admin username and password specified on the router sticker."
-        },
-        4: {
-          title: "Step 4: Official Router Documentation & Manufacturer Manuals",
-          desc: "Select your router brand below to access official support, downloadable PDF manuals, and device driver resources:"
+      try {
+        const adapter = await navigator.gpu.requestAdapter();
+        if (!adapter) {
+          handleLoadFailure('No compatible WebGPU adapter found');
+          return;
         }
-      },
-      de: {
-        1: {
-          title: "Schritt 1: Stromversorgung & Netzwerk-Wanddose anschließen",
-          desc: "Schließe das Netzteil an den Router und eine Steckdose an. Verbinde ein Ethernet-Kabel von der Wanddose Deines Zimmers ausschließlich mit dem <strong>BLAUEN WAN-PORT</strong> auf der Rückseite des Routers."
-        },
-        2: {
-          title: "Schritt 2: Mit dem Standard-WLAN verbinden",
-          desc: "Warte ca. 60 Sekunden, bis der Router hochgefahren ist. Verbinde Dein Handy oder Deinen Laptop mit dem Standard-WLAN. Den WLAN-Namen (SSID) und das Passwort findest Du auf dem Aufkleber auf der Unter- oder Rückseite des Routers."
-        },
-        3: {
-          title: "Schritt 3 (Optional): Router-Weboberfläche aufrufen",
-          desc: "Um WLAN-Namen oder Passwort zu ändern, öffne einen Browser und gib die Standard-Gateway-IP ein (meist <code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.0.1</code> oder <code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.1.1</code>). Nutze die Zugangsdaten vom Router-Aufkleber."
-        },
-        4: {
-          title: "Schritt 4: Offizielle Router-Anleitungen & Hersteller-Portale",
-          desc: "Wähle Deine Router-Marke aus, um zu offiziellen Handbüchern, PDF-Anleitungen und Support-Seiten zu gelangen:"
-        }
-      },
-      fr: {
-        1: {
-          title: "Étape 1 : Branchement électrique et câble mural",
-          desc: "Branchez l'adaptateur secteur du routeur. Connectez un câble Ethernet de la prise murale de votre chambre au <strong>PORT WAN BLEU</strong> situé à l'arrière du routeur."
-        },
-        2: {
-          title: "Étape 2 : Connexion au Wi-Fi par défaut",
-          desc: "Patientez 60 secondes pendant le démarrage. Connectez votre appareil au réseau Wi-Fi par défaut. Le nom du réseau (SSID) et le mot de passe sont inscrits sur l'étiquette au dos ou sous le routeur."
-        },
-        3: {
-          title: "Étape 3 (Optionnel) : Accès à l'interface de gestion web",
-          desc: "Pour modifier le nom ou mot de passe Wi-Fi, ouvrez un navigateur et entrez l'adresse IP (<code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.0.1</code> ou <code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.1.1</code>). Connectez-vous avec les identifiants figurant sur l'étiquette."
-        },
-        4: {
-          title: "Étape 4 : Manuels officiels et documentation des fabricants",
-          desc: "Sélectionnez la marque de votre routeur ci-dessous pour accéder aux manuels officiels et ressources de support :"
-        }
-      }
-    };
 
-    function setWizardStep(step) {
-      if (step < 1) step = 1;
-      if (step > 4) step = 4;
-      currentWizardStep = step;
-      updateWizardStepUI(step);
-    }
+        const blob = new Blob([workerScriptCode], { type: 'application/javascript' });
+        const workerUrl = URL.createObjectURL(blob);
+        
+        aiWorker = new Worker(workerUrl, { type: 'module' });
 
-    function prevWizardStep() {
-      setWizardStep(currentWizardStep - 1);
-    }
+        aiWorker.onerror = (err) => {
+          console.error('Worker Fatal Error:', err);
+          handleLoadFailure(err.message || 'Worker thread initialization error');
+        };
 
-    function nextWizardStep() {
-      setWizardStep(currentWizardStep + 1);
-    }
+        aiWorker.onmessage = (e) => {
+          const { status, percent, token, error } = e.data;
 
-    function updateWizardStepUI(step) {
-      // Update Tab Styles
-      for (let i = 1; i <= 4; i++) {
-        const tab = document.getElementById(`wizard-tab-${i}`);
-        if (tab) {
-          if (i === step) {
-            tab.className = "p-3 text-left border border-morandi-slate dark:border-white bg-morandi-slate text-white transition-all font-medium text-sm flex items-center space-x-2";
-          } else {
-            tab.className = "p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium text-sm flex items-center space-x-2";
+          if (status === 'progress') {
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('loading-subtext').innerText = `${translations[currentLang].statusDownloading} ${percent}%`;
+          } else if (status === 'ready') {
+            document.getElementById('header-model-name').innerText = selectedModelName;
+            document.getElementById('chat-badge-model').innerText = `${selectedModelName} (${translations[currentLang].statusReady})`;
+            document.getElementById('status-badge').innerText = translations[currentLang].statusReady;
+            document.getElementById('status-badge').className = 'text-[11px] text-emerald-500 font-medium';
+            switchView('view-chat');
+          } else if (status === 'update') {
+            if (currentAiBubble) {
+              accumulatedResponse += token;
+              // Apply formatting to ensure punctuation and word spacing is handled cleanly
+              currentAiBubble.innerText = formatTextSpacing(accumulatedResponse);
+              scrollChat();
+            }
+          } else if (status === 'complete') {
+            document.getElementById('btn-send').disabled = false;
+            if (currentAiBubble) {
+              chatHistory.push({ role: 'assistant', content: currentAiBubble.innerText });
+              currentAiBubble = null;
+            }
+          } else if (status === 'error') {
+            handleLoadFailure(error);
           }
-        }
-      }
+        };
 
-      // Update Prev/Next Buttons and Step Counter
-      const prevBtn = document.getElementById('btn-prev-step');
-      const nextBtn = document.getElementById('btn-next-step');
-      const counter = document.getElementById('wizard-step-counter');
+        aiWorker.postMessage({ type: 'load', data: { modelId: selectedModelId } });
 
-      if (prevBtn) prevBtn.disabled = (step === 1);
-      if (nextBtn) nextBtn.disabled = (step === 4);
-      if (counter) counter.innerText = `Step ${step} of 4`;
-
-      // Render Text Description
-      const contentBox = document.getElementById('wizard-step-content');
-      if (contentBox && stepDetails[currentLang] && stepDetails[currentLang][step]) {
-        const stepData = stepDetails[currentLang][step];
-        contentBox.innerHTML = `
-          <h3 class="text-lg font-bold text-gray-900 dark:text-white">${stepData.title}</h3>
-          <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">${stepData.desc}</p>
-        `;
-      }
-
-      // Render Step Visual Content
-      const visualContainer = document.getElementById('wizard-visual-container');
-      if (!visualContainer) return;
-
-      if (step === 1) {
-        visualContainer.innerHTML = `
-          <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-mono mb-2">
-            <span>Generic Router Rear Panel Layout</span>
-            <span>Click elements for details</span>
-          </div>
-          <div class="w-full overflow-x-auto py-2">
-            <svg viewBox="0 0 700 180" class="w-full max-w-2xl mx-auto min-w-[500px]">
-              <rect x="20" y="30" width="660" height="120" fill="#2A3439" stroke="#1E2225" stroke-width="4" />
-              <rect x="30" y="40" width="640" height="100" fill="#1E2225" />
-              <rect x="10" y="60" width="10" height="40" fill="#4B5563" />
-              <rect x="680" y="60" width="10" height="40" fill="#4B5563" />
-
-              <g class="cursor-pointer group" onclick="highlightPortInfo('power')">
-                <circle cx="80" cy="90" r="16" fill="#374151" stroke="#9CA3AF" stroke-width="2" class="group-hover:stroke-white transition-colors" />
-                <circle cx="80" cy="90" r="6" fill="#111827" />
-                <text x="80" y="130" fill="#9CA3AF" font-size="11" text-anchor="middle" font-family="Noto Sans">POWER</text>
-              </g>
-
-              <g class="cursor-pointer group" onclick="highlightPortInfo('power-btn')">
-                <rect x="130" y="76" width="24" height="28" fill="#4B5563" stroke="#9CA3AF" stroke-width="2" class="group-hover:stroke-white transition-colors" />
-                <text x="142" y="130" fill="#9CA3AF" font-size="11" text-anchor="middle" font-family="Noto Sans">ON/OFF</text>
-              </g>
-
-              <g class="cursor-pointer group" onclick="highlightPortInfo('wan')">
-                <rect x="190" y="70" width="40" height="40" fill="#2563EB" stroke="#60A5FA" stroke-width="3" class="group-hover:fill-blue-600 transition-colors" />
-                <rect x="202" y="82" width="16" height="16" fill="#1E3A8A" />
-                <text x="210" y="130" fill="#60A5FA" font-size="12" font-weight="bold" text-anchor="middle" font-family="Noto Sans">WAN (BLUE)</text>
-              </g>
-
-              <g class="cursor-pointer group" onclick="highlightPortInfo('lan')">
-                <rect x="260" y="70" width="36" height="40" fill="#D97706" stroke="#FBBF24" stroke-width="2" />
-                <rect x="306" y="70" width="36" height="40" fill="#D97706" stroke="#FBBF24" stroke-width="2" />
-                <rect x="352" y="70" width="36" height="40" fill="#D97706" stroke="#FBBF24" stroke-width="2" />
-                <rect x="398" y="70" width="36" height="40" fill="#D97706" stroke="#FBBF24" stroke-width="2" />
-                <text x="347" y="130" fill="#FBBF24" font-size="11" text-anchor="middle" font-family="Noto Sans">LAN 1 - 4 (YELLOW)</text>
-              </g>
-
-              <g class="cursor-pointer group" onclick="highlightPortInfo('reset')">
-                <circle cx="470" cy="90" r="10" fill="#DC2626" stroke="#FCA5A5" stroke-width="2" />
-                <text x="470" y="130" fill="#FCA5A5" font-size="11" text-anchor="middle" font-family="Noto Sans">RESET</text>
-              </g>
-
-              <rect x="520" y="60" width="130" height="60" fill="#111827" stroke="#374151" />
-              <text x="585" y="85" fill="#10B981" font-size="11" text-anchor="middle" font-family="JetBrains Mono">STATUS: OK</text>
-              <text x="585" y="105" fill="#6B7280" font-size="10" text-anchor="middle" font-family="JetBrains Mono">ROUTER REAR</text>
-            </svg>
-          </div>
-          <div id="port-info-banner" class="bg-white dark:bg-morandi-darkcard border border-[#DCE0D8] dark:border-[#33383F] p-3 text-sm text-gray-800 dark:text-gray-200 font-medium">
-            <i class="fa-solid fa-circle-info text-morandi-blue mr-2"></i>
-            <span id="port-info-text">Click any port or button on the diagram above to view functional instructions.</span>
-          </div>
-        `;
-        highlightPortInfo('init');
-      } else if (step === 2) {
-        visualContainer.innerHTML = `
-          <div class="max-w-md mx-auto border border-gray-300 dark:border-gray-700 bg-white dark:bg-morandi-darkcard shadow-md p-4 space-y-3 font-sans">
-            <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-wifi text-morandi-blue"></i> Wi-Fi Connections
-              </span>
-              <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">Scanning...</span>
-            </div>
-
-            <div class="space-y-2">
-              <div class="p-3 border-2 border-morandi-blue bg-blue-50 dark:bg-blue-950/30 flex items-center justify-between">
-                <div>
-                  <div class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <span>TP-Link_718_5G</span>
-                    <i class="fa-solid fa-lock text-xs text-gray-500"></i>
-                  </div>
-                  <span class="text-xs text-blue-700 dark:text-blue-300">Connected, secured</span>
-                </div>
-                <i class="fa-solid fa-check text-emerald-500 text-base"></i>
-              </div>
-
-              <div class="p-3 border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-morandi-darkbg opacity-60 flex items-center justify-between">
-                <div>
-                  <div class="text-xs font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                    <span>Dorm_Neighbor_Guest</span>
-                    <i class="fa-solid fa-lock text-xs text-gray-400"></i>
-                  </div>
-                  <span class="text-[10px] text-gray-500">Secured</span>
-                </div>
-                <i class="fa-solid fa-wifi text-xs text-gray-400"></i>
-              </div>
-            </div>
-
-            <div class="pt-2 border-t border-gray-200 dark:border-gray-800 text-[11px] text-gray-600 dark:text-gray-400 space-y-1">
-              <p><strong>Note:</strong> Check the sticker on the back/bottom of your router for the default Wi-Fi SSID and Password.</p>
-            </div>
-          </div>
-        `;
-      } else if (step === 3) {
-        visualContainer.innerHTML = `
-          <div class="max-w-md mx-auto border-2 border-gray-400 dark:border-gray-600 bg-white dark:bg-morandi-darkcard shadow-lg font-sans">
-            <div class="bg-gray-200 dark:bg-gray-800 p-2 flex items-center space-x-2 border-b border-gray-300 dark:border-gray-700">
-              <div class="flex space-x-1">
-                <span class="w-2.5 h-2.5 rounded-full bg-red-400 inline-block"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 inline-block"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-green-400 inline-block"></span>
-              </div>
-              <div class="flex-grow bg-white dark:bg-morandi-darkbg px-3 py-1 border border-gray-300 dark:border-gray-700 text-xs font-mono text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                <i class="fa-solid fa-lock text-[10px] text-emerald-600"></i>
-                <span>http://192.168.0.1</span>
-              </div>
-            </div>
-
-            <div class="p-6 space-y-4 text-center">
-              <div class="space-y-1">
-                <i class="fa-solid fa-router text-3xl text-morandi-slate dark:text-morandi-blue"></i>
-                <h4 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">Router Web Management</h4>
-                <p class="text-xs text-gray-500">Please enter your device password to log in</p>
-              </div>
-
-              <div class="space-y-2 text-left max-w-xs mx-auto">
-                <div>
-                  <label class="block text-[10px] font-bold uppercase text-gray-500">Username</label>
-                  <input type="text" disabled value="admin" class="w-full p-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-xs font-mono text-gray-800 dark:text-gray-200" />
-                </div>
-                <div>
-                  <label class="block text-[10px] font-bold uppercase text-gray-500">Password</label>
-                  <input type="password" disabled value="••••••••" class="w-full p-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-xs font-mono text-gray-800 dark:text-gray-200" />
-                </div>
-                <button disabled class="w-full py-2 bg-morandi-slate text-white text-xs font-bold uppercase tracking-wider">Log In</button>
-              </div>
-
-              <p class="text-[10px] text-gray-500 italic">Default login details are printed on your router's bottom label.</p>
-            </div>
-          </div>
-        `;
-      } else if (step === 4) {
-        visualContainer.innerHTML = `
-          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <button onclick="openExternalNotice('https://www.tp-link.com/support/download/')" class="p-4 bg-white dark:bg-morandi-darkcard border-2 border-[#DCE0D8] dark:border-[#33383F] hover:border-morandi-blue text-left space-y-2 transition-all group">
-              <div class="flex items-center justify-between font-bold text-sm text-gray-900 dark:text-white group-hover:text-morandi-blue">
-                <span>TP-Link Manuals</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400"></i>
-              </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Official downloads, user manuals, and setup guides for TP-Link routers.</p>
-            </button>
-
-            <button onclick="openExternalNotice('https://avm.de/service/')" class="p-4 bg-white dark:bg-morandi-darkcard border-2 border-[#DCE0D8] dark:border-[#33383F] hover:border-morandi-blue text-left space-y-2 transition-all group">
-              <div class="flex items-center justify-between font-bold text-sm text-gray-900 dark:text-white group-hover:text-morandi-blue">
-                <span>AVM FRITZ!Box</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400"></i>
-              </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Service portal, firmware updates, and knowledge base for FRITZ!Box routers.</p>
-            </button>
-
-            <button onclick="openExternalNotice('https://consumer.huawei.com/en/support/')" class="p-4 bg-white dark:bg-morandi-darkcard border-2 border-[#DCE0D8] dark:border-[#33383F] hover:border-morandi-blue text-left space-y-2 transition-all group">
-              <div class="flex items-center justify-between font-bold text-sm text-gray-900 dark:text-white group-hover:text-morandi-blue">
-                <span>Huawei Support</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400"></i>
-              </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Official user documentation and connection guides for Huawei devices.</p>
-            </button>
-
-            <button onclick="openExternalNotice('https://www.swisscom.ch/en/residential/help/device/internet-router.html')" class="p-4 bg-white dark:bg-morandi-darkcard border-2 border-[#DCE0D8] dark:border-[#33383F] hover:border-morandi-blue text-left space-y-2 transition-all group">
-              <div class="flex items-center justify-between font-bold text-sm text-gray-900 dark:text-white group-hover:text-morandi-blue">
-                <span>Swisscom Guides</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400"></i>
-              </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Step-by-step router configuration guides and device support.</p>
-            </button>
-
-            <button onclick="openExternalNotice('https://www.asus.com/support/')" class="p-4 bg-white dark:bg-morandi-darkcard border-2 border-[#DCE0D8] dark:border-[#33383F] hover:border-morandi-blue text-left space-y-2 transition-all group">
-              <div class="flex items-center justify-between font-bold text-sm text-gray-900 dark:text-white group-hover:text-morandi-blue">
-                <span>Asus Support</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400"></i>
-              </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">User manuals, driver downloads, and troubleshooting for Asus routers.</p>
-            </button>
-
-            <button onclick="openExternalNotice('https://www.netgear.com/support/')" class="p-4 bg-white dark:bg-morandi-darkcard border-2 border-[#DCE0D8] dark:border-[#33383F] hover:border-morandi-blue text-left space-y-2 transition-all group">
-              <div class="flex items-center justify-between font-bold text-sm text-gray-900 dark:text-white group-hover:text-morandi-blue">
-                <span>Netgear Support</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400"></i>
-              </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">Official documentation, Nighthawk router manuals, and support.</p>
-            </button>
-          </div>
-        `;
+      } catch (err) {
+        console.error('Init Worker Exception:', err);
+        handleLoadFailure(err.message);
       }
     }
 
-    function highlightPortInfo(portKey) {
-      const bannerText = document.getElementById('port-info-text');
-      if (!bannerText) return;
+    function handleLoadFailure(rawError) {
+      failedModels.add(selectedModelId);
 
-      const descriptions = {
-        en: {
-          'power': "Power Input Port: Connect the included DC power adapter here.",
-          'power-btn': "Power Switch: Toggle ON/OFF to restart the router hardware.",
-          'wan': "BLUE WAN PORT: Connect your wall Ethernet cable HERE. Do not plug the wall socket into yellow ports!",
-          'lan': "YELLOW LAN PORTS (1-4): Use for wired local computer or console connections.",
-          'reset': "Reset Button: Press and hold for 8 seconds to reset the router to factory settings.",
-          'init': "Click any port or button on the diagram above to view functional instructions."
-        },
-        de: {
-          'power': "Stromanschluss: Schließe hier das mitgelieferte Netzteil an.",
-          'power-btn': "Ein-/Ausschalter: Drücke hier, um den Router neu zu starten.",
-          'wan': "BLAUER WAN-PORT: Verbinde das Netzwerkkabel von der Wanddose HIER. Nicht in gelbe Ports stecken!",
-          'lan': "GELBE LAN-PORTS (1-4): Für kabelgebundene Verbindungen zu PC oder Konsole.",
-          'reset': "Reset-Knopf: 8 Sekunden gedrückt halten, um den Router zurückzusetzen.",
-          'init': "Klicke auf einen Anschluss oder Knopf im Diagramm oben für Details."
-        },
-        fr: {
-          'power': "Port d'alimentation : Connectez l'adaptateur secteur fourni ici.",
-          'power-btn': "Bouton Marche/Arrêt : Appuyez pour redémarrer le routeur.",
-          'wan': "PORT WAN BLEU : Branchez le câble Ethernet mural ICI. Ne pas brancher sur les ports jaunes !",
-          'lan': "PORTS LAN JAUNES (1-4) : Pour connexions filaires (ordinateur, console).",
-          'reset': "Bouton Reset : Maintenez enfoncé pendant 8 secondes pour réinitialiser.",
-          'init': "Cliquez sur un port ou bouton du schéma ci-dessus pour afficher les détails."
-        }
-      };
+      const otherModelName = (selectedModelId.includes('Qwen')) ? 'Llama 3.2 1B' : 'Qwen2.5 0.5B';
+      let userErrorMsg = '';
 
-      const langMap = descriptions[currentLang] || descriptions.en;
-      bannerText.innerText = langMap[portKey] || langMap['init'];
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /* 4. ROUTER FRONT LED TOGGLES & COMBINED DIAGNOSTIC SOLVER                   */
-    /* -------------------------------------------------------------------------- */
-    const routerLeds = {
-      power: 'green',     // 'green' | 'off'
-      internet: 'green',  // 'green' | 'amber' | 'off'
-      wlan: 'green',      // 'green' | 'off'
-      lan: 'green'        // 'green' | 'off'
-    };
-
-    function toggleLedState(ledKey) {
-      if (ledKey === 'power') {
-        routerLeds.power = (routerLeds.power === 'green') ? 'off' : 'green';
-      } else if (ledKey === 'internet') {
-        if (routerLeds.internet === 'green') routerLeds.internet = 'amber';
-        else if (routerLeds.internet === 'amber') routerLeds.internet = 'off';
-        else routerLeds.internet = 'green';
-      } else if (ledKey === 'wlan') {
-        routerLeds.wlan = (routerLeds.wlan === 'green') ? 'off' : 'green';
-      } else if (ledKey === 'lan') {
-        routerLeds.lan = (routerLeds.lan === 'green') ? 'off' : 'green';
-      }
-
-      updateLedVisualsUI();
-      analyzeLedStates();
-    }
-
-    function updateLedVisualsUI() {
-      // POWER
-      const dotPower = document.getElementById('led-dot-power');
-      const subPower = document.getElementById('led-sub-power');
-      if (dotPower && subPower) {
-        if (routerLeds.power === 'green') {
-          dotPower.className = "w-6 h-6 rounded-full led-glow-green transition-all duration-300";
-          subPower.className = "text-[10px] text-emerald-400 font-mono font-bold";
-          subPower.innerText = "ON (Green)";
-        } else {
-          dotPower.className = "w-6 h-6 rounded-full led-off transition-all duration-300";
-          subPower.className = "text-[10px] text-gray-500 font-mono font-bold";
-          subPower.innerText = "OFF";
-        }
-      }
-
-      // INTERNET
-      const dotInternet = document.getElementById('led-dot-internet');
-      const subInternet = document.getElementById('led-sub-internet');
-      if (dotInternet && subInternet) {
-        if (routerLeds.internet === 'green') {
-          dotInternet.className = "w-6 h-6 rounded-full led-glow-green transition-all duration-300";
-          subInternet.className = "text-[10px] text-emerald-400 font-mono font-bold";
-          subInternet.innerText = "Connected (Green)";
-        } else if (routerLeds.internet === 'amber') {
-          dotInternet.className = "w-6 h-6 rounded-full led-glow-amber transition-all duration-300";
-          subInternet.className = "text-[10px] text-amber-400 font-mono font-bold";
-          subInternet.innerText = "Orange / No IP";
-        } else {
-          dotInternet.className = "w-6 h-6 rounded-full led-off transition-all duration-300";
-          subInternet.className = "text-[10px] text-gray-500 font-mono font-bold";
-          subInternet.innerText = "OFF / No Cable";
-        }
-      }
-
-      // WLAN
-      const dotWlan = document.getElementById('led-dot-wlan');
-      const subWlan = document.getElementById('led-sub-wlan');
-      if (dotWlan && subWlan) {
-        if (routerLeds.wlan === 'green') {
-          dotWlan.className = "w-6 h-6 rounded-full led-glow-green transition-all duration-300";
-          subWlan.className = "text-[10px] text-emerald-400 font-mono font-bold";
-          subWlan.innerText = "Active (Green)";
-        } else {
-          dotWlan.className = "w-6 h-6 rounded-full led-off transition-all duration-300";
-          subWlan.className = "text-[10px] text-gray-500 font-mono font-bold";
-          subWlan.innerText = "Disabled (OFF)";
-        }
-      }
-
-      // LAN
-      const dotLan = document.getElementById('led-dot-lan');
-      const subLan = document.getElementById('led-sub-lan');
-      if (dotLan && subLan) {
-        if (routerLeds.lan === 'green') {
-          dotLan.className = "w-6 h-6 rounded-full led-glow-green transition-all duration-300";
-          subLan.className = "text-[10px] text-emerald-400 font-mono font-bold";
-          subLan.innerText = "Port Active (Green)";
-        } else {
-          dotLan.className = "w-6 h-6 rounded-full led-off transition-all duration-300";
-          subLan.className = "text-[10px] text-gray-500 font-mono font-bold";
-          subLan.innerText = "Unused / OFF";
-        }
-      }
-    }
-
-    function analyzeLedStates() {
-      const output = document.getElementById('led-diagnostic-output');
-      const activeLabel = document.getElementById('led-active-label');
-      if (!output) return;
-
-      // Localized status messages
-      const diagnostics = {
-        en: {
-          power_off_label: "DIAGNOSIS: POWER DISCONNECTED",
-          power_off_title: "Power Light Off — Device Not Operating",
-          power_off_desc: "<strong>Probable Cause:</strong> Power adapter disconnected, power strip switched off, or power button toggled off.<br/><strong>Recommended Solution:</strong> Ensure the power adapter is firmly plugged into the wall and the back of your router, then press the power button ON.",
-          
-          all_ok_label: "ALL SYSTEMS NORMAL",
-          all_ok_title: "Network Connection Normal / All LED Indicators Healthy",
-          all_ok_desc: "Your router front panel indicates full operational status! The device is powered, connected to the dormitory gateway with a valid IP address, and actively broadcasting Wi-Fi.",
-          
-          wan_amber_label: "DIAGNOSIS: WAN IP ASSIGNMENT ERROR",
-          wan_amber_title: "Internet Light Solid Orange / Amber",
-          wan_amber_desc: "<strong>Probable Cause:</strong> The router detects a cable in the WAN port, but could not retrieve a dynamic IP address from the room's wall socket.<br/><strong>Recommended Solution:</strong> 1. Verify the cable is connected to the <strong>BLUE WAN port</strong>.<br/>2. Reboot your router by unplugging power for 10 seconds.<br/>3. Log into admin dashboard (192.168.0.1) and ensure WAN protocol is set to 'Dynamic IP / DHCP'.",
-          
-          wan_off_label: "DIAGNOSIS: CABLE DISCONNECTED",
-          wan_off_title: "Internet Light Completely Off",
-          wan_off_desc: "<strong>Probable Cause:</strong> No Ethernet cable detected in the BLUE WAN port.<br/><strong>Recommended Solution:</strong> Connect a network cable from your room's Ethernet wall socket directly into the BLUE WAN port on your router.",
-          
-          wlan_off_label: "DIAGNOSIS: WI-FI TRANSMITTER DISABLED",
-          wlan_off_title: "WLAN / Wi-Fi Light Turned Off",
-          wlan_off_desc: "<strong>Probable Cause:</strong> Wireless radio broadcast has been disabled.<br/><strong>Recommended Solution:</strong> Press the Wi-Fi/WPS button on the back of your router for 3 seconds to re-enable Wi-Fi broadcasting."
-        },
-        de: {
-          power_off_label: "DIAGNOSE: STROM TRENNUNG",
-          power_off_title: "Power-LED aus — Gerät nicht in Betrieb",
-          power_off_desc: "<strong>Mögliche Ursache:</strong> Netzteil nicht angeschlossen, Steckdose ausgeschaltet oder Schalter aus.<br/><strong>Empfohlene Lösung:</strong> Prüfe, ob das Netzteil fest eingesteckt ist und drücke den Ein-/Ausschalter am Router.",
-          
-          all_ok_label: "ALLE SYSTEME NORMAL",
-          all_ok_title: "Netzwerkverbindung normal / Alle LEDs betriebsbereit",
-          all_ok_desc: "Dein Router zeigt vollständige Betriebsbereitschaft! Das Gerät ist mit Strom versorgt, mit dem Wohnheim-Gateway verbunden und sendet WLAN.",
-          
-          wan_amber_label: "DIAGNOSE: WAN IP-FEHLER",
-          wan_amber_title: "Internet-LED leuchtet orange / gelb",
-          wan_amber_desc: "<strong>Mögliche Ursache:</strong> Ein Kabel ist im WAN-Port, aber der Router erhält keine dynamische IP von der Wanddose.<br/><strong>Empfohlene Lösung:</strong> 1. Stelle sicher, dass das Kabel im <strong>BLAUEN WAN-PORT</strong> steckt.<br/>2. Starte den Router neu (10 Sek. Strom trennen).<br/>3. Prüfe im Admin-Menü (192.168.0.1), ob WAN auf 'Dynamische IP / DHCP' steht.",
-          
-          wan_off_label: "DIAGNOSE: KABEL NICHT VERBUNDEN",
-          wan_off_title: "Internet-LED vollständig aus",
-          wan_off_desc: "<strong>Mögliche Ursache:</strong> Kein Netzwerkkabel im BLAUEN WAN-Port erkannt.<br/><strong>Empfohlene Lösung:</strong> Verbinde ein Kabel von der Wanddose Deines Zimmers mit dem BLAUEN WAN-Port des Routers.",
-          
-          wlan_off_label: "DIAGNOSE: WLAN DEAKTIVIERT",
-          wlan_off_title: "WLAN-LED ausgeschaltet",
-          wlan_off_desc: "<strong>Mögliche Ursache:</strong> Das WLAN-Signal wurde deaktiviert.<br/><strong>Empfohlene Lösung:</strong> Drücke die Wi-Fi/WPS-Taste auf der Rückseite des Routers für 3 Sekunden, um WLAN wieder einzuschalten."
-        },
-        fr: {
-          power_off_label: "DIAGNOSTIC : ALIMENTATION COUPÉE",
-          power_off_title: "Voyant Alimentation Éteint — Appareil hors service",
-          power_off_desc: "<strong>Cause probable :</strong> Adaptateur débranché, prise éteinte ou interrupteur arrêté.<br/><strong>Solution recommandée :</strong> Vérifiez le branchement de l'adaptateur et appuyez sur le bouton Marche.",
-          
-          all_ok_label: "TOUS LES SYSTÈMES SONT NORMAUX",
-          all_ok_title: "Connexion réseau normale / Tous les voyants verts",
-          all_ok_desc: "Votre routeur est totalement opérationnel ! L'appareil est alimenté, connecté à la passerelle de la résidence avec une adresse IP valide et émet le Wi-Fi.",
-          
-          wan_amber_label: "DIAGNOSTIC : ERREUR D'ATTRIBUTION IP WAN",
-          wan_amber_title: "Voyant Internet Orange / Ambre",
-          wan_amber_desc: "<strong>Cause probable :</strong> Le câble est détecté dans le port WAN, mais aucune adresse IP n'est attribuée.<br/><strong>Solution recommandée :</strong> 1. Vérifiez que le câble est branché sur le <strong>PORT WAN BLEU</strong>.<br/>2. Redémarrez le routeur en débranchant la prise 10 secondes.<br/>3. Assurez-vous que le protocole WAN est sur 'IP Dynamique / DHCP' dans la gestion.",
-          
-          wan_off_label: "DIAGNOSTIC : CÂBLE DÉCONNECTÉ",
-          wan_off_title: "Voyant Internet Éteint",
-          wan_off_desc: "<strong>Cause probable :</strong> Aucun câble Ethernet détecté dans le port WAN BLEU.<br/><strong>Solution recommandée :</strong> Connectez un câble réseau de la prise murale au port WAN BLEU du routeur.",
-          
-          wlan_off_label: "DIAGNOSTIC : ÉMETTEUR WI-FI DÉSACTIVÉ",
-          wlan_off_title: "Voyant WLAN / Wi-Fi Éteint",
-          wlan_off_desc: "<strong>Cause probable :</strong> La diffusion Wi-Fi est désactivée.<br/><strong>Solution recommandée :</strong> Appuyez sur le bouton Wi-Fi/WPS à l'arrière du routeur pendant 3 secondes."
-        }
-      };
-
-      const langMap = diagnostics[currentLang] || diagnostics.en;
-
-      // Case 1: POWER IS OFF
-      if (routerLeds.power === 'off') {
-        if (activeLabel) activeLabel.innerText = langMap.power_off_label;
-        output.className = "p-5 border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-sm space-y-2";
-        output.innerHTML = `
-          <div class="font-bold text-red-700 dark:text-red-300 flex items-center gap-2">
-            <i class="fa-solid fa-power-off text-base"></i>
-            <span>${langMap.power_off_title}</span>
-          </div>
-          <p class="text-xs sm:text-sm text-red-800 dark:text-red-200 leading-relaxed">${langMap.power_off_desc}</p>
-        `;
-        return;
-      }
-
-      // Case 2: ALL NORMAL
-      if (routerLeds.power === 'green' && routerLeds.internet === 'green' && routerLeds.wlan === 'green') {
-        if (activeLabel) activeLabel.innerText = langMap.all_ok_label;
-        output.className = "p-5 border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-sm space-y-2";
-        output.innerHTML = `
-          <div class="font-bold text-emerald-800 dark:text-emerald-200 flex items-center gap-2 text-base">
-            <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
-            <span>${langMap.all_ok_title}</span>
-          </div>
-          <p class="text-xs sm:text-sm text-emerald-900 dark:text-emerald-300 leading-relaxed">${langMap.all_ok_desc}</p>
-        `;
-        return;
-      }
-
-      // Case 3: WAN / INTERNET AMBER
-      if (routerLeds.internet === 'amber') {
-        if (activeLabel) activeLabel.innerText = langMap.wan_amber_label;
-        output.className = "p-5 border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-sm space-y-2";
-        output.innerHTML = `
-          <div class="font-bold text-amber-800 dark:text-amber-200 flex items-center gap-2">
-            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
-            <span>${langMap.wan_amber_title}</span>
-          </div>
-          <p class="text-xs sm:text-sm text-amber-900 dark:text-amber-300 leading-relaxed">${langMap.wan_amber_desc}</p>
-        `;
-        return;
-      }
-
-      // Case 4: WAN / INTERNET OFF
-      if (routerLeds.internet === 'off') {
-        if (activeLabel) activeLabel.innerText = langMap.wan_off_label;
-        output.className = "p-5 border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-sm space-y-2";
-        output.innerHTML = `
-          <div class="font-bold text-amber-800 dark:text-amber-200 flex items-center gap-2">
-            <i class="fa-solid fa-plug-circle-xmark text-amber-600"></i>
-            <span>${langMap.wan_off_title}</span>
-          </div>
-          <p class="text-xs sm:text-sm text-amber-900 dark:text-amber-300 leading-relaxed">${langMap.wan_off_desc}</p>
-        `;
-        return;
-      }
-
-      // Case 5: WLAN OFF
-      if (routerLeds.wlan === 'off') {
-        if (activeLabel) activeLabel.innerText = langMap.wlan_off_label;
-        output.className = "p-5 border border-blue-300 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30 text-sm space-y-2";
-        output.innerHTML = `
-          <div class="font-bold text-blue-800 dark:text-blue-200 flex items-center gap-2">
-            <i class="fa-solid fa-wifi-slash text-blue-600"></i>
-            <span>${langMap.wlan_off_title}</span>
-          </div>
-          <p class="text-xs sm:text-sm text-blue-900 dark:text-blue-300 leading-relaxed">${langMap.wlan_off_desc}</p>
-        `;
-        return;
-      }
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /* 5. MODALS & CONTROLS                                                       */
-    /* -------------------------------------------------------------------------- */
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobile-menu');
-      if (menu) menu.classList.toggle('hidden');
-    }
-
-    function openLanguageModal() {
-      document.getElementById('modal-language')?.classList.remove('hidden');
-    }
-
-    function closeLanguageModal() {
-      document.getElementById('modal-language')?.classList.add('hidden');
-    }
-
-    function openAccessibilityModal() {
-      document.getElementById('modal-accessibility')?.classList.remove('hidden');
-    }
-
-    function closeAccessibilityModal() {
-      document.getElementById('modal-accessibility')?.classList.add('hidden');
-    }
-
-    function openExternalNotice(targetUrl) {
-      const modal = document.getElementById('modal-external');
-      const urlDisplay = document.getElementById('external-url-display');
-      const proceedBtn = document.getElementById('external-proceed-btn');
-
-      if (urlDisplay) urlDisplay.innerText = targetUrl;
-      if (proceedBtn) proceedBtn.href = targetUrl;
-
-      modal?.classList.remove('hidden');
-    }
-
-    function closeExternalModal() {
-      document.getElementById('modal-external')?.classList.add('hidden');
-    }
-
-    function toggleDarkMode(isDark) {
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
+      // Check if both Qwen and Llama have failed
+      if (failedModels.size >= 2) {
+        userErrorMsg = translations[currentLang].errTryLater;
       } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      }
-    }
-
-    function toggleSerifFont(useSerif) {
-      if (useSerif) {
-        document.body.classList.add('use-serif');
-      } else {
-        document.body.classList.remove('use-serif');
-      }
-    }
-
-    function toggleHighContrast() {
-      document.body.classList.toggle('high-contrast');
-      updateHighContrastButtonText();
-    }
-
-    function updateHighContrastButtonText() {
-      const contrastBtn = document.getElementById('contrast-toggle-btn');
-      if (!contrastBtn) return;
-
-      const isHighContrast = document.body.classList.contains('high-contrast');
-      const key = isHighContrast ? 'a11y.contrast_deactivate' : 'a11y.contrast_activate';
-      if (translations[currentLang] && translations[currentLang][key]) {
-        contrastBtn.innerText = translations[currentLang][key];
-      }
-    }
-
-    /* -------------------------------------------------------------------------- */
-    /* 6. INITIALIZATION                                                          */
-    /* -------------------------------------------------------------------------- */
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
+        userErrorMsg = translations[currentLang].errTryOther
+          .replace('{currentModel}', selectedModelName)
+          .replace('{otherModel}', otherModelName);
       }
 
-      setLanguage('en');
-    });
+      showError(userErrorMsg);
+    }
+
+    function sendMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+
+      if (!text || !aiWorker) return;
+
+      input.value = '';
+      document.getElementById('btn-send').disabled = true;
+
+      const chatContainer = document.getElementById('chat-messages');
+
+      // User Message
+      const userBubbleWrap = document.createElement('div');
+      userBubbleWrap.className = 'flex flex-col items-end space-y-1 max-w-[85%] ml-auto w-full';
+      userBubbleWrap.innerHTML = `
+        <div class="imessage-bubble-user px-3.5 py-2 text-xs sm:text-sm leading-snug shadow-sm max-w-[85%] break-words whitespace-pre-wrap overflow-hidden font-sans">
+          ${escapeHtml(text)}
+        </div>
+      `;
+      chatContainer.appendChild(userBubbleWrap);
+
+      // AI Message Wrapper
+      const aiBubbleWrap = document.createElement('div');
+      aiBubbleWrap.className = 'flex flex-col items-start space-y-1 max-w-[85%] mr-auto w-full';
+      
+      currentAiBubble = document.createElement('div');
+      currentAiBubble.className = 'imessage-bubble-ai px-3.5 py-2 text-xs sm:text-sm leading-snug shadow-sm max-w-[85%] break-words whitespace-pre-wrap overflow-hidden font-sans';
+      currentAiBubble.innerText = '';
+      accumulatedResponse = '';
+      
+      const modelLabel = document.createElement('span');
+      modelLabel.className = 'text-[9px] text-slate-400 px-1';
+      modelLabel.innerText = selectedModelName;
+
+      aiBubbleWrap.appendChild(currentAiBubble);
+      aiBubbleWrap.appendChild(modelLabel);
+      chatContainer.appendChild(aiBubbleWrap);
+
+      scrollChat();
+
+      aiWorker.postMessage({
+        type: 'generate',
+        data: { text, history: chatHistory }
+      });
+
+      chatHistory.push({ role: 'user', content: text });
+    }
+
+    function showError(msg) {
+      document.getElementById('loading-spinner').classList.add('hidden');
+      document.getElementById('error-message').innerText = msg;
+      document.getElementById('error-box').classList.remove('hidden');
+      document.getElementById('status-badge').innerText = translations[currentLang].statusFailed;
+      document.getElementById('status-badge').className = 'text-[11px] text-red-500 font-medium';
+    }
+
+    function cancelLoading() {
+      if (aiWorker) {
+        aiWorker.terminate();
+        aiWorker = null;
+      }
+      document.getElementById('status-badge').innerText = translations[currentLang].statusNotReady;
+      document.getElementById('status-badge').className = 'text-[11px] text-slate-500';
+      switchView('view-intro');
+    }
+
+    function switchView(viewId) {
+      ['view-intro', 'view-loading', 'view-chat'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(viewId).classList.remove('hidden');
+    }
+
+    function scrollChat() {
+      const box = document.getElementById('chat-messages');
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    window.changeLanguage = changeLanguage;
+    window.selectModelOption = selectModelOption;
+    window.checkAndStartLoading = checkAndStartLoading;
+    window.cancelLoading = cancelLoading;
+    window.handleSend = sendMessage;
   </script>
 </body>
 </html>
