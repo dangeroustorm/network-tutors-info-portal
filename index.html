@@ -1,591 +1,1543 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WebGPU Local AI Chat</title>
+  <title>Network Tutors | Wohnanlage Chiemgauer Str.</title>
 
-  <!-- Cross-Origin Isolation Script -->
-  <script src="coi-serviceworker.js"></script>
+  <!-- Google Fonts: Noto Sans, Noto Serif & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS & Font Awesome Icons -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <style>
-    .imessage-bubble-user {
-      background-color: #007AFF;
-      color: #FFFFFF;
-      border-radius: 18px;
-      border-bottom-right-radius: 4px;
-    }
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    .imessage-bubble-ai {
-      background-color: #E9E9EB;
-      color: #000000;
-      border-radius: 18px;
-      border-bottom-left-radius: 4px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .imessage-bubble-ai {
-        background-color: #262628;
-        color: #FFFFFF;
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans"', 'sans-serif'],
+            serif: ['"Noto Serif"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            morandi: {
+              mint: '#B9DDB1',
+              pink: '#F0B9CC',
+              blue: '#B8D8E8',
+              yellow: '#E9D77C',
+              slate: '#2A3439',
+              darkbg: '#141618',
+              darkcard: '#1E2225',
+              darkborder: '#33383F',
+            }
+          },
+          borderRadius: {
+            'none': '0px',
+            'DEFAULT': '0px',
+            'sm': '0px',
+            'md': '0px',
+            'lg': '0px',
+            'xl': '0px',
+            '2xl': '0px',
+            'full': '0px'
+          }
+        }
       }
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg-page: #F7F7F3;
+      --text-main: #222222;
+      --bg-card: #FFFFFF;
+      --border-color: #DCE0D8;
+      --accent-mint: #B9DDB1;
+      --accent-pink: #F0B9CC;
+      --accent-blue: #B8D8E8;
+      --accent-yellow: #E9D77C;
+      --accent-slate: #2A3439;
     }
 
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .dark {
+      --bg-page: #141618;
+      --text-main: #ECEEEA;
+      --bg-card: #1E2225;
+      --border-color: #33383F;
+      --accent-mint: #244230;
+      --accent-pink: #4B2A36;
+      --accent-blue: #203A4A;
+      --accent-yellow: #473F1F;
+      --accent-slate: #2A3439;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Noto Sans', sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    *, *::before, *::after {
+      border-radius: 0px !important;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .animate-slide-down {
+      animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    body.high-contrast {
+      background-color: #FFFFFF !important;
+      color: #000000 !important;
+    }
+
+    body.high-contrast * {
+      background-color: #FFFFFF !important;
+      color: #000000 !important;
+      border-color: #000000 !important;
+      box-shadow: none !important;
+    }
+
+    body.high-contrast.dark {
+      background-color: #000000 !important;
+      color: #FFFFFF !important;
+    }
+
+    body.high-contrast.dark * {
+      background-color: #000000 !important;
+      color: #FFFFFF !important;
+      border-color: #FFFFFF !important;
+    }
+
+    body.use-serif {
+      font-family: 'Noto Serif', serif !important;
+    }
+
+    .modal-overlay {
+      background-color: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(2px);
+    }
+
+    .led-glow-green {
+      background-color: #10B981;
+      box-shadow: 0 0 10px #10B981, 0 0 20px #10B981;
+    }
+
+    .led-glow-amber {
+      background-color: #F59E0B;
+      box-shadow: 0 0 10px #F59E0B, 0 0 20px #F59E0B;
+    }
+
+    .led-off {
+      background-color: #374151;
+      box-shadow: none;
+    }
+
+    /* iMessage Chat Bubbles */
+    .chat-bubble-user {
+      background-color: #2563EB;
+      color: #FFFFFF;
+      align-self: flex-end;
+      border-bottom-right-radius: 0px !important;
+    }
+
+    .chat-bubble-ai {
+      background-color: #E5E7EB;
+      color: #111827;
+      align-self: flex-start;
+      border-bottom-left-radius: 0px !important;
+    }
+
+    .dark .chat-bubble-ai {
+      background-color: #2A3439;
+      color: #ECEEEA;
+      border: 1px solid #33383F;
+    }
   </style>
 </head>
-<body class="h-full bg-slate-100 dark:bg-zinc-950 text-slate-800 dark:text-slate-100 antialiased flex flex-col items-center justify-center p-0 sm:p-4">
 
-  <!-- Main Container -->
-  <div class="w-full max-w-md h-full sm:h-[720px] bg-white dark:bg-zinc-900 sm:rounded-3xl shadow-2xl border border-slate-200 dark:border-zinc-800 flex flex-col overflow-hidden relative">
+<body class="min-h-screen flex flex-col antialiased selection:bg-morandi-blue selection:text-black">
 
-    <!-- Header -->
-    <header class="px-4 py-3 bg-slate-50/90 dark:bg-zinc-900/90 backdrop-blur border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between shrink-0 z-10">
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
-          <i class="fa-solid fa-microchip"></i>
-        </div>
-        <div>
-          <h1 id="header-model-name" class="text-sm font-semibold leading-none">WebGPU AI Chat</h1>
-          <span id="status-badge" class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="statusNotReady">Not Ready</span>
-        </div>
-      </div>
+  <!-- ========================================== -->
+  <!-- HEADER & NAVIGATION                        -->
+  <!-- ========================================== -->
+  <header class="sticky top-0 z-40 bg-[#F7F7F3]/95 dark:bg-[#141618]/95 border-b border-[#DCE0D8] dark:border-[#33383F] backdrop-blur-sm transition-colors duration-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       
+      <a href="#" class="flex items-center space-x-3 group">
+        <i class="fa-solid fa-wifi text-morandi-slate dark:text-morandi-blue text-xl"></i>
+        <div class="flex flex-col">
+          <span class="text-base sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white leading-tight">
+            Network Tutors
+          </span>
+          <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">
+            Wohnanlage Chiemgauer Str.
+          </span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+        <a href="#setup-guide" class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-morandi-slate dark:after:bg-morandi-blue hover:after:w-full after:transition-all after:duration-200" data-i18n="nav.setup">Setup Guide</a>
+        <a href="#security" class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-morandi-slate dark:after:bg-morandi-blue hover:after:w-full after:transition-all after:duration-200" data-i18n="nav.security">Security</a>
+        <a href="#support" class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-morandi-slate dark:after:bg-morandi-blue hover:after:w-full after:transition-all after:duration-200" data-i18n="nav.support">Support</a>
+        <a href="#media" class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-morandi-slate dark:after:bg-morandi-blue hover:after:w-full after:transition-all after:duration-200" data-i18n="nav.media">Media</a>
+      </nav>
+
       <div class="flex items-center space-x-2">
-        <!-- Language Selector -->
-        <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-slate-100 dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 text-xs text-slate-700 dark:text-slate-200 rounded-lg px-2 py-1 focus:outline-none cursor-pointer">
-          <option value="en" selected>EN</option>
-          <option value="fr">FR</option>
-          <option value="de">DE</option>
-        </select>
-        
-        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-[10px] font-mono font-medium rounded-full" data-i18n="statusWorker">
-          Worker
-        </span>
-      </div>
-    </header>
-
-    <!-- Main Content Area -->
-    <div id="main-content" class="flex-1 flex flex-col overflow-hidden relative">
-
-      <!-- View 1: Model Selection -->
-      <div id="view-intro" class="flex-1 p-5 flex flex-col justify-between overflow-y-auto space-y-4">
-        
-        <div class="space-y-4">
-          <div class="text-center pt-2">
-            <h2 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="selectModelTitle">Select On-Device AI Model</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" data-i18n="selectModelSubtitle">Runs in background thread with zero UI lag</p>
-          </div>
-
-          <div class="space-y-2.5">
-            <!-- Option 1: Qwen2.5 0.5B -->
-            <label class="block p-3 border-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 rounded-xl cursor-pointer transition-all model-option" onclick="selectModelOption(this, 'onnx-community/Qwen2.5-0.5B-Instruct', 'Qwen2.5 0.5B')">
-              <div class="flex items-start justify-between">
-                <div class="space-y-0.5">
-                  <div class="flex items-center gap-1.5 font-bold text-xs text-slate-900 dark:text-white">
-                    <input type="radio" name="model_choice" checked class="text-blue-600 focus:ring-0" />
-                    <span data-i18n="qwenName">Qwen2.5 0.5B</span>
-                    <span class="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 text-[9px] font-mono rounded" data-i18n="badgeRecommended">Recommended</span>
-                  </div>
-                  <p class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="qwenDesc">Strong general understanding, excellent multilingual capability</p>
-                </div>
-                <span class="text-[10px] font-mono font-semibold text-slate-400" data-i18n="qwenSize">~350 MB</span>
-              </div>
-            </label>
-
-            <!-- Option 2: Llama 3.2 1B -->
-            <label class="block p-3 border border-slate-200 dark:border-zinc-800 hover:border-slate-300 rounded-xl cursor-pointer transition-all model-option" onclick="selectModelOption(this, 'onnx-community/Llama-3.2-1B-Instruct', 'Llama 3.2 1B')">
-              <div class="flex items-start justify-between">
-                <div class="space-y-0.5">
-                  <div class="flex items-center gap-1.5 font-bold text-xs text-slate-900 dark:text-white">
-                    <input type="radio" name="model_choice" class="text-blue-600 focus:ring-0" />
-                    <span data-i18n="llamaName">Llama 3.2 1B</span>
-                  </div>
-                  <p class="text-[11px] text-slate-500 dark:text-slate-400" data-i18n="llamaDesc">Meta lightweight model with strong reasoning capability</p>
-                </div>
-                <span class="text-[10px] font-mono font-semibold text-slate-400" data-i18n="llamaSize">~700 MB</span>
-              </div>
-            </label>
-          </div>
-
-          <div class="p-2.5 bg-slate-50 dark:bg-zinc-800/50 rounded-lg border border-slate-100 dark:border-zinc-800 text-[11px] text-slate-600 dark:text-slate-400">
-            <i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i>
-            <strong data-i18n="securityNoteTitle">On-Device Security:</strong>
-            <span data-i18n="securityNoteDesc">Data stays in your browser memory and is never sent to any cloud server.</span>
-          </div>
-        </div>
-
-        <button id="btn-start" onclick="checkAndStartLoading()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm rounded-xl transition-colors shadow-sm flex items-center justify-center space-x-2">
-          <span data-i18n="btnInit">Initialize & Load Model</span>
-          <i class="fa-solid fa-arrow-right text-xs"></i>
+        <button onclick="openLanguageModal()" class="p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none" title="Select Language">
+          <i class="fa-solid fa-globe text-lg"></i>
         </button>
 
+        <button onclick="openAccessibilityModal()" class="p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none" title="Accessibility Settings">
+          <i class="fa-solid fa-universal-access text-lg"></i>
+        </button>
+
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none" title="Toggle Navigation Menu">
+          <i class="fa-solid fa-bars text-lg" id="mobile-menu-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden border-b border-[#DCE0D8] dark:border-[#33383F] bg-[#F7F7F3] dark:bg-[#141618] px-4 py-3 space-y-2 animate-slide-down">
+      <a href="#setup-guide" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-800" data-i18n="nav.setup">Setup Guide</a>
+      <a href="#security" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-800" data-i18n="nav.security">Security</a>
+      <a href="#support" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-800" data-i18n="nav.support">Support</a>
+      <a href="#media" onclick="toggleMobileMenu()" class="block py-2 text-base font-medium text-gray-800 dark:text-gray-200" data-i18n="nav.media">Media</a>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- MAIN CONTENT CONTAINER                     -->
+  <!-- ========================================== -->
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 space-y-12">
+
+    <!-- HERO SECTION & SERVICE HOURS NOTICE -->
+    <section id="hero" class="space-y-6">
+      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 sm:p-10 transition-colors">
+        <div class="max-w-3xl space-y-4">
+          <div class="inline-block px-3 py-1 bg-morandi-mint dark:bg-[#244230] text-gray-900 dark:text-morandi-mint text-xs font-bold uppercase tracking-wider">
+            Resident Information Portal
+          </div>
+          <h1 class="text-2xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white" data-i18n="hero.title">
+            Internet Information for You
+          </h1>
+          <p class="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="hero.subtitle">
+            Welcome to the official network guidance page for residents of Wohnanlage Chiemgauer Str. Here you will find step-by-step router setup guides, security rules, and technical assistance.
+          </p>
+        </div>
       </div>
 
-      <!-- View 2: Progress Screen -->
-      <div id="view-loading" class="hidden flex-1 p-6 flex flex-col items-center justify-center text-center space-y-6">
-        <div class="relative w-16 h-16 flex items-center justify-center">
-          <div class="absolute inset-0 rounded-full border-4 border-slate-200 dark:border-zinc-800"></div>
-          <div id="loading-spinner" class="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
-          <i class="fa-solid fa-cube text-blue-600 text-lg"></i>
-        </div>
-
-        <div class="space-y-2 w-full max-w-xs">
-          <h3 id="loading-title" class="text-sm font-semibold" data-i18n="loadingTitle">Initializing...</h3>
-          <p id="loading-subtext" class="text-xs text-slate-500 dark:text-slate-400" data-i18n="loadingSubtext">Starting background Worker thread...</p>
-          
-          <div class="w-full bg-slate-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden mt-3">
-            <div id="progress-bar" class="bg-blue-600 h-full w-0 transition-all duration-200"></div>
+      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-pink/30 dark:bg-morandi-pink/10 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6 transition-colors">
+        <div class="space-y-2">
+          <div class="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-gray-800 dark:text-morandi-pink">
+            <i class="fa-regular fa-clock text-sm"></i>
+            <span data-i18n="service.label">In-Person Assistance</span>
           </div>
-          <div id="progress-percent" class="text-[11px] font-mono text-slate-400 text-right">0%</div>
+          <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white" data-i18n="service.heading">
+            Bi-Weekly Service Hours
+          </h2>
+          <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="service.location">
+            Held every two weeks on <strong>Friday at 19:00 CET</strong> (1 hour before the dorm bar night) in <strong>Traunsteiner Str. 5 Common Rooms</strong>.
+          </p>
         </div>
 
-        <div id="error-box" class="hidden w-full max-w-xs p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-xl text-left text-xs text-red-600 dark:text-red-400 space-y-1">
-          <div class="font-bold flex items-center">
-            <i class="fa-solid fa-circle-xmark mr-1.5"></i>
-            <span data-i18n="errorTitle">Service Temporarily Unavailable</span>
-          </div>
-          <p id="error-message" class="text-[11px] leading-relaxed"></p>
+        <div class="bg-white dark:bg-morandi-darkbg border border-[#DCE0D8] dark:border-[#33383F] p-4 min-w-[240px] text-center space-y-1">
+          <span class="text-xs text-gray-500 dark:text-gray-400 font-medium block uppercase tracking-wider" data-i18n="service.next">Next Session</span>
+          <span id="next-service-date" class="text-base sm:text-lg font-bold text-gray-900 dark:text-white block font-mono">
+            Calculating...
+          </span>
+          <span class="text-xs text-gray-600 dark:text-gray-400 block" data-i18n="service.time">19:00 - 20:00 CET</span>
         </div>
+      </div>
+    </section>
 
-        <button id="btn-cancel" onclick="cancelLoading()" class="px-4 py-2 border border-slate-300 dark:border-zinc-700 text-xs text-slate-600 dark:text-slate-400 rounded-lg" data-i18n="btnReturn">
-          Return
+    <!-- SECTION 1: ROUTER SETUP GUIDE -->
+    <section id="setup-guide" class="space-y-6 pt-4">
+      <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3 flex items-center justify-between">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
+          <span class="w-3 h-3 bg-morandi-blue inline-block"></span>
+          <span data-i18n="setup.title">Router Setup Guide</span>
+        </h2>
+        <span class="text-xs text-gray-500 dark:text-gray-400 font-mono" data-i18n="setup.subtitle">Generic Wireless Router</span>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <button onclick="setWizardStep(1)" id="wizard-tab-1" class="p-3 text-left border border-morandi-slate dark:border-white bg-morandi-slate text-white transition-all font-medium text-sm flex items-center space-x-2">
+          <span class="font-mono font-bold">01</span>
+          <span data-i18n="wizard.step1_tab">Cabling & WAN</span>
+        </button>
+        <button onclick="setWizardStep(2)" id="wizard-tab-2" class="p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium text-sm flex items-center space-x-2">
+          <span class="font-mono font-bold">02</span>
+          <span data-i18n="wizard.step2_tab">Wi-Fi Connection</span>
+        </button>
+        <button onclick="setWizardStep(3)" id="wizard-tab-3" class="p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium text-sm flex items-center space-x-2">
+          <span class="font-mono font-bold">03</span>
+          <span data-i18n="wizard.step3_tab">Admin Login (Opt)</span>
+        </button>
+        <button onclick="setWizardStep(4)" id="wizard-tab-4" class="p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium text-sm flex items-center space-x-2">
+          <span class="font-mono font-bold">04</span>
+          <span data-i18n="wizard.step4_tab">Router Manuals</span>
         </button>
       </div>
 
-      <!-- View 3: Chat Interface -->
-      <div id="view-chat" class="hidden flex-1 flex flex-col h-full overflow-hidden">
-        
-        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 no-scrollbar w-full">
-          <div class="text-center my-1">
-            <span id="chat-badge-model" class="text-[10px] text-slate-400 bg-slate-200/50 dark:bg-zinc-800/50 px-2.5 py-1 rounded-full font-mono" data-i18n="chatBadge">
-              WebGPU Worker Ready
-            </span>
+      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 space-y-6">
+        <div id="wizard-step-content" class="space-y-3 animate-fade-in"></div>
+
+        <div id="wizard-visual-container" class="border border-[#DCE0D8] dark:border-[#33383F] bg-gray-50 dark:bg-morandi-darkbg p-4 sm:p-6 space-y-4"></div>
+
+        <div class="flex items-center justify-between border-t border-[#DCE0D8] dark:border-[#33383F] pt-4">
+          <button onclick="prevWizardStep()" id="btn-prev-step" class="px-5 py-2.5 border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 font-bold text-xs uppercase tracking-wider hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-2">
+            <i class="fa-solid fa-arrow-left text-xs"></i>
+            <span data-i18n="wizard.btn_prev">Previous Step</span>
+          </button>
+
+          <span id="wizard-step-counter" class="text-xs font-mono font-bold text-gray-500">Step 1 of 4</span>
+
+          <button onclick="nextWizardStep()" id="btn-next-step" class="px-5 py-2.5 bg-morandi-slate text-white font-bold text-xs uppercase tracking-wider hover:bg-black transition-colors flex items-center space-x-2">
+            <span data-i18n="wizard.btn_next">Next Step</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+        </div>
+
+        <!-- LED Diagnostic Panel -->
+        <div class="border-t border-[#DCE0D8] dark:border-[#33383F] pt-6 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-microchip text-morandi-yellow"></i>
+              <span data-i18n="led.title">Interactive LED Diagnostic Inspector</span>
+            </h3>
+            <span class="text-xs text-gray-500 font-mono" data-i18n="led.instruction_hint">Click individual lights below to recreate your router's status</span>
           </div>
 
-          <div class="flex flex-col items-start space-y-1 max-w-[85%] mr-auto w-full">
-            <div class="imessage-bubble-ai px-3.5 py-2 text-xs sm:text-sm leading-snug shadow-sm max-w-[85%] break-words whitespace-pre-wrap overflow-hidden font-sans" data-i18n="welcomeAi">
-              Hello! I am ready to assist you. Type a message to test execution!
+          <div class="bg-[#1E2225] border-2 border-[#33383F] p-6 text-white space-y-4 shadow-inner">
+            <div class="flex items-center justify-between text-xs font-mono text-gray-400 border-b border-gray-700 pb-2">
+              <span>FRONT PANEL STATUS INDICATORS</span>
+              <span id="led-active-label" class="text-emerald-400 font-bold">ALL SYSTEMS NORMAL</span>
             </div>
-            <span class="text-[9px] text-slate-400 px-1">Local AI</span>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 py-2">
+              <button onclick="toggleLedState('power')" class="flex flex-col items-center space-y-2 group focus:outline-none">
+                <div id="led-dot-power" class="w-6 h-6 rounded-full led-glow-green transition-all duration-300"></div>
+                <span class="text-xs font-mono font-bold tracking-wider text-gray-300 group-hover:text-white">POWER</span>
+                <span id="led-sub-power" class="text-[10px] text-emerald-400 font-mono font-bold">ON (Green)</span>
+              </button>
+
+              <button onclick="toggleLedState('internet')" class="flex flex-col items-center space-y-2 group focus:outline-none">
+                <div id="led-dot-internet" class="w-6 h-6 rounded-full led-glow-green transition-all duration-300"></div>
+                <span class="text-xs font-mono font-bold tracking-wider text-gray-300 group-hover:text-white">INTERNET</span>
+                <span id="led-sub-internet" class="text-[10px] text-emerald-400 font-mono font-bold">Connected (Green)</span>
+              </button>
+
+              <button onclick="toggleLedState('wlan')" class="flex flex-col items-center space-y-2 group focus:outline-none">
+                <div id="led-dot-wlan" class="w-6 h-6 rounded-full led-glow-green transition-all duration-300"></div>
+                <span class="text-xs font-mono font-bold tracking-wider text-gray-300 group-hover:text-white">WLAN</span>
+                <span id="led-sub-wlan" class="text-[10px] text-emerald-400 font-mono font-bold">Active (Green)</span>
+              </button>
+
+              <button onclick="toggleLedState('lan')" class="flex flex-col items-center space-y-2 group focus:outline-none">
+                <div id="led-dot-lan" class="w-6 h-6 rounded-full led-glow-green transition-all duration-300"></div>
+                <span class="text-xs font-mono font-bold tracking-wider text-gray-300 group-hover:text-white">LAN PORTS</span>
+                <span id="led-sub-lan" class="text-[10px] text-emerald-400 font-mono font-bold">Port Active (Green)</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="led-diagnostic-output" class="p-5 border transition-colors"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: SECURITY & RULES -->
+    <section id="security" class="space-y-6 pt-4">
+      <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
+          <span class="w-3 h-3 bg-morandi-yellow inline-block"></span>
+          <span data-i18n="security.title">Network Safety & Guidelines</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-yellow/20 dark:bg-morandi-yellow/10 p-6 space-y-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-morandi-yellow text-gray-900 flex items-center justify-center font-bold">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="security.rules_heading">
+              Essential Dormitory Network Rules
+            </h3>
+          </div>
+
+          <ul class="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400 mt-1"></i>
+              <span data-i18n="security.rule1">Always connect the wall Ethernet outlet strictly to the <strong>BLUE WAN port</strong> of your router.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400 mt-1"></i>
+              <span data-i18n="security.rule2">Avoid plugging wall cables into yellow LAN ports to prevent network loops that might disrupt internet access for your floor.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400 mt-1"></i>
+              <span data-i18n="security.rule3">Keep your router administrator password updated and secure to prevent unauthorized network access.</span>
+            </li>
+            <li class="flex items-start space-x-3">
+              <i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400 mt-1"></i>
+              <span data-i18n="security.rule4">Adhere strictly to LRZ acceptable usage policies regarding copyright, legal compliance, and network safety.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 space-y-4 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center font-bold">
+                  <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="security.check_heading">
+                  Security Self-Check Tool
+                </h3>
+              </div>
+              <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold uppercase" data-i18n="status.maintenance">Maintenance</span>
+            </div>
+
+            <div class="p-4 bg-gray-100 dark:bg-morandi-darkbg border border-gray-300 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-300 space-y-2">
+              <div class="font-bold flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                <span data-i18n="security.check_offline_title">Tool Temporarily Unavailable</span>
+              </div>
+              <p class="text-xs leading-relaxed" data-i18n="security.check_offline_desc">
+                The automated security self-check tool is currently undergoing scheduled maintenance. Please refer to the guidelines on the left or visit us during Friday service hours.
+              </p>
+            </div>
+          </div>
+
+          <button disabled class="w-full py-2.5 bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500 text-sm font-bold cursor-not-allowed text-center" data-i18n="security.check_disabled_btn">
+            Self-Check Offline
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: SUPPORT & AI CARD -->
+    <section id="support" class="space-y-6 pt-4">
+      <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
+          <span class="w-3 h-3 bg-morandi-blue inline-block"></span>
+          <span data-i18n="support.title">Support, Assistance & Links</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Card 1: Service Hours -->
+        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-pink/20 dark:bg-morandi-pink/10 p-6 space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="w-8 h-8 bg-morandi-pink text-gray-900 flex items-center justify-center font-bold">
+              <i class="fa-solid fa-user-gear"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="support.card_service_title">In-Person Service Hours</h3>
+            <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="support.card_service_desc">
+              Get direct help from network tutors every two weeks on <strong>Fridays at 19:00 CET</strong> in <strong>Traunsteiner Str. 5 Common Rooms</strong>.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-[#DCE0D8] dark:border-[#33383F]">
+            <span class="text-[10px] uppercase font-bold text-gray-500 block" data-i18n="service.next">Next Session</span>
+            <span id="support-card-next-date" class="text-sm font-bold font-mono text-gray-900 dark:text-white block">Calculating...</span>
           </div>
         </div>
 
-        <form onsubmit="handleSend(event)" class="p-3 bg-slate-50/90 dark:bg-zinc-900/90 border-t border-slate-200 dark:border-zinc-800 flex items-center space-x-2 shrink-0">
-          <input 
-            type="text" 
-            id="chat-input" 
-            placeholder="iMessage" 
-            data-i18n-placeholder="inputPlaceholder"
-            autocomplete="off"
-            class="flex-1 px-4 py-2 bg-white dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 rounded-full text-xs sm:text-sm focus:outline-none focus:border-blue-500 transition-colors placeholder:text-slate-400"
-          />
-          <button 
-            type="submit" 
-            id="btn-send"
-            class="w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors disabled:opacity-40 shrink-0"
-          >
-            <i class="fa-solid fa-arrow-up text-xs"></i>
+        <!-- Card 2: WhatsApp -->
+        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-mint/20 dark:bg-morandi-mint/10 p-6 space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="w-8 h-8 bg-morandi-mint text-gray-900 flex items-center justify-center font-bold">
+              <i class="fa-brands fa-whatsapp text-lg"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="support.card_wa_title">House WhatsApp Group</h3>
+            <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="support.card_wa_desc">
+              Scan the official QR code poster located at the notice board near the main entrance of each building for immediate house updates.
+            </p>
+          </div>
+          <span class="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400 block" data-i18n="support.poster_location">Poster at Building Entrance</span>
+        </div>
+
+        <!-- Card 3: Speed Test -->
+        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-blue/20 dark:bg-morandi-blue/10 p-6 space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="w-8 h-8 bg-morandi-blue text-gray-900 flex items-center justify-center font-bold">
+              <i class="fa-solid fa-gauge-high"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="speed.title">Internet Speed Test</h3>
+            <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="speed.description">
+              Test your bandwidth, upload speed, and ping directly via Speedtest by Ookla.
+            </p>
+          </div>
+          <button onclick="openExternalNotice('https://www.speedtest.net/')" class="w-full py-2 bg-morandi-slate text-white text-xs font-bold hover:bg-black transition-colors flex items-center justify-center space-x-2">
+            <span data-i18n="speed.button">Launch Speed Test</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Card 4: WebGPU Ask AI Card (Refined) -->
+        <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-yellow/30 dark:bg-morandi-yellow/10 p-6 space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="w-8 h-8 bg-morandi-yellow text-gray-900 flex items-center justify-center font-bold">
+                <i class="fa-solid fa-robot text-lg"></i>
+              </div>
+              <span class="px-2 py-0.5 bg-yellow-200 dark:bg-yellow-900/50 text-yellow-900 dark:text-yellow-200 text-[10px] font-bold uppercase tracking-wider font-mono">
+                WebGPU
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="support.card_ai_title">
+              Ask AI Assistant
+            </h3>
+            <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="support.card_ai_desc">
+              Client-side AI inference powered by WebGPU for router setup and network Q&A without cloud API routing.
+            </p>
+          </div>
+          <button onclick="openAiModal()" class="w-full py-2 bg-morandi-slate text-white text-xs font-bold hover:bg-black transition-colors flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-comments text-xs"></i>
+            <span data-i18n="support.card_ai_btn">Launch AI Assistant</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: MEDIA RESOURCES -->
+    <section id="media" class="space-y-6 pt-4">
+      <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
+          <span class="w-3 h-3 bg-morandi-pink inline-block"></span>
+          <span data-i18n="media.title">Video Setup Guides</span>
+        </h2>
+      </div>
+
+      <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div class="flex items-start space-x-4">
+          <div class="w-12 h-12 bg-red-600 text-white flex items-center justify-center font-bold text-2xl shrink-0">
+            <i class="fa-brands fa-youtube"></i>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="media.heading">YouTube Video Connection Search</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed" data-i18n="media.description">
+              Looking for visual video tutorials? Search general step-by-step router setup guides directly on YouTube.
+            </p>
+          </div>
+        </div>
+
+        <button onclick="openExternalNotice('https://www.youtube.com/results?search_query=how+to+connect+router+to+internet')" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-bold transition-colors shrink-0 flex items-center space-x-2">
+          <span data-i18n="media.button">Search YouTube</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-16 border-t border-[#DCE0D8] dark:border-[#33383F] bg-[#F7F7F3] dark:bg-[#141618] py-8 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600 dark:text-gray-400">
+      <div>
+        <span data-i18n="footer.provider">Network Provider: <strong>Leibniz-Rechenzentrum (LRZ)</strong></span>
+        <span class="mx-2">•</span>
+        <span>Wohnanlage Chiemgauer Str.</span>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-black dark:hover:text-white transition-colors">
+          <i class="fa-solid fa-arrow-up mr-1"></i> <span data-i18n="footer.back_to_top">Back to Top</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL 1: LANGUAGE SELECTION -->
+  <div id="modal-language" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay animate-fade-in">
+    <div class="bg-white dark:bg-morandi-darkcard border border-[#DCE0D8] dark:border-[#33383F] max-w-sm w-full p-6 space-y-4 shadow-xl">
+      <div class="flex items-center justify-between border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
+        <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-globe text-morandi-blue"></i>
+          <span>Select Language / Sprache</span>
+        </h3>
+        <button onclick="closeLanguageModal()" class="text-gray-400 hover:text-black dark:hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="setLanguage('en')" class="w-full p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg font-medium text-sm flex items-center justify-between group">
+          <span>English (EN)</span>
+          <i class="fa-solid fa-check text-emerald-500 opacity-0 group-hover:opacity-100" id="lang-check-en"></i>
+        </button>
+        <button onclick="setLanguage('de')" class="w-full p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg font-medium text-sm flex items-center justify-between group">
+          <span>Deutsch (DE)</span>
+          <i class="fa-solid fa-check text-emerald-500 opacity-0 group-hover:opacity-100" id="lang-check-de"></i>
+        </button>
+        <button onclick="setLanguage('fr')" class="w-full p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] hover:bg-gray-50 dark:hover:bg-morandi-darkbg font-medium text-sm flex items-center justify-between group">
+          <span>Français (FR)</span>
+          <i class="fa-solid fa-check text-emerald-500 opacity-0 group-hover:opacity-100" id="lang-check-fr"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ACCESSIBILITY -->
+  <div id="modal-accessibility" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay animate-fade-in">
+    <div class="bg-white dark:bg-morandi-darkcard border border-[#DCE0D8] dark:border-[#33383F] max-w-md w-full p-6 space-y-6 shadow-xl">
+      <div class="flex items-center justify-between border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
+        <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-universal-access text-morandi-blue"></i>
+          <span data-i18n="a11y.title">Accessibility Settings</span>
+        </h3>
+        <button onclick="closeAccessibilityModal()" class="text-gray-400 hover:text-black dark:hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-sm">
+        <div class="space-y-2">
+          <label class="block font-bold text-gray-800 dark:text-gray-200" data-i18n="a11y.theme_label">Color Mode</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="toggleDarkMode(false)" class="p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-medium text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg">Light Mode</button>
+            <button onclick="toggleDarkMode(true)" class="p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-medium text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg">Dark Mode</button>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block font-bold text-gray-800 dark:text-gray-200" data-i18n="a11y.font_label">Typography Style</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="toggleSerifFont(false)" class="p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-sans font-medium text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg">Noto Sans</button>
+            <button onclick="toggleSerifFont(true)" class="p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-serif font-medium text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg">Noto Serif</button>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block font-bold text-gray-800 dark:text-gray-200" data-i18n="a11y.contrast_label">High Contrast Mode</label>
+          <button onclick="toggleHighContrast()" id="contrast-toggle-btn" class="w-full p-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-bold text-center hover:bg-gray-50 dark:hover:bg-morandi-darkbg" data-i18n="a11y.contrast_activate">
+            Activate High Contrast
+          </button>
+        </div>
+      </div>
+
+      <div class="pt-2">
+        <button onclick="closeAccessibilityModal()" class="w-full py-2.5 bg-morandi-slate text-white font-bold text-sm">Save & Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: EXTERNAL LINK NOTICE -->
+  <div id="modal-external" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay animate-fade-in">
+    <div class="bg-white dark:bg-morandi-darkcard border border-[#DCE0D8] dark:border-[#33383F] max-w-md w-full p-6 space-y-4 shadow-xl">
+      <div class="flex items-center justify-between border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
+        <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-arrow-up-right-from-square text-morandi-blue"></i>
+          <span data-i18n="disclaimer.title">External Link Notice</span>
+        </h3>
+        <button onclick="closeExternalModal()" class="text-gray-400 hover:text-black dark:hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+        <p data-i18n="disclaimer.body">You are about to leave the Network Tutors resident portal and proceed to an external website:</p>
+        <div class="p-3 bg-gray-100 dark:bg-morandi-darkbg font-mono text-xs text-gray-900 dark:text-white break-all" id="external-url-display">https://www.example.com</div>
+        <p class="text-xs text-gray-500" data-i18n="disclaimer.note">Network Tutors are not responsible for external content or privacy policies.</p>
+      </div>
+
+      <div class="flex items-center space-x-3 pt-2">
+        <button onclick="closeExternalModal()" class="w-1/2 py-2.5 border border-[#DCE0D8] dark:border-[#33383F] font-bold text-sm hover:bg-gray-100 dark:hover:bg-gray-800" data-i18n="disclaimer.cancel">Cancel</button>
+        <a id="external-proceed-btn" href="#" target="_blank" rel="noopener noreferrer" onclick="closeExternalModal()" class="w-1/2 py-2.5 bg-morandi-slate text-white text-center font-bold text-sm hover:bg-black transition-colors" data-i18n="disclaimer.proceed">Proceed</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 4: CLIENT-SIDE WEBGPU AI ASSISTANT   -->
+  <!-- ========================================== -->
+  <div id="modal-ai" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay animate-fade-in">
+    <div class="bg-white dark:bg-morandi-darkcard border border-[#DCE0D8] dark:border-[#33383F] max-w-xl w-full p-6 space-y-4 shadow-2xl flex flex-col max-h-[90vh]">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-[#DCE0D8] dark:border-[#33383F] pb-3 shrink-0">
+        <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-robot text-morandi-yellow"></i>
+          <span data-i18n="ai.title">Local AI Assistant (WebGPU)</span>
+        </h3>
+        <button onclick="attemptCloseAiModal()" class="text-gray-400 hover:text-black dark:hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- STEP 1: Objective Introduction & Technical Architecture (No Marketing Fluff) -->
+      <div id="ai-step-1" class="space-y-4 text-sm leading-relaxed overflow-y-auto">
+        <div class="p-4 bg-morandi-yellow/20 dark:bg-morandi-yellow/10 border border-morandi-yellow space-y-2">
+          <h4 class="font-bold text-gray-900 dark:text-white flex items-center gap-2" data-i18n="ai.step1_title">
+            <i class="fa-solid fa-microchip text-amber-600"></i>
+            Apertus Model & WebGPU Architecture
+          </h4>
+          <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300" data-i18n="ai.step1_desc">
+            This module utilizes Apertus 0.5B, an open compact language model developed by Swiss AI. Powered by Transformers.js and ONNX Runtime Web, inference runs natively inside your browser process via WebGPU hardware acceleration. Input messages and processing remain local to your browser without transmitting data to cloud API servers.
+          </p>
+        </div>
+
+        <div class="p-4 bg-gray-50 dark:bg-morandi-darkbg border border-gray-200 dark:border-gray-800 text-xs text-gray-600 dark:text-gray-400 space-y-1">
+          <strong class="font-bold block text-gray-800 dark:text-gray-200" data-i18n="ai.disclaimer_title">Disclaimer</strong>
+          <p data-i18n="ai.disclaimer">
+            Disclaimer: Output generated by AI may contain errors. Please verify critical instructions with resident network tutors.
+          </p>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+          <button onclick="goToAiStep(2)" class="px-5 py-2.5 bg-morandi-slate text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition-colors flex items-center gap-2">
+            <span data-i18n="ai.btn_hardware">Proceed to Hardware Check</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Hardware Detection & Authorization -->
+      <div id="ai-step-2" class="hidden space-y-4 text-sm leading-relaxed">
+        <h4 class="font-bold text-gray-900 dark:text-white" data-i18n="ai.step2_title">
+          Hardware Detection & Authorization
+        </h4>
+
+        <div id="ai-gpu-status" class="p-4 border text-xs sm:text-sm">
+          <div class="flex items-center gap-2 font-bold">
+            <i class="fa-solid fa-circle-notch fa-spin text-morandi-blue"></i>
+            <span data-i18n="ai.gpu_checking">Detecting WebGPU capability...</span>
+          </div>
+        </div>
+
+        <div id="ai-consent-box" class="hidden space-y-3">
+          <label class="flex items-start space-x-3 cursor-pointer">
+            <input type="checkbox" id="ai-consent-checkbox" onchange="toggleAiStartButton()" class="mt-1" />
+            <span class="text-xs text-gray-700 dark:text-gray-300" data-i18n="ai.auth_agree">
+              I authorize downloading the quantized AI model (~300MB) to local browser storage.
+            </span>
+          </label>
+
+          <div class="flex justify-between items-center pt-2">
+            <button onclick="goToAiStep(1)" class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-xs font-bold uppercase tracking-wider">
+              Back
+            </button>
+            <button id="ai-btn-start-load" disabled onclick="startAiModelLoading()" class="px-5 py-2.5 bg-morandi-slate text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+              <span data-i18n="ai.btn_start_load">Agree & Load Model</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="ai-gpu-unsupported-actions" class="hidden flex justify-end pt-2">
+          <button onclick="attemptCloseAiModal()" class="px-5 py-2.5 border border-gray-300 dark:border-gray-700 text-xs font-bold uppercase">
+            Close
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Model Loading & Real-time Progress -->
+      <div id="ai-step-3" class="hidden space-y-4 text-sm leading-relaxed">
+        <h4 class="font-bold text-gray-900 dark:text-white" data-i18n="ai.step3_title">
+          Loading Model Weights
+        </h4>
+
+        <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="ai.loading_desc">
+          Downloading & compiling ONNX WebGPU weights. Downloaded weights will be cached locally.
+        </p>
+
+        <div class="space-y-2">
+          <div class="w-full bg-gray-200 dark:bg-gray-800 h-3 border border-gray-300 dark:border-gray-700 overflow-hidden">
+            <div id="ai-progress-bar" class="bg-morandi-blue h-full w-0 transition-all duration-200"></div>
+          </div>
+          <div class="flex justify-between text-xs font-mono text-gray-500">
+            <span id="ai-progress-status">Initializing ONNX Runtime Web...</span>
+            <span id="ai-progress-percent">0%</span>
+          </div>
+        </div>
+
+        <!-- Failure Intercept Alert Box -->
+        <div id="ai-load-error-box" class="hidden p-3 bg-red-50 dark:bg-red-950/30 border border-red-300 dark:border-red-800 text-xs text-red-700 dark:text-red-300 font-bold">
+          <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+          <span data-i18n="ai.load_error">Service temporarily unavailable. Model failed to load.</span>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button id="ai-btn-cancel-load" onclick="cancelAiModelLoading()" class="px-4 py-2 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 text-xs font-bold uppercase tracking-wider hover:bg-red-50 dark:hover:bg-red-950">
+            <span data-i18n="ai.btn_cancel">Cancel Loading</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4: iMessage-Style Local WebGPU Chat Interface -->
+      <div id="ai-step-4" class="hidden flex-grow flex flex-col space-y-3 overflow-hidden">
+        <div id="ai-chat-messages" class="flex-grow overflow-y-auto p-3 bg-gray-50 dark:bg-morandi-darkbg border border-gray-200 dark:border-gray-800 flex flex-col space-y-3 h-80 sm:h-96">
+          <div class="chat-bubble-ai p-3 text-xs sm:text-sm leading-relaxed max-w-[85%] font-sans shadow-sm">
+            Hello! I am your resident WebGPU AI assistant running locally in your browser process. How can I help with your router setup or dormitory network today?
+          </div>
+        </div>
+
+        <form onsubmit="handleAiSendMessage(event);" class="flex items-center gap-2 pt-1 shrink-0">
+          <input type="text" id="ai-chat-input" placeholder="Ask a question about your router, network, or dorm setup..." class="flex-grow p-2.5 bg-white dark:bg-morandi-darkbg border border-gray-300 dark:border-gray-700 text-xs sm:text-sm text-gray-900 dark:text-white focus:outline-none focus:border-morandi-blue" data-i18n-placeholder="ai.placeholder" />
+          
+          <button type="submit" id="ai-chat-send-btn" class="px-4 py-2.5 bg-morandi-slate text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition-colors shrink-0 flex items-center gap-1">
+            <span data-i18n="ai.send">Send</span>
+            <i class="fa-solid fa-paper-plane text-[10px]"></i>
           </button>
         </form>
-
       </div>
 
     </div>
   </div>
 
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC                           -->
+  <!-- ========================================== -->
   <script>
-    // Embedded Web Worker Logic
-    const workerScriptCode = `
-      import { pipeline, TextStreamer, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3';
-
-      env.allowLocalModels = false;
-      env.useBrowserCache = true;
-
-      let generator = null;
-      let fileProgressMap = {};
-
-      self.addEventListener('message', async (e) => {
-        const { type, data } = e.data;
-
-        if (type === 'load') {
-          try {
-            fileProgressMap = {};
-            generator = await pipeline('text-generation', data.modelId, {
-              device: 'webgpu',
-              dtype: 'q4',
-              progress_callback: (p) => {
-                if (p.status === 'progress') {
-                  fileProgressMap[p.file || 'model'] = p.progress || 0;
-                  const files = Object.keys(fileProgressMap);
-                  const pct = Math.round(files.reduce((sum, k) => sum + fileProgressMap[k], 0) / (files.length || 1));
-                  self.postMessage({ status: 'progress', percent: pct });
-                }
-              }
-            });
-
-            self.postMessage({ status: 'ready' });
-          } catch (err) {
-            self.postMessage({ status: 'error', error: err.message || String(err) });
-          }
-        } else if (type === 'generate') {
-          try {
-            const streamer = new TextStreamer(generator.tokenizer, {
-              skip_prompt: true,
-              skip_special_tokens: true,
-              callback_function: (tokenText) => {
-                self.postMessage({ status: 'update', token: tokenText });
-              }
-            });
-
-            const messages = [
-              { role: 'system', content: 'You are a helpful assistant.' },
-              ...(data.history || []),
-              { role: 'user', content: data.text }
-            ];
-
-            await generator(messages, {
-              max_new_tokens: 128,
-              temperature: 0.6,
-              do_sample: true,
-              streamer: streamer
-            });
-
-            self.postMessage({ status: 'complete' });
-          } catch (err) {
-            self.postMessage({ status: 'error', error: err.message || String(err) });
-          }
-        }
-      });
-    `;
-
-    // Multilingual Translations Dictionary (EN, FR, DE)
+    /* -------------------------------------------------------------------------- */
+    /* 1. TRILINGUAL DICTIONARY                                                   */
+    /* -------------------------------------------------------------------------- */
     const translations = {
       en: {
-        appTitle: "WebGPU AI Chat",
-        statusNotReady: "Not Ready",
-        statusWorker: "Worker",
-        statusLoading: "Starting Worker...",
-        statusDownloading: "Downloading Weights...",
-        statusReady: "Online (WebGPU)",
-        statusFailed: "Load Failed",
-        selectModelTitle: "Select On-Device AI Model",
-        selectModelSubtitle: "Runs in background thread with zero UI lag",
-        qwenName: "Qwen2.5 0.5B",
-        qwenDesc: "Strong general understanding, excellent multilingual capability",
-        qwenSize: "~350 MB",
-        llamaName: "Llama 3.2 1B",
-        llamaDesc: "Meta lightweight model with strong reasoning capability",
-        llamaSize: "~700 MB",
-        badgeRecommended: "Recommended",
-        securityNoteTitle: "On-Device Security:",
-        securityNoteDesc: "Data stays in your browser memory and is never sent to any cloud server.",
-        btnInit: "Initialize & Load Model",
-        loadingTitle: "Initializing...",
-        loadingSubtext: "Starting background Worker thread...",
-        errorTitle: "Service Temporarily Unavailable",
-        btnReturn: "Return",
-        chatBadge: "WebGPU Worker Ready",
-        welcomeAi: "Hello! I am ready to assist you. Type a message to test execution!",
-        inputPlaceholder: "iMessage",
-        errTryOther: "Failed to load {currentModel}. Please try loading {otherModel} instead.",
-        errTryLater: "Both models failed to load. Please try again later or verify WebGPU support."
-      },
-      fr: {
-        appTitle: "Chat IA WebGPU",
-        statusNotReady: "Non prêt",
-        statusWorker: "Worker",
-        statusLoading: "Démarrage...",
-        statusDownloading: "Téléchargement...",
-        statusReady: "En ligne (WebGPU)",
-        statusFailed: "Échec",
-        selectModelTitle: "Sélectionner un modèle local",
-        selectModelSubtitle: "S'exécute en arrière-plan sans ralentissement de l'interface",
-        qwenName: "Qwen2.5 0.5B",
-        qwenDesc: "Excellente compréhension générale et capacités multilingues",
-        qwenSize: "~350 Mo",
-        llamaName: "Llama 3.2 1B",
-        llamaDesc: "Modèle léger de Meta avec une forte capacité de raisonnement",
-        llamaSize: "~700 Mo",
-        badgeRecommended: "Recommandé",
-        securityNoteTitle: "Sécurité locale :",
-        securityNoteDesc: "Les données restent dans la mémoire du navigateur et ne sont jamais envoyées à un serveur.",
-        btnInit: "Initialiser et charger le modèle",
-        loadingTitle: "Initialisation...",
-        loadingSubtext: "Démarrage du thread Worker en arrière-plan...",
-        errorTitle: "Service temporairement indisponible",
-        btnReturn: "Retour",
-        chatBadge: "WebGPU Worker Prêt",
-        welcomeAi: "Bonjour ! Je suis prêt à vous aider. Tapez un message pour tester !",
-        inputPlaceholder: "iMessage",
-        errTryOther: "Échec du chargement de {currentModel}. Veuillez essayer de charger {otherModel}.",
-        errTryLater: "Échec du chargement des deux modèles. Veuillez réessayer plus tard."
+        "nav.setup": "Setup Guide",
+        "nav.security": "Security",
+        "nav.support": "Support",
+        "nav.media": "Media",
+        "hero.title": "Internet Information for You",
+        "hero.subtitle": "Welcome to the official network guidance page for residents of Wohnanlage Chiemgauer Str. Here you will find step-by-step router setup guides, security rules, and technical assistance.",
+        "service.label": "In-Person Assistance",
+        "service.heading": "Bi-Weekly Service Hours",
+        "service.location": "Held every two weeks on Friday at 19:00 CET (1 hour before the dorm bar night) in Traunsteiner Str. 5 Common Rooms.",
+        "service.next": "Next Session",
+        "service.time": "19:00 - 20:00 CET",
+        "setup.title": "Router Setup Guide",
+        "setup.subtitle": "Generic Wireless Router",
+        "wizard.step1_tab": "Cabling & WAN",
+        "wizard.step2_tab": "Wi-Fi Connection",
+        "wizard.step3_tab": "Admin Login (Opt)",
+        "wizard.step4_tab": "Router Manuals",
+        "wizard.btn_prev": "Previous Step",
+        "wizard.btn_next": "Next Step",
+        "led.title": "Interactive LED Diagnostic Inspector",
+        "led.instruction_hint": "Click individual lights below to recreate your router's status",
+        "security.title": "Network Safety & Guidelines",
+        "security.rules_heading": "Essential Dormitory Network Rules",
+        "security.rule1": "Always connect the wall Ethernet outlet strictly to the BLUE WAN port of your router.",
+        "security.rule2": "Avoid plugging wall cables into yellow LAN ports to prevent network loops that might disrupt internet access for your floor.",
+        "security.rule3": "Keep your router administrator password updated and secure to prevent unauthorized network access.",
+        "security.rule4": "Adhere strictly to LRZ acceptable usage policies regarding copyright, legal compliance, and network safety.",
+        "security.check_heading": "Security Self-Check Tool",
+        "status.maintenance": "Maintenance",
+        "security.check_offline_title": "Tool Temporarily Unavailable",
+        "security.check_offline_desc": "The automated security self-check tool is currently undergoing scheduled maintenance. Please refer to the guidelines on the left or visit us during Friday service hours.",
+        "security.check_disabled_btn": "Self-Check Offline",
+        "support.title": "Support, Assistance & Links",
+        "support.card_service_title": "In-Person Service Hours",
+        "support.card_service_desc": "Get direct help from network tutors every two weeks on Fridays at 19:00 CET in Traunsteiner Str. 5 Common Rooms.",
+        "support.card_wa_title": "House WhatsApp Group",
+        "support.card_wa_desc": "Scan the official QR code poster located at the notice board near the main entrance of each building for immediate house updates.",
+        "support.poster_location": "Poster at Building Entrance",
+        "speed.title": "Internet Speed Test",
+        "speed.description": "Test your bandwidth, upload speed, and ping directly via Speedtest by Ookla.",
+        "speed.button": "Launch Speed Test",
+        "support.card_ai_title": "Ask AI Assistant",
+        "support.card_ai_desc": "Client-side AI inference powered by WebGPU for router setup and network Q&A without cloud API routing.",
+        "support.card_ai_btn": "Launch AI Assistant",
+        "media.title": "Video Setup Guides",
+        "media.heading": "YouTube Video Connection Search",
+        "media.description": "Looking for visual video tutorials? Search general step-by-step router setup guides directly on YouTube.",
+        "media.button": "Search YouTube",
+        "footer.provider": "Network Provider: <strong>Leibniz-Rechenzentrum (LRZ)</strong>",
+        "footer.back_to_top": "Back to Top",
+        "a11y.title": "Accessibility Settings",
+        "a11y.theme_label": "Color Mode",
+        "a11y.font_label": "Typography Style",
+        "a11y.contrast_label": "High Contrast Mode",
+        "a11y.contrast_activate": "Activate High Contrast",
+        "a11y.contrast_deactivate": "Deactivate High Contrast",
+        "disclaimer.title": "External Link Notice",
+        "disclaimer.body": "You are about to leave the Network Tutors resident portal and proceed to an external website:",
+        "disclaimer.note": "Network Tutors are not responsible for external content or privacy policies.",
+        "disclaimer.cancel": "Cancel",
+        "disclaimer.proceed": "Proceed",
+        "ai.title": "Local AI Assistant (WebGPU)",
+        "ai.step1_title": "Apertus Model & WebGPU Architecture",
+        "ai.step1_desc": "This module utilizes Apertus 0.5B, an open compact language model developed by Swiss AI. Powered by Transformers.js and ONNX Runtime Web, inference runs natively inside your browser process via WebGPU hardware acceleration. Input messages and processing remain local to your browser without transmitting data to cloud API servers.",
+        "ai.disclaimer_title": "Disclaimer",
+        "ai.disclaimer": "Disclaimer: Output generated by AI may contain errors. Please verify critical instructions with resident network tutors.",
+        "ai.btn_hardware": "Proceed to Hardware Check",
+        "ai.step2_title": "Hardware Detection & Authorization",
+        "ai.gpu_checking": "Detecting WebGPU capability...",
+        "ai.gpu_supported": "WebGPU is supported on your browser! Hardware acceleration is functional.",
+        "ai.gpu_unsupported": "Your browser or graphics driver does not support WebGPU execution.",
+        "ai.auth_agree": "I authorize downloading the quantized AI model (~300MB) to local browser storage.",
+        "ai.btn_start_load": "Agree & Load Model",
+        "ai.step3_title": "Loading Model Weights",
+        "ai.loading_desc": "Downloading & compiling ONNX WebGPU weights. Downloaded weights will be cached locally.",
+        "ai.btn_cancel": "Cancel Loading",
+        "ai.load_error": "Service temporarily unavailable. Model failed to load.",
+        "ai.send": "Send",
+        "ai.placeholder": "Ask a question about your router, network, or dorm setup...",
+        "ai.close_confirm": "Current chat history will be lost. Are you sure you want to close?",
+        "ai.beforeunload": "Next time you open, the model will need to be reloaded."
       },
       de: {
-        appTitle: "WebGPU KI-Chat",
-        statusNotReady: "Nicht bereit",
-        statusWorker: "Worker",
-        statusLoading: "Worker startet...",
-        statusDownloading: "Gewichte herunterladen...",
-        statusReady: "Online (WebGPU)",
-        statusFailed: "Fehlgeschlagen",
-        selectModelTitle: "Lokales KI-Modell auswählen",
-        selectModelSubtitle: "Läuft im Hintergrund ohne UI-Verzögerung",
-        qwenName: "Qwen2.5 0.5B",
-        qwenDesc: "Starkes allgemeines Verständnis, hervorragend mehrsprachig",
-        qwenSize: "~350 MB",
-        llamaName: "Llama 3.2 1B",
-        llamaDesc: "Leichtes Meta-Modell mit starker Argumentationsfähigkeit",
-        llamaSize: "~700 MB",
-        badgeRecommended: "Empfohlen",
-        securityNoteTitle: "Lokale Sicherheit:",
-        securityNoteDesc: "Daten verbleiben im Speichers des Browsers und werden nicht an Server gesendet.",
-        btnInit: "Initialisieren & Modell laden",
-        loadingTitle: "Initialisierung...",
-        loadingSubtext: "Starten des Hintergrund-Worker-Threads...",
-        errorTitle: "Dienst vorübergehend nicht verfügbar",
-        btnReturn: "Zurück",
-        chatBadge: "WebGPU Worker Bereit",
-        welcomeAi: "Hallo! Ich bin bereit, Ihnen zu helfen. Schreiben Sie eine Nachricht, um zu testen!",
-        inputPlaceholder: "iMessage",
-        errTryOther: "Laden von {currentModel} fehlgeschlagen. Bitte versuchen Sie stattdessen {otherModel} zu laden.",
-        errTryLater: "Beide Modelle konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+        "nav.setup": "Einrichtung",
+        "nav.security": "Sicherheit",
+        "nav.support": "Support",
+        "nav.media": "Medien",
+        "hero.title": "Internet-Informationen für Dich",
+        "hero.subtitle": "Willkommen auf der offiziellen Netzwerk-Informationsseite für Bewohner der Wohnanlage Chiemgauer Str. Hier findest Du Schritt-für-Schritt-Anleitungen zur Router-Einrichtung, Sicherheitsregeln und Hilfe.",
+        "service.label": "Persönliche Hilfe",
+        "service.heading": "Zweiwöchentliche Sprechzeiten",
+        "service.location": "Alle zwei Wochen am Freitag um 19:00 Uhr (1 Stunde vor der Dorm Bar Night) in den Gemeinschaftsräumen, Traunsteiner Str. 5.",
+        "service.next": "Nächster Termin",
+        "service.time": "19:00 - 20:00 Uhr",
+        "setup.title": "Router-Einrichtungsanleitung",
+        "setup.subtitle": "Generischer WLAN-Router",
+        "wizard.step1_tab": "Kabel & WAN",
+        "wizard.step2_tab": "WLAN-Verbindung",
+        "wizard.step3_tab": "Admin-Login (Opt)",
+        "wizard.step4_tab": "Router-Anleitungen",
+        "wizard.btn_prev": "Vorheriger Schritt",
+        "wizard.btn_next": "Nächster Schritt",
+        "led.title": "Interaktiver LED-Diagnose-Inspektor",
+        "led.instruction_hint": "Klicke auf einzelne Lampen, um den Status Deines Routers nachzubilden",
+        "security.title": "Netzwerksicherheit & Regeln",
+        "security.rules_heading": "Wichtige Wohnheim-Netzwerkregeln",
+        "security.rule1": "Schließe die Ethernet-Wanddose ausschließlich an den BLAUEN WAN-Port Deines Routers an.",
+        "security.rule2": "Vermeide das Anstecken von Wandkabeln an gelbe LAN-Ports, um Netzwerkschleifen auf Deinem Stockwerk zu verhindern.",
+        "security.rule3": "Halte Dein Router-Administrator-Passwort stets geheim und aktualisiert.",
+        "security.rule4": "Halte Dich strikt an die LRZ-Nutzungsrichtlinien bezüglich Urheberrecht und Sicherheit.",
+        "security.check_heading": "Sicherheits-Selbsttest",
+        "status.maintenance": "Wartung",
+        "security.check_offline_title": "Werkzeug vorübergehend nicht verfügbar",
+        "security.check_offline_desc": "Der automatische Selbsttest wird derzeit gewartet. Bitte beachte die Richtlinien links oder besuche uns in der Freitags-Sprechstunde.",
+        "security.check_disabled_btn": "Selbsttest Offline",
+        "support.title": "Support, Hilfe & Links",
+        "support.card_service_title": "Persönliche Sprechzeiten",
+        "support.card_service_desc": "Hole Dir alle zwei Wochen freitags um 19:00 Uhr in Traunsteiner Str. 5 Hilfe von Netzwerk-Tutoren.",
+        "support.card_wa_title": "Haus-WhatsApp-Gruppe",
+        "support.card_wa_desc": "Scanne den offiziellen QR-Code am Aushang neben dem Haupteingang jedes Gebäudes für direkte Updates.",
+        "support.poster_location": "Aushang am Gebäudeeingang",
+        "speed.title": "Internet-Geschwindigkeitstest",
+        "speed.description": "Teste Deine Bandbreite, Upload-Geschwindigkeit und Latenz direkt über Speedtest von Ookla.",
+        "speed.button": "Speedtest starten",
+        "support.card_ai_title": "KI-Assistent fragen",
+        "support.card_ai_desc": "Lokale KI-Inferenz via WebGPU für Router-Einrichtung ohne Cloud-API-Weiterleitung.",
+        "support.card_ai_btn": "KI-Assistent starten",
+        "media.title": "Video-Einrichtungsanleitungen",
+        "media.heading": "YouTube Video-Suche",
+        "media.description": "Suchst Du nach anschaulichen Video-Anleitungen? Suche allgemeine Schritte zur Router-Einrichtung direkt auf YouTube.",
+        "media.button": "Auf YouTube suchen",
+        "footer.provider": "Netzwerkanbieter: <strong>Leibniz-Rechenzentrum (LRZ)</strong>",
+        "footer.back_to_top": "Nach oben",
+        "a11y.title": "Barrierefreiheit-Einstellungen",
+        "a11y.theme_label": "Farbmodus",
+        "a11y.font_label": "Schriftstil",
+        "a11y.contrast_label": "Hoher Kontrast",
+        "a11y.contrast_activate": "Hohen Kontrast aktivieren",
+        "a11y.contrast_deactivate": "Hohen Kontrast deaktivieren",
+        "disclaimer.title": "Hinweis zu externem Link",
+        "disclaimer.body": "Du verlässt nun das Portal der Network Tutors und wirst zu einer externen Webseite weitergeleitet:",
+        "disclaimer.note": "Die Network Tutors sind nicht für Inhalte externer Seiten verantwortlich.",
+        "disclaimer.cancel": "Abbrechen",
+        "disclaimer.proceed": "Weiter",
+        "ai.title": "Lokaler KI-Assistent (WebGPU)",
+        "ai.step1_title": "Apertus-Modell & WebGPU-Technologie",
+        "ai.step1_desc": "Dieses Modul nutzt Apertus 0.5B, ein kompaktes Sprachmodell des Swiss AI Teams. Mittels Transformers.js und ONNX Runtime Web erfolgt die Inferenz direkt im Browser über WebGPU-Hardwarebeschleunigung. Alle Berechnungen und Texteingaben verbleiben lokal im Browserprozess ohne Übertragung an externe Server-APIs.",
+        "ai.disclaimer_title": "Haftungsausschluss",
+        "ai.disclaimer": "Hinweis: KI-generierte Antworten können Fehler enthalten. Bitte prüfe wichtige Anweisungen bei den Netzwerktutoren.",
+        "ai.btn_hardware": "Weiter zur Hardware-Prüfung",
+        "ai.step2_title": "Hardware-Erkennung & Autorisierung",
+        "ai.gpu_checking": "Prüfe WebGPU-Unterstützung...",
+        "ai.gpu_supported": "WebGPU wird von Deinem Browser unterstützt!",
+        "ai.gpu_unsupported": "Dein Browser oder Treibersystem unterstützt kein WebGPU.",
+        "ai.auth_agree": "Ich stimme dem Herunterladen des KI-Modells (~300MB) in den lokalen Speicher zu.",
+        "ai.btn_start_load": "Zustimmen & Modell laden",
+        "ai.step3_title": "Modellgewichte werden geladen",
+        "ai.loading_desc": "Lade & kompiliere ONNX-WebGPU-Dateien. Die heruntergeladenen Dateien werden lokal gespeichert.",
+        "ai.btn_cancel": "Laden abbrechen",
+        "ai.load_error": "Dienst vorübergehend nicht verfügbar. Modell konnte nicht geladen werden.",
+        "ai.send": "Senden",
+        "ai.placeholder": "Stelle eine Frage zu Router, Netzwerk oder Wohnheim...",
+        "ai.close_confirm": "Der aktuelle Chatverlauf geht verloren. Möchtest Du wirklich schließen?",
+        "ai.beforeunload": "Beim nächsten Öffnen muss das Modell erneut geladen werden."
+      },
+      fr: {
+        "nav.setup": "Guide d'installation",
+        "nav.security": "Sécurité",
+        "nav.support": "Support",
+        "nav.media": "Médias",
+        "hero.title": "Informations Internet pour vous",
+        "hero.subtitle": "Bienvenue sur la page d'information réseau officielle pour les résidents de Wohnanlage Chiemgauer Str. Vous y trouverez des guides de configuration de routeur, des règles de sécurité et de l'assistance.",
+        "service.label": "Assistance en personne",
+        "service.heading": "Heures de service bimensuelles",
+        "service.location": "Organisées un vendredi sur deux à 19h00 (1 heure avant la soirée bar du foyer) dans les salles communes de Traunsteiner Str. 5.",
+        "service.next": "Prochaine session",
+        "service.time": "19:00 - 20:00 CET",
+        "setup.title": "Guide de configuration du routeur",
+        "setup.subtitle": "Routeur Wi-Fi générique",
+        "wizard.step1_tab": "Câblage & WAN",
+        "wizard.step2_tab": "Connexion Wi-Fi",
+        "wizard.step3_tab": "Admin Login (Opt)",
+        "wizard.step4_tab": "Manuels routeur",
+        "wizard.btn_prev": "Étape précédente",
+        "wizard.btn_next": "Étape suivante",
+        "led.title": "Inspecteur interactif de diagnostic LED",
+        "led.instruction_hint": "Cliquez sur les voyants ci-dessous pour recréer l'état de votre routeur",
+        "security.title": "Sécurité réseau & Règles",
+        "security.rules_heading": "Règles réseau essentielles de la résidence",
+        "security.rule1": "Branchez toujours la prise murale Ethernet exclusivement sur le port WAN BLEU de votre routeur.",
+        "security.rule2": "Évitez de brancher des câbles muraux sur les ports LAN jaunes afin d'éviter les boucles réseau sur votre étage.",
+        "security.rule3": "Conservez le mot de passe administrateur de votre routeur à jour et sécurisé.",
+        "security.rule4": "Respectez strictement les conditions d'utilisation du LRZ concernant les droits d'auteur et la sécurité.",
+        "security.check_heading": "Auto-évaluation de sécurité",
+        "status.maintenance": "Maintenance",
+        "security.check_offline_title": "Outil temporairement indisponible",
+        "security.check_offline_desc": "L'outil d'auto-évaluation automatique est actuellement en maintenance programmée. Veuillez vous référer aux consignes à gauche ou nous rendre visite le vendredi.",
+        "security.check_disabled_btn": "Auto-évaluation hors ligne",
+        "support.title": "Support, Assistance & Liens",
+        "support.card_service_title": "Heures de service en personne",
+        "support.card_service_desc": "Obtenez de l'aide directe un vendredi sur deux à 19h00 dans les salles communes de Traunsteiner Str. 5.",
+        "support.card_wa_title": "Groupe WhatsApp du bâtiment",
+        "support.card_wa_desc": "Scannez l'affiche avec le code QR officiel située à l'entrée principale de chaque immeuble.",
+        "support.poster_location": "Affiche à l'entrée de l'immeuble",
+        "speed.title": "Test de vitesse Internet",
+        "speed.description": "Testez votre débit, votre envoi et votre latence directement via Speedtest de Ookla.",
+        "speed.button": "Lancer le test",
+        "support.card_ai_title": "Assistant IA Local",
+        "support.card_ai_desc": "Inférence IA côté client via WebGPU pour le paramétrage du routeur sans routage API cloud.",
+        "support.card_ai_btn": "Lancer l'assistant IA",
+        "media.title": "Guides d'installation vidéo",
+        "media.heading": "Recherche vidéo YouTube",
+        "media.description": "Vous cherchez des tutoriels vidéo ? Recherchez des guides généraux d'installation de routeur directement sur YouTube.",
+        "media.button": "Rechercher sur YouTube",
+        "footer.provider": "Fournisseur réseau : <strong>Leibniz-Rechenzentrum (LRZ)</strong>",
+        "footer.back_to_top": "Retour en haut",
+        "a11y.title": "Paramètres d'accessibilité",
+        "a11y.theme_label": "Mode couleur",
+        "a11y.font_label": "Style typographique",
+        "a11y.contrast_label": "Mode contraste élevé",
+        "a11y.contrast_activate": "Activer le contraste élevé",
+        "a11y.contrast_deactivate": "Désactiver le contraste élevé",
+        "disclaimer.title": "Avis de lien externe",
+        "disclaimer.body": "Vous allez quitter le portail Network Tutors pour vous rendre sur un site externe :",
+        "disclaimer.note": "Les Network Tutors ne sont pas responsables du contenu des sites externes.",
+        "disclaimer.cancel": "Annuler",
+        "disclaimer.proceed": "Poursuivre",
+        "ai.title": "Assistant IA Local (WebGPU)",
+        "ai.step1_title": "Modèle Apertus & Architecture WebGPU",
+        "ai.step1_desc": "Cette fonctionnalité utilise Apertus 0.5B, un modèle de langage compact développé par Swiss AI. Grâce à Transformers.js et ONNX Runtime Web, l'inférence s'exécute directement dans votre navigateur via l'accélération WebGPU. Le traitement des messages s'effectue au sein du processus navigateur local sans transit par des API cloud.",
+        "ai.disclaimer_title": "Avertissement",
+        "ai.disclaimer": "Avertissement : Les réponses générées peuvent contenir des erreurs. Veuillez vérifier les consignes importantes auprès des tuteurs.",
+        "ai.btn_hardware": "Passer au test matériel",
+        "ai.step2_title": "Détection matérielle & Autorisation",
+        "ai.gpu_checking": "Vérification de la compatibilité WebGPU...",
+        "ai.gpu_supported": "WebGPU est pris en charge par votre navigateur !",
+        "ai.gpu_unsupported": "Votre navigateur ou pilote graphique ne prend pas en charge WebGPU.",
+        "ai.auth_agree": "J'autorise le téléchargement du modèle d'IA quantifié (~300 Mo) dans le stockage local.",
+        "ai.btn_start_load": "Accepter & Charger le modèle",
+        "ai.step3_title": "Chargement des poids du modèle",
+        "ai.loading_desc": "Téléchargement & compilation des poids ONNX WebGPU. Les fichiers seront stockés en cache local.",
+        "ai.btn_cancel": "Annuler le chargement",
+        "ai.load_error": "Service temporairement indisponible. Échec du chargement.",
+        "ai.send": "Envoyer",
+        "ai.placeholder": "Posez une question sur votre routeur ou le réseau du foyer...",
+        "ai.close_confirm": "L'historique actuel sera perdu. Voulez-vous vraiment fermer ?",
+        "ai.beforeunload": "Lors de la prochaine ouverture, le modèle devra être rechargé."
       }
     };
 
     let currentLang = 'en';
-    let selectedModelId = 'onnx-community/Qwen2.5-0.5B-Instruct';
-    let selectedModelName = 'Qwen2.5 0.5B';
 
-    // Track failed model loads
-    const failedModels = new Set();
-
-    let aiWorker = null;
-    let chatHistory = [];
-    let currentAiBubble = null;
-    let accumulatedResponse = '';
-
-    // Language Switcher Function
-    function changeLanguage(lang) {
+    function setLanguage(lang) {
       if (!translations[lang]) return;
       currentLang = lang;
 
-      // Update all data-i18n elements
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
+      document.querySelectorAll('[data-i18n]').forEach(elem => {
+        const key = elem.getAttribute('data-i18n');
         if (translations[lang][key]) {
-          el.innerText = translations[lang][key];
+          elem.innerHTML = translations[lang][key];
         }
       });
 
-      // Update placeholder attributes
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(elem => {
+        const key = elem.getAttribute('data-i18n-placeholder');
         if (translations[lang][key]) {
-          el.placeholder = translations[lang][key];
+          elem.placeholder = translations[lang][key];
         }
       });
-    }
 
-    // Format text to fix missing space after punctuation
-    function formatTextSpacing(text) {
-      if (!text) return '';
-      // Ensure a space exists after punctuation marks (. , ! ? ; :) if followed immediately by a letter or digit
-      return text.replace(/([.,!?;:])([A-Za-z0-9])/g, '$1 $2');
-    }
-
-    function selectModelOption(elem, modelId, modelName) {
-      document.querySelectorAll('.model-option').forEach(el => {
-        el.className = 'block p-3 border border-slate-200 dark:border-zinc-800 hover:border-slate-300 rounded-xl cursor-pointer transition-all model-option';
-        const radio = el.querySelector('input[type="radio"]');
-        if (radio) radio.checked = false;
+      ['en', 'de', 'fr'].forEach(l => {
+        const checkElem = document.getElementById(`lang-check-${l}`);
+        if (checkElem) checkElem.style.opacity = (l === lang) ? '1' : '0';
       });
 
-      elem.className = 'block p-3 border-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 rounded-xl cursor-pointer transition-all model-option';
-      const currentRadio = elem.querySelector('input[type="radio"]');
-      if (currentRadio) currentRadio.checked = true;
-
-      selectedModelId = modelId;
-      selectedModelName = modelName;
+      updateWizardStepUI(currentWizardStep);
+      calculateNextServiceDate();
+      analyzeLedStates();
+      updateHighContrastButtonText();
+      closeLanguageModal();
     }
 
-    async function checkAndStartLoading() {
-      switchView('view-loading');
-      document.getElementById('loading-title').innerText = `${translations[currentLang].loadingTitle} (${selectedModelName})`;
-      document.getElementById('status-badge').innerText = translations[currentLang].statusLoading;
-      document.getElementById('error-box').classList.add('hidden');
+    /* -------------------------------------------------------------------------- */
+    /* 2. DYNAMIC BI-WEEKLY SERVICE DATE CALCULATOR                               */
+    /* -------------------------------------------------------------------------- */
+    function calculateNextServiceDate() {
+      const baseDate = new Date('2026-10-23T19:00:00');
+      const now = new Date();
+      let targetDate = new Date(baseDate);
 
-      if (!('gpu' in navigator)) {
-        handleLoadFailure('WebGPU not supported by browser');
-        return;
+      while (targetDate <= now) {
+        targetDate.setDate(targetDate.getDate() + 14);
       }
 
-      try {
-        const adapter = await navigator.gpu.requestAdapter();
-        if (!adapter) {
-          handleLoadFailure('No compatible WebGPU adapter found');
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const formattedDate = targetDate.toLocaleDateString(currentLang === 'de' ? 'de-DE' : (currentLang === 'fr' ? 'fr-FR' : 'en-US'), options);
+
+      const displayElem = document.getElementById('next-service-date');
+      if (displayElem) displayElem.innerText = formattedDate;
+
+      const supportCardElem = document.getElementById('support-card-next-date');
+      if (supportCardElem) supportCardElem.innerText = formattedDate;
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 3. ROUTER SETUP WIZARD & MOCKUPS                                           */
+    /* -------------------------------------------------------------------------- */
+    let currentWizardStep = 1;
+
+    const stepDetails = {
+      en: {
+        1: { title: "Step 1: Connecting Power Adapter & Wall Ethernet", desc: "Plug your router's power adapter into an electrical outlet and turn the power switch ON. Connect an Ethernet cable from your room's wall socket strictly into the <strong>BLUE WAN PORT</strong> on the back of your router." },
+        2: { title: "Step 2: Connecting Devices to Default Wi-Fi", desc: "Allow 60 seconds for the router to boot up. Search for available Wi-Fi networks. The default network name (SSID) and Wireless Password are on the router sticker." },
+        3: { title: "Step 3 (Optional): Accessing Router Web Management", desc: "Open a web browser and enter your router's default IP (<code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.0.1</code> or <code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.1.1</code>). Log in using admin credentials on the sticker." },
+        4: { title: "Step 4: Official Router Documentation & Manufacturer Manuals", desc: "Select your router brand below to access official support, PDF manuals, and device drivers." }
+      },
+      de: {
+        1: { title: "Schritt 1: Stromversorgung & WAN-Kabel anschließen", desc: "Schließe das Netzteil an. Verbinde ein Ethernet-Kabel von der Wanddose ausschließlich mit dem <strong>BLAUEN WAN-PORT</strong> auf der Rückseite des Routers." },
+        2: { title: "Schritt 2: Mit dem Standard-WLAN verbinden", desc: "Warte 60 Sekunden. Verbinde Dein Gerät mit dem Standard-WLAN. Name (SSID) und Passwort findest Du auf dem Aufkleber des Routers." },
+        3: { title: "Schritt 3 (Optional): Router-Weboberfläche aufrufen", desc: "Öffne einen Browser und gib die Gateway-IP ein (<code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.0.1</code>). Nutze die Zugangsdaten vom Aufkleber." },
+        4: { title: "Schritt 4: Offizielle Router-Anleitungen", desc: "Wähle Deine Router-Marke aus, um zu offiziellen Handbüchern und Support-Seiten zu gelangen." }
+      },
+      fr: {
+        1: { title: "Étape 1 : Branchement secteur et câble murale", desc: "Branchez l'alimentation. Connectez un câble Ethernet de la prise murale au <strong>PORT WAN BLEU</strong> à l'arrière du routeur." },
+        2: { title: "Étape 2 : Connexion au Wi-Fi par défaut", desc: "Patientez 60 secondes. Connectez votre appareil au réseau Wi-Fi par défaut indiqué sur l'étiquette du routeur." },
+        3: { title: "Étape 3 (Optionnel) : Gestion web du routeur", desc: "Entrez l'adresse IP (<code class='font-mono bg-gray-100 dark:bg-gray-800 px-1 py-0.5 text-xs'>192.168.0.1</code>) dans un navigateur et connectez-vous avec les identifiants." },
+        4: { title: "Étape 4 : Manuels officiels des fabricants", desc: "Sélectionnez la marque de votre routeur ci-dessous pour accéder aux manuels officiels." }
+      }
+    };
+
+    function setWizardStep(step) {
+      if (step < 1) step = 1;
+      if (step > 4) step = 4;
+      currentWizardStep = step;
+      updateWizardStepUI(step);
+    }
+
+    function prevWizardStep() { setWizardStep(currentWizardStep - 1); }
+    function nextWizardStep() { setWizardStep(currentWizardStep + 1); }
+
+    function updateWizardStepUI(step) {
+      for (let i = 1; i <= 4; i++) {
+        const tab = document.getElementById(`wizard-tab-${i}`);
+        if (tab) {
+          tab.className = (i === step)
+            ? "p-3 text-left border border-morandi-slate dark:border-white bg-morandi-slate text-white transition-all font-medium text-sm flex items-center space-x-2"
+            : "p-3 text-left border border-[#DCE0D8] dark:border-[#33383F] bg-white dark:bg-morandi-darkcard text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all font-medium text-sm flex items-center space-x-2";
+        }
+      }
+
+      const prevBtn = document.getElementById('btn-prev-step');
+      const nextBtn = document.getElementById('btn-next-step');
+      const counter = document.getElementById('wizard-step-counter');
+
+      if (prevBtn) prevBtn.disabled = (step === 1);
+      if (nextBtn) nextBtn.disabled = (step === 4);
+      if (counter) counter.innerText = `Step ${step} of 4`;
+
+      const contentBox = document.getElementById('wizard-step-content');
+      if (contentBox && stepDetails[currentLang] && stepDetails[currentLang][step]) {
+        const stepData = stepDetails[currentLang][step];
+        contentBox.innerHTML = `
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white">${stepData.title}</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">${stepData.desc}</p>
+        `;
+      }
+
+      const visualContainer = document.getElementById('wizard-visual-container');
+      if (!visualContainer) return;
+
+      if (step === 1) {
+        visualContainer.innerHTML = `
+          <div class="flex items-center justify-between text-xs text-gray-500 uppercase tracking-wider font-mono mb-2">
+            <span>Generic Router Rear Panel</span>
+          </div>
+          <div class="w-full overflow-x-auto py-2">
+            <svg viewBox="0 0 700 180" class="w-full max-w-2xl mx-auto min-w-[500px]">
+              <rect x="20" y="30" width="660" height="120" fill="#2A3439" stroke="#1E2225" stroke-width="4" />
+              <rect x="30" y="40" width="640" height="100" fill="#1E2225" />
+              <rect x="190" y="70" width="40" height="40" fill="#2563EB" stroke="#60A5FA" stroke-width="3" />
+              <text x="210" y="130" fill="#60A5FA" font-size="12" font-weight="bold" text-anchor="middle">WAN (BLUE)</text>
+              <rect x="260" y="70" width="36" height="40" fill="#D97706" stroke="#FBBF24" stroke-width="2" />
+              <rect x="306" y="70" width="36" height="40" fill="#D97706" stroke="#FBBF24" stroke-width="2" />
+              <rect x="352" y="70" width="36" height="40" fill="#D97706" stroke="#FBBF24" stroke-width="2" />
+              <rect x="398" y="70" width="36" height="40" fill="#D97706" stroke="#FBBF24" stroke-width="2" />
+              <text x="347" y="130" fill="#FBBF24" font-size="11" text-anchor="middle">LAN 1 - 4 (YELLOW)</text>
+            </svg>
+          </div>
+        `;
+      } else {
+        visualContainer.innerHTML = `<div class="p-4 text-xs font-mono text-gray-500 text-center">Step ${step} Configuration Visual Active</div>`;
+      }
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 4. LED DIAGNOSTICS LOGIC                                                   */
+    /* -------------------------------------------------------------------------- */
+    const routerLeds = { power: 'green', internet: 'green', wlan: 'green', lan: 'green' };
+
+    function toggleLedState(ledKey) {
+      if (ledKey === 'power') routerLeds.power = (routerLeds.power === 'green') ? 'off' : 'green';
+      else if (ledKey === 'internet') {
+        if (routerLeds.internet === 'green') routerLeds.internet = 'amber';
+        else if (routerLeds.internet === 'amber') routerLeds.internet = 'off';
+        else routerLeds.internet = 'green';
+      } else if (ledKey === 'wlan') routerLeds.wlan = (routerLeds.wlan === 'green') ? 'off' : 'green';
+      else if (ledKey === 'lan') routerLeds.lan = (routerLeds.lan === 'green') ? 'off' : 'green';
+
+      updateLedVisualsUI();
+      analyzeLedStates();
+    }
+
+    function updateLedVisualsUI() {
+      const dotPower = document.getElementById('led-dot-power');
+      if (dotPower) dotPower.className = (routerLeds.power === 'green') ? "w-6 h-6 rounded-full led-glow-green" : "w-6 h-6 rounded-full led-off";
+      const dotInternet = document.getElementById('led-dot-internet');
+      if (dotInternet) {
+        if (routerLeds.internet === 'green') dotInternet.className = "w-6 h-6 rounded-full led-glow-green";
+        else if (routerLeds.internet === 'amber') dotInternet.className = "w-6 h-6 rounded-full led-glow-amber";
+        else dotInternet.className = "w-6 h-6 rounded-full led-off";
+      }
+    }
+
+    function analyzeLedStates() {
+      const output = document.getElementById('led-diagnostic-output');
+      if (!output) return;
+
+      if (routerLeds.power === 'off') {
+        output.className = "p-5 border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-sm space-y-2";
+        output.innerHTML = `<div class="font-bold text-red-700">Power Light Off — Check power adapter and power switch.</div>`;
+      } else {
+        output.className = "p-5 border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-sm space-y-2";
+        output.innerHTML = `<div class="font-bold text-emerald-800">All Systems Normal — Router powered and ready.</div>`;
+      }
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 5. GENERAL MODALS & ACCESSIBILITY                                          */
+    /* -------------------------------------------------------------------------- */
+    function toggleMobileMenu() { document.getElementById('mobile-menu')?.classList.toggle('hidden'); }
+    function openLanguageModal() { document.getElementById('modal-language')?.classList.remove('hidden'); }
+    function closeLanguageModal() { document.getElementById('modal-language')?.classList.add('hidden'); }
+    function openAccessibilityModal() { document.getElementById('modal-accessibility')?.classList.remove('hidden'); }
+    function closeAccessibilityModal() { document.getElementById('modal-accessibility')?.classList.add('hidden'); }
+    function openExternalNotice(url) {
+      const modal = document.getElementById('modal-external');
+      const urlDisplay = document.getElementById('external-url-display');
+      const proceedBtn = document.getElementById('external-proceed-btn');
+      if (urlDisplay) urlDisplay.innerText = url;
+      if (proceedBtn) proceedBtn.href = url;
+      modal?.classList.remove('hidden');
+    }
+    function closeExternalModal() { document.getElementById('modal-external')?.classList.add('hidden'); }
+    function toggleDarkMode(isDark) {
+      if (isDark) { document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); }
+      else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); }
+    }
+    function toggleSerifFont(useSerif) {
+      if (useSerif) document.body.classList.add('use-serif');
+      else document.body.classList.remove('use-serif');
+    }
+    function toggleHighContrast() {
+      document.body.classList.toggle('high-contrast');
+      updateHighContrastButtonText();
+    }
+    function updateHighContrastButtonText() {
+      const contrastBtn = document.getElementById('contrast-toggle-btn');
+      if (!contrastBtn) return;
+      const isHighContrast = document.body.classList.contains('high-contrast');
+      contrastBtn.innerText = isHighContrast ? "Deactivate High Contrast" : "Activate High Contrast";
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 6. REFINED CLIENT-SIDE WEBGPU AI MODULE (Transformers.js v3)              */
+    /* -------------------------------------------------------------------------- */
+    let aiPipeline = null;
+    let isAiLoading = false;
+    let isAiLoaded = false;
+    let aiChatHistory = [];
+    const fileProgressMap = {};
+
+    function openAiModal() {
+      document.getElementById('modal-ai')?.classList.remove('hidden');
+      if (!isAiLoaded) {
+        goToAiStep(1);
+      } else {
+        goToAiStep(4);
+      }
+    }
+
+    function attemptCloseAiModal() {
+      if (isAiLoaded || aiChatHistory.length > 0) {
+        const confirmMsg = translations[currentLang]["ai.close_confirm"] || "Current chat history will be lost. Are you sure you want to close?";
+        if (!confirm(confirmMsg)) {
           return;
         }
+      }
+      if (isAiLoading) {
+        cancelAiModelLoading();
+      }
+      document.getElementById('modal-ai')?.classList.add('hidden');
+    }
 
-        const blob = new Blob([workerScriptCode], { type: 'application/javascript' });
-        const workerUrl = URL.createObjectURL(blob);
-        
-        aiWorker = new Worker(workerUrl, { type: 'module' });
+    function goToAiStep(stepNum) {
+      [1, 2, 3, 4].forEach(s => {
+        const elem = document.getElementById(`ai-step-${s}`);
+        if (elem) elem.classList.add('hidden');
+      });
 
-        aiWorker.onerror = (err) => {
-          console.error('Worker Fatal Error:', err);
-          handleLoadFailure(err.message || 'Worker thread initialization error');
-        };
+      const currentElem = document.getElementById(`ai-step-${stepNum}`);
+      if (currentElem) currentElem.classList.remove('hidden');
 
-        aiWorker.onmessage = (e) => {
-          const { status, percent, token, error } = e.data;
+      if (stepNum === 2) {
+        checkWebGpuSupport();
+      }
+    }
 
-          if (status === 'progress') {
-            document.getElementById('progress-bar').style.width = `${percent}%`;
-            document.getElementById('progress-percent').innerText = `${percent}%`;
-            document.getElementById('loading-subtext').innerText = `${translations[currentLang].statusDownloading} ${percent}%`;
-          } else if (status === 'ready') {
-            document.getElementById('header-model-name').innerText = selectedModelName;
-            document.getElementById('chat-badge-model').innerText = `${selectedModelName} (${translations[currentLang].statusReady})`;
-            document.getElementById('status-badge').innerText = translations[currentLang].statusReady;
-            document.getElementById('status-badge').className = 'text-[11px] text-emerald-500 font-medium';
-            switchView('view-chat');
-          } else if (status === 'update') {
-            if (currentAiBubble) {
-              accumulatedResponse += token;
-              // Apply formatting to ensure punctuation and word spacing is handled cleanly
-              currentAiBubble.innerText = formatTextSpacing(accumulatedResponse);
-              scrollChat();
+    async function checkWebGpuSupport() {
+      const gpuStatus = document.getElementById('ai-gpu-status');
+      const consentBox = document.getElementById('ai-consent-box');
+      const unsupportedActions = document.getElementById('ai-gpu-unsupported-actions');
+
+      if (!gpuStatus) return;
+
+      if ('gpu' in navigator) {
+        try {
+          const adapter = await navigator.gpu.requestAdapter();
+          if (adapter) {
+            const device = await adapter.requestDevice();
+            if (device) {
+              gpuStatus.className = "p-4 border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-xs sm:text-sm text-emerald-800 dark:text-emerald-200";
+              gpuStatus.innerHTML = `
+                <div class="flex items-center gap-2 font-bold">
+                  <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                  <span>${translations[currentLang]["ai.gpu_supported"]}</span>
+                </div>
+              `;
+              if (consentBox) consentBox.classList.remove('hidden');
+              if (unsupportedActions) unsupportedActions.classList.add('hidden');
+              return;
             }
-          } else if (status === 'complete') {
-            document.getElementById('btn-send').disabled = false;
-            if (currentAiBubble) {
-              chatHistory.push({ role: 'assistant', content: currentAiBubble.innerText });
-              currentAiBubble = null;
-            }
-          } else if (status === 'error') {
-            handleLoadFailure(error);
           }
-        };
-
-        aiWorker.postMessage({ type: 'load', data: { modelId: selectedModelId } });
-
-      } catch (err) {
-        console.error('Init Worker Exception:', err);
-        handleLoadFailure(err.message);
-      }
-    }
-
-    function handleLoadFailure(rawError) {
-      failedModels.add(selectedModelId);
-
-      const otherModelName = (selectedModelId.includes('Qwen')) ? 'Llama 3.2 1B' : 'Qwen2.5 0.5B';
-      let userErrorMsg = '';
-
-      // Check if both Qwen and Llama have failed
-      if (failedModels.size >= 2) {
-        userErrorMsg = translations[currentLang].errTryLater;
-      } else {
-        userErrorMsg = translations[currentLang].errTryOther
-          .replace('{currentModel}', selectedModelName)
-          .replace('{otherModel}', otherModelName);
+        } catch (e) {
+          console.warn("WebGPU initialization check error:", e);
+        }
       }
 
-      showError(userErrorMsg);
-    }
-
-    function sendMessage(e) {
-      e.preventDefault();
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-
-      if (!text || !aiWorker) return;
-
-      input.value = '';
-      document.getElementById('btn-send').disabled = true;
-
-      const chatContainer = document.getElementById('chat-messages');
-
-      // User Message
-      const userBubbleWrap = document.createElement('div');
-      userBubbleWrap.className = 'flex flex-col items-end space-y-1 max-w-[85%] ml-auto w-full';
-      userBubbleWrap.innerHTML = `
-        <div class="imessage-bubble-user px-3.5 py-2 text-xs sm:text-sm leading-snug shadow-sm max-w-[85%] break-words whitespace-pre-wrap overflow-hidden font-sans">
-          ${escapeHtml(text)}
+      gpuStatus.className = "p-4 border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-xs sm:text-sm text-red-800 dark:text-red-200";
+      gpuStatus.innerHTML = `
+        <div class="flex items-center gap-2 font-bold">
+          <i class="fa-solid fa-circle-xmark text-red-600"></i>
+          <span>${translations[currentLang]["ai.gpu_unsupported"]}</span>
         </div>
       `;
-      chatContainer.appendChild(userBubbleWrap);
-
-      // AI Message Wrapper
-      const aiBubbleWrap = document.createElement('div');
-      aiBubbleWrap.className = 'flex flex-col items-start space-y-1 max-w-[85%] mr-auto w-full';
-      
-      currentAiBubble = document.createElement('div');
-      currentAiBubble.className = 'imessage-bubble-ai px-3.5 py-2 text-xs sm:text-sm leading-snug shadow-sm max-w-[85%] break-words whitespace-pre-wrap overflow-hidden font-sans';
-      currentAiBubble.innerText = '';
-      accumulatedResponse = '';
-      
-      const modelLabel = document.createElement('span');
-      modelLabel.className = 'text-[9px] text-slate-400 px-1';
-      modelLabel.innerText = selectedModelName;
-
-      aiBubbleWrap.appendChild(currentAiBubble);
-      aiBubbleWrap.appendChild(modelLabel);
-      chatContainer.appendChild(aiBubbleWrap);
-
-      scrollChat();
-
-      aiWorker.postMessage({
-        type: 'generate',
-        data: { text, history: chatHistory }
-      });
-
-      chatHistory.push({ role: 'user', content: text });
+      if (consentBox) consentBox.classList.add('hidden');
+      if (unsupportedActions) unsupportedActions.classList.remove('hidden');
     }
 
-    function showError(msg) {
-      document.getElementById('loading-spinner').classList.add('hidden');
-      document.getElementById('error-message').innerText = msg;
-      document.getElementById('error-box').classList.remove('hidden');
-      document.getElementById('status-badge').innerText = translations[currentLang].statusFailed;
-      document.getElementById('status-badge').className = 'text-[11px] text-red-500 font-medium';
-    }
-
-    function cancelLoading() {
-      if (aiWorker) {
-        aiWorker.terminate();
-        aiWorker = null;
+    function toggleAiStartButton() {
+      const checkbox = document.getElementById('ai-consent-checkbox');
+      const startBtn = document.getElementById('ai-btn-start-load');
+      if (startBtn && checkbox) {
+        startBtn.disabled = !checkbox.checked;
       }
-      document.getElementById('status-badge').innerText = translations[currentLang].statusNotReady;
-      document.getElementById('status-badge').className = 'text-[11px] text-slate-500';
-      switchView('view-intro');
     }
 
-    function switchView(viewId) {
-      ['view-intro', 'view-loading', 'view-chat'].forEach(id => {
-        document.getElementById(id).classList.add('hidden');
-      });
-      document.getElementById(viewId).classList.remove('hidden');
+    async function startAiModelLoading() {
+      goToAiStep(3);
+      isAiLoading = true;
+
+      const progressBar = document.getElementById('ai-progress-bar');
+      const progressPercent = document.getElementById('ai-progress-percent');
+      const progressStatus = document.getElementById('ai-progress-status');
+      const loadErrorBox = document.getElementById('ai-load-error-box');
+
+      if (loadErrorBox) loadErrorBox.classList.add('hidden');
+      if (progressBar) progressBar.style.width = '0%';
+      if (progressPercent) progressPercent.innerText = '0%';
+      if (progressStatus) progressStatus.innerText = 'Initializing ONNX Runtime Web...';
+
+      try {
+        // Dynamic ESM import from CDN for Transformers.js v3
+        const { pipeline, env } = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3');
+
+        // Configure browser cache and disable local file lookups
+        env.allowLocalModels = false;
+        env.useBrowserCache = true;
+
+        // Apertus 0.5B ONNX Instruct model identifier
+        const MODEL_ID = 'onnx-community/Apertus-v1.1-0.5B-Instruct-ONNX';
+
+        aiPipeline = await pipeline('text-generation', MODEL_ID, {
+          device: 'webgpu',
+          dtype: 'q4', // Load 4-bit quantized ONNX graph
+          progress_callback: (p) => {
+            if (!isAiLoading) return;
+            if (p.status === 'progress') {
+              fileProgressMap[p.file || 'main'] = p.progress || 0;
+              const files = Object.keys(fileProgressMap);
+              const totalProgress = Math.round(
+                files.reduce((sum, key) => sum + fileProgressMap[key], 0) / (files.length || 1)
+              );
+              if (progressBar) progressBar.style.width = `${totalProgress}%`;
+              if (progressPercent) progressPercent.innerText = `${totalProgress}%`;
+              if (progressStatus) progressStatus.innerText = `Downloading ONNX weights... ${totalProgress}%`;
+            } else if (p.status === 'ready') {
+              if (progressStatus) progressStatus.innerText = 'Model compiled & ready.';
+            }
+          }
+        });
+
+        isAiLoading = false;
+        isAiLoaded = true;
+
+        // Attach unload listener after model is successfully loaded
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        goToAiStep(4);
+      } catch (error) {
+        console.error("WebGPU AI Model Load Error:", error);
+        isAiLoading = false;
+        if (loadErrorBox) {
+          loadErrorBox.classList.remove('hidden');
+        }
+        if (progressStatus) {
+          progressStatus.innerText = 'Service temporarily unavailable / 服务暂时不可用';
+        }
+      }
     }
 
-    function scrollChat() {
-      const box = document.getElementById('chat-messages');
-      box.scrollTop = box.scrollHeight;
+    function cancelAiModelLoading() {
+      isAiLoading = false;
+      aiPipeline = null;
+      goToAiStep(2);
     }
 
-    function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    function handleBeforeUnload(e) {
+      if (isAiLoaded) {
+        const warnText = translations[currentLang]["ai.beforeunload"] || "Next time you open, the model will need to be reloaded.";
+        e.preventDefault();
+        e.returnValue = warnText;
+        return warnText;
+      }
     }
 
-    window.changeLanguage = changeLanguage;
-    window.selectModelOption = selectModelOption;
-    window.checkAndStartLoading = checkAndStartLoading;
-    window.cancelLoading = cancelLoading;
-    window.handleSend = sendMessage;
+    async function handleAiSendMessage(event) {
+      event.preventDefault();
+      const inputElem = document.getElementById('ai-chat-input');
+      const messagesContainer = document.getElementById('ai-chat-messages');
+      const sendBtn = document.getElementById('ai-chat-send-btn');
+
+      if (!inputElem || !inputElem.value.trim() || !aiPipeline) return;
+
+      const userText = inputElem.value.trim();
+      inputElem.value = '';
+
+      // Append User Chat Bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = "chat-bubble-user p-3 text-xs sm:text-sm leading-relaxed max-w-[85%] font-sans shadow-sm";
+      userBubble.innerText = userText;
+      messagesContainer.appendChild(userBubble);
+
+      // Append AI Thinking Placeholder Bubble
+      const aiBubble = document.createElement('div');
+      aiBubble.className = "chat-bubble-ai p-3 text-xs sm:text-sm leading-relaxed max-w-[85%] font-sans shadow-sm flex items-center gap-2";
+      aiBubble.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-morandi-blue"></i> <span>Thinking...</span>`;
+      messagesContainer.appendChild(aiBubble);
+
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      if (sendBtn) sendBtn.disabled = true;
+
+      try {
+        const prompt = [
+          { role: 'system', content: 'You are a helpful resident network assistant for dormitory residents. Answer concisely.' },
+          ...aiChatHistory,
+          { role: 'user', content: userText }
+        ];
+
+        const output = await aiPipeline(prompt, { max_new_tokens: 128, temperature: 0.6 });
+
+        let generatedText = "";
+        if (Array.isArray(output) && output[0]?.generated_text) {
+          const gen = output[0].generated_text;
+          if (Array.isArray(gen)) {
+            generatedText = gen[gen.length - 1]?.content || "";
+          } else if (typeof gen === 'string') {
+            generatedText = gen;
+          }
+        }
+
+        if (!generatedText) {
+          generatedText = "Response completed.";
+        }
+
+        aiBubble.innerHTML = generatedText;
+        aiChatHistory.push({ role: 'user', content: userText });
+        aiChatHistory.push({ role: 'assistant', content: generatedText });
+
+      } catch (err) {
+        console.error("AI Generation Error:", err);
+        aiBubble.innerHTML = `<span class="text-red-500 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 服务暂时不可用 (${translations[currentLang]["ai.load_error"]})</span>`;
+      } finally {
+        if (sendBtn) sendBtn.disabled = false;
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 7. INITIALIZATION                                                          */
+    /* -------------------------------------------------------------------------- */
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+
+      setLanguage('en');
+    });
   </script>
 </body>
 </html>
