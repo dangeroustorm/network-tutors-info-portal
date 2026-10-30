@@ -40,16 +40,6 @@
               darkcard: '#1E2225',
               darkborder: '#33383F',
             }
-          },
-          borderRadius: {
-            'none': '0px',
-            'DEFAULT': '0px',
-            'sm': '0px',
-            'md': '0px',
-            'lg': '0px',
-            'xl': '0px',
-            '2xl': '0px',
-            'full': '0px'
           }
         }
       }
@@ -86,10 +76,6 @@
       color: var(--text-main);
       font-family: 'Noto Sans', sans-serif;
       transition: background-color 0.25s ease, color 0.25s ease;
-    }
-
-    *, *::before, *::after {
-      border-radius: 0px !important;
     }
 
     @keyframes fadeIn {
@@ -162,29 +148,28 @@
       box-shadow: none;
     }
 
-    /* Modern Chat Bubbles */
+    /* Messaging Style Chat Bubbles */
     .chat-bubble-user {
-      background-color: #2A3439;
+      background-color: #2563EB; /* Blue 600 */
       color: #FFFFFF;
-      border-radius: 12px !important;
-      border-bottom-right-radius: 2px !important;
-    }
-
-    .dark .chat-bubble-user {
-      background-color: #3B82F6;
-      color: #FFFFFF;
+      border-radius: 18px;
+      border-bottom-right-radius: 4px;
+      width: fit-content;
+      max-width: 100%;
     }
 
     .chat-bubble-ai {
-      background-color: #E2E8F0;
-      color: #000000;
-      border-radius: 12px !important;
-      border-bottom-left-radius: 2px !important;
+      background-color: #E5E7EB; /* Gray 200 */
+      color: #111827; /* Gray 900 */
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      width: fit-content;
+      max-width: 100%;
     }
 
     .dark .chat-bubble-ai {
-      background-color: #2A3439;
-      color: #FFFFFF;
+      background-color: #374151; /* Gray 700 */
+      color: #F9FAFB; /* Gray 50 */
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -219,15 +204,15 @@
       </nav>
 
       <div class="flex items-center space-x-2">
-        <button onclick="openLanguageModal()" class="p-2 hover:bg-white/10 dark:hover:bg-black/10 transition-colors focus:outline-none" title="Select Language">
+        <button onclick="openLanguageModal()" class="p-2 hover:bg-white/10 dark:hover:bg-black/10 transition-colors rounded-full focus:outline-none" title="Select Language">
           <i class="fa-solid fa-globe text-lg"></i>
         </button>
 
-        <button onclick="openAccessibilityModal()" class="p-2 hover:bg-white/10 dark:hover:bg-black/10 transition-colors focus:outline-none" title="Accessibility Settings">
+        <button onclick="openAccessibilityModal()" class="p-2 hover:bg-white/10 dark:hover:bg-black/10 transition-colors rounded-full focus:outline-none" title="Accessibility Settings">
           <i class="fa-solid fa-universal-access text-lg"></i>
         </button>
 
-        <button onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 dark:hover:bg-black/10 transition-colors focus:outline-none" title="Toggle Navigation Menu">
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 hover:bg-white/10 dark:hover:bg-black/10 transition-colors rounded-full focus:outline-none" title="Toggle Navigation Menu">
           <i class="fa-solid fa-bars text-lg" id="mobile-menu-icon"></i>
         </button>
       </div>
@@ -463,7 +448,7 @@
       </div>
     </section>
 
-    <!-- SECTION 3: SUPPORT & ASK KLARA -->
+    <!-- SECTION 3: SUPPORT & AI COMPANION -->
     <section id="support" class="space-y-6 pt-4">
       <div class="border-b border-[#DCE0D8] dark:border-[#33383F] pb-3">
         <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
@@ -521,32 +506,20 @@
           </button>
         </div>
 
-        <!-- Card 4: Ask Klara Card (Pearl Earring Homage Avatar) -->
+        <!-- Card 4: AI Companion Card -->
         <div class="border border-[#DCE0D8] dark:border-[#33383F] bg-morandi-yellow/30 dark:bg-morandi-yellow/10 p-6 space-y-3 flex flex-col justify-between">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <!-- Klara Portrait SVG Avatar -->
-              <div class="w-10 h-10 bg-white dark:bg-morandi-darkcard border border-gray-900 dark:border-gray-200 flex items-center justify-center overflow-hidden p-0.5">
-                <svg viewBox="0 0 100 100" class="w-full h-full stroke-current text-gray-900 dark:text-gray-100 fill-none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M 28,52 C 20,38 25,20 48,16 C 70,12 82,26 78,44 C 76,52 70,62 66,70" fill="none" />
-                  <path d="M 32,32 C 45,22 62,24 74,34" fill="none" />
-                  <path d="M 66,38 C 76,46 82,60 80,78 L 62,78" fill="none" stroke-width="2" />
-                  <path d="M 36,46 C 36,58 42,70 54,72 C 60,72 64,68 66,62" fill="none" />
-                  <path d="M 42,48 C 45,46 49,47 51,49" />
-                  <circle cx="46" cy="51" r="1.8" fill="currentColor" />
-                  <path d="M 54,50 Q 56,56 52,58 Q 50,59 48,59" />
-                  <path d="M 46,64 Q 52,66 56,63" />
-                  <ellipse cx="61" cy="61" rx="3.5" ry="4.5" fill="currentColor" />
-                  <path d="M 48,72 L 46,88" />
-                  <path d="M 62,66 C 68,76 76,82 86,88" />
-                </svg>
+              <!-- AI Minimal Avatar -->
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#847B96] to-[#5A516E] text-white flex items-center justify-center font-bold text-xl shadow-sm shrink-0">
+                <span data-i18n="ai.initial">C</span>
               </div>
-              <span class="px-2 py-0.5 bg-yellow-200 dark:bg-yellow-900/50 text-yellow-900 dark:text-yellow-200 text-[10px] font-bold uppercase tracking-wider font-mono">
-                WebGPU
+              <span class="px-2 py-0.5 bg-yellow-200 dark:bg-yellow-900/50 text-yellow-900 dark:text-yellow-200 text-[10px] font-bold uppercase tracking-wider font-mono" data-i18n="ai.badge">
+                AI
               </span>
             </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white" data-i18n="support.card_ai_title">
-              Ask Klara
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+              <span data-i18n="support.card_ai_title">Ask Clare</span>
             </h3>
             <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed" data-i18n="support.card_ai_desc">
               Your personal network & cybersecurity companion. Client-side local inference with zero data leaving your browser.
@@ -812,32 +785,20 @@
     </div>
   </div>
 
-  <!-- MODAL 4: CLIENT-SIDE WEBGPU ASK KLARA -->
+  <!-- MODAL 4: CLIENT-SIDE WEBGPU AI CHAT (CLARE/KLARA/CLAIRE) -->
   <div id="modal-ai" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay animate-fade-in">
     <div class="bg-white dark:bg-morandi-darkcard border border-[#DCE0D8] dark:border-[#33383F] max-w-xl w-full p-6 space-y-4 shadow-2xl flex flex-col max-h-[90vh]">
       
       <!-- Modal Header -->
       <div class="flex items-center justify-between border-b border-[#DCE0D8] dark:border-[#33383F] pb-3 shrink-0">
         <div class="flex items-center space-x-3">
-          <!-- Klara Pearl Earring Portrait Avatar -->
-          <div class="w-9 h-9 bg-white dark:bg-morandi-darkcard border border-gray-900 dark:border-gray-200 flex items-center justify-center overflow-hidden p-0.5 shrink-0">
-            <svg viewBox="0 0 100 100" class="w-full h-full stroke-current text-gray-900 dark:text-gray-100 fill-none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M 28,52 C 20,38 25,20 48,16 C 70,12 82,26 78,44 C 76,52 70,62 66,70" fill="none" />
-              <path d="M 32,32 C 45,22 62,24 74,34" fill="none" />
-              <path d="M 66,38 C 76,46 82,60 80,78 L 62,78" fill="none" stroke-width="2" />
-              <path d="M 36,46 C 36,58 42,70 54,72 C 60,72 64,68 66,62" fill="none" />
-              <path d="M 42,48 C 45,46 49,47 51,49" />
-              <circle cx="46" cy="51" r="1.8" fill="currentColor" />
-              <path d="M 54,50 Q 56,56 52,58 Q 50,59 48,59" />
-              <path d="M 46,64 Q 52,66 56,63" />
-              <ellipse cx="61" cy="61" rx="3.5" ry="4.5" fill="currentColor" />
-              <path d="M 48,72 L 46,88" />
-              <path d="M 62,66 C 68,76 76,82 86,88" />
-            </svg>
+          <!-- AI Minimal Avatar -->
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#847B96] to-[#5A516E] text-white flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
+            <span data-i18n="ai.initial">C</span>
           </div>
           <div>
-            <h3 id="ai-header-title" class="text-base font-bold text-gray-900 dark:text-white leading-tight">
-              Klara
+            <h3 class="text-base font-bold text-gray-900 dark:text-white leading-tight" data-i18n="ai.name">
+              Clare
             </h3>
             <div class="flex items-center space-x-1.5">
               <span id="ai-status-dot" class="w-2 h-2 rounded-full bg-gray-400 inline-block"></span>
@@ -852,110 +813,125 @@
       </div>
 
       <!-- Main Content Area within Modal -->
-      <div id="ai-main-content" class="flex-1 flex flex-col overflow-hidden relative min-h-[380px]">
+      <div id="ai-main-content" class="flex-1 flex flex-col overflow-hidden relative min-h-[420px]">
 
-        <!-- View 1: Introduction & System Requirements Info -->
-        <div id="view-intro" class="flex-1 p-2 flex flex-col justify-between overflow-y-auto space-y-4">
+        <!-- VIEW 1: STRICT DISCLAIMERS & HARDWARE WARNING -->
+        <div id="view-disclaimer" class="flex-1 p-2 flex flex-col justify-between overflow-y-auto space-y-5 animate-fade-in">
           
-          <div class="space-y-4">
-            <!-- Avatar Header Greeting -->
-            <div class="text-center space-y-2 pt-1">
-              <div class="w-16 h-16 bg-white dark:bg-morandi-darkcard border-2 border-gray-900 dark:border-gray-200 mx-auto p-1 overflow-hidden">
-                <svg viewBox="0 0 100 100" class="w-full h-full stroke-current text-gray-900 dark:text-gray-100 fill-none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M 28,52 C 20,38 25,20 48,16 C 70,12 82,26 78,44 C 76,52 70,62 66,70" fill="none" />
-                  <path d="M 32,32 C 45,22 62,24 74,34" fill="none" />
-                  <path d="M 66,38 C 76,46 82,60 80,78 L 62,78" fill="none" stroke-width="2" />
-                  <path d="M 36,46 C 36,58 42,70 54,72 C 60,72 64,68 66,62" fill="none" />
-                  <path d="M 42,48 C 45,46 49,47 51,49" />
-                  <circle cx="46" cy="51" r="1.8" fill="currentColor" />
-                  <path d="M 54,50 Q 56,56 52,58 Q 50,59 48,59" />
-                  <path d="M 46,64 Q 52,66 56,63" />
-                  <ellipse cx="61" cy="61" rx="3.5" ry="4.5" fill="currentColor" />
-                  <path d="M 48,72 L 46,88" />
-                  <path d="M 62,66 C 68,76 76,82 86,88" />
-                </svg>
+          <div class="space-y-5">
+            <div class="text-center space-y-3 pt-2">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-br from-[#847B96] to-[#5A516E] text-white flex items-center justify-center font-bold text-3xl shadow-sm mx-auto shrink-0">
+                <span data-i18n="ai.initial">C</span>
               </div>
-              <h2 class="text-base font-bold text-gray-900 dark:text-white" data-i18n="klara.introTitle">Meet Klara — Personal Network Companion</h2>
-              <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed max-w-md mx-auto" data-i18n="klara.introDesc">
-                Hi! I am Klara, your friendly network companion. I run 100% locally on your computer GPU to help you troubleshoot WiFi, router settings, and dormitory internet setup without sending data to cloud servers.
-              </p>
+              <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white" data-i18n="ai.greeting">Hi! I am Clare, your AI network companion.</h2>
             </div>
 
-            <!-- Model Options Grid -->
-            <div class="space-y-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block" data-i18n="klara.selectModel">Available On-Device Model</span>
+            <!-- Disclaimer Cards -->
+            <div class="space-y-3 text-xs leading-relaxed">
               
+              <!-- Tech Info -->
+              <div class="p-3 bg-gray-50 dark:bg-morandi-darkbg border border-gray-200 dark:border-gray-800 space-y-1.5">
+                <div class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1.5">
+                  <i class="fa-solid fa-microchip text-morandi-blue"></i>
+                  <span data-i18n="ai.tech_title">WebGPU Technology</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400" data-i18n="ai.tech_desc">This feature loads AI models externally and utilizes your browser cache to perform natural language processing locally. Please note that this is an artificial intelligence technology.</p>
+              </div>
+
+              <!-- Privacy & Limitations -->
+              <div class="p-3 bg-gray-50 dark:bg-morandi-darkbg border border-gray-200 dark:border-gray-800 space-y-1.5">
+                <div class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1.5">
+                  <i class="fa-solid fa-user-shield text-emerald-600 dark:text-emerald-400"></i>
+                  <span data-i18n="ai.privacy_title">Disclaimer & Security</span>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400" data-i18n="ai.privacy_desc">Although deployed locally and Network Tutors does not collect your chat data, we cannot guarantee absolute data security on your device. AI-generated outputs may be inaccurate and are for reference only.</p>
+              </div>
+
+              <!-- Hardware Warning (Red) -->
+              <div class="p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 space-y-1.5">
+                <div class="font-bold text-red-700 dark:text-red-400 flex items-center gap-1.5">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <span data-i18n="ai.warn_title">Important Hardware Warning</span>
+                </div>
+                <p class="text-red-600/90 dark:text-red-400/90" data-i18n="ai.warn_desc">Do not use mobile devices or older computers. Recommended: Apple M-series, Intel Arc, or AMD 780M+ processors with 16GB+ RAM. Please use Chromium-based browsers or Firefox (Safari support is limited). Running on inadequate devices may cause overheating, system crashes, and reduce device lifespan.</p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="space-y-2 pt-4">
+            <button onclick="showModelSelect()" class="w-full py-3 bg-morandi-slate text-white dark:bg-morandi-blue dark:text-gray-900 font-bold text-xs uppercase tracking-wider transition-colors hover:bg-black dark:hover:bg-white shadow-sm text-center">
+              <span data-i18n="ai.btn_accept">I have read the above, start using Clare</span>
+            </button>
+            <button onclick="attemptCloseAiModal()" class="w-full py-2.5 text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider transition-colors hover:text-gray-800 dark:hover:text-gray-200 text-center">
+              <span data-i18n="ai.btn_exit">Exit</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- VIEW 2: MODEL SELECTION -->
+        <div id="view-model-select" class="hidden flex-1 p-2 flex flex-col justify-between overflow-y-auto space-y-4 animate-fade-in">
+          
+          <div class="space-y-4 pt-2">
+            <h3 class="font-bold text-sm text-gray-900 dark:text-white" data-i18n="ai.model_select">Select Model</h3>
+            
+            <div class="space-y-3">
               <!-- Option 1: Qwen2.5 0.5B -->
-              <label class="block p-3 border-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 cursor-pointer transition-all model-option" onclick="selectModelOption(this, 'onnx-community/Qwen2.5-0.5B-Instruct', 'Qwen2.5 0.5B')">
+              <label class="block p-4 border-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 cursor-pointer transition-all model-option" onclick="selectModelOption(this, 'onnx-community/Qwen2.5-0.5B-Instruct', 'Qwen2.5 0.5B')">
                 <div class="flex items-start justify-between">
-                  <div class="space-y-0.5">
-                    <div class="flex items-center gap-1.5 font-bold text-xs text-gray-900 dark:text-white">
-                      <input type="radio" name="model_choice" checked class="text-blue-600 focus:ring-0" />
-                      <span data-i18n="qwenName">Qwen2.5 0.5B Instruct</span>
-                      <span class="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 text-[9px] font-mono" data-i18n="badgeRecommended">Recommended</span>
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2 font-bold text-sm text-gray-900 dark:text-white">
+                      <input type="radio" name="model_choice" checked class="text-blue-600 focus:ring-0 w-4 h-4" />
+                      <span>Qwen2.5 0.5B Instruct</span>
                     </div>
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400" data-i18n="qwenDesc">Fast, lightweight, excellent multilingual network companion.</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="ai.model_qwen_dev">0.5 Billion Parameters | Alibaba Cloud</p>
                   </div>
-                  <span class="text-[10px] font-mono font-semibold text-gray-400" data-i18n="qwenSize">~350 MB</span>
+                  <span class="text-xs font-mono font-semibold text-gray-500">~350 MB</span>
                 </div>
               </label>
 
               <!-- Option 2: Llama 3.2 1B (Disabled) -->
-              <div class="p-3 border border-gray-200 dark:border-gray-800 bg-gray-100/70 dark:bg-zinc-800/40 opacity-60 cursor-not-allowed">
+              <div class="p-4 border border-gray-200 dark:border-gray-800 bg-gray-100/70 dark:bg-zinc-800/40 opacity-60 cursor-not-allowed">
                 <div class="flex items-start justify-between">
-                  <div class="space-y-0.5">
-                    <div class="flex items-center gap-1.5 font-bold text-xs text-gray-500 dark:text-gray-400">
-                      <input type="radio" name="model_choice" disabled class="text-gray-400 focus:ring-0" />
-                      <span data-i18n="llamaName">Llama 3.2 1B</span>
-                      <span class="px-1.5 py-0.2 bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 text-[9px] font-mono" data-i18n="badgeUnavailable">Temporarily Unavailable</span>
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2 font-bold text-sm text-gray-500 dark:text-gray-400">
+                      <input type="radio" name="model_choice" disabled class="text-gray-400 focus:ring-0 w-4 h-4" />
+                      <span>Llama 3.2 1B</span>
+                      <span class="px-1.5 py-0.5 bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 text-[10px] font-mono" data-i18n="badgeUnavailable">Temporarily Unavailable</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 dark:text-gray-500" data-i18n="llamaDescDisabled">Requires higher WebGPU buffer limits and is temporarily disabled.</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500" data-i18n="ai.model_llama_dev">1 Billion Parameters | Meta</p>
                   </div>
-                  <span class="text-[10px] font-mono font-semibold text-gray-400" data-i18n="llamaSize">~700 MB</span>
+                  <span class="text-xs font-mono font-semibold text-gray-400">~700 MB</span>
                 </div>
-              </div>
-            </div>
-
-            <!-- Important Technical & Privacy Info Cards -->
-            <div class="space-y-2 text-[11px] leading-relaxed text-gray-600 dark:text-gray-400">
-              <div class="p-2.5 bg-gray-50 dark:bg-morandi-darkbg border border-gray-200 dark:border-gray-800 space-y-1">
-                <div class="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1.5">
-                  <i class="fa-solid fa-shield-halved text-emerald-500"></i>
-                  <span data-i18n="klara.info_sec_title">100% On-Device Privacy</span>
-                </div>
-                <p data-i18n="klara.info_sec_body">Executes in WebGPU browser memory. No text or log is ever transmitted to external cloud servers.</p>
-              </div>
-
-              <div class="p-2.5 bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-800/50 space-y-1">
-                <div class="font-bold text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
-                  <i class="fa-solid fa-compass-drafting"></i>
-                  <span data-i18n="klara.info_req_title">Recommended Browser & Hardware</span>
-                </div>
-                <p data-i18n="klara.info_req_body">Please use <strong>Chromium-based browsers</strong> (Chrome, Edge, Brave) rather than Safari. Recommended setup: Apple M-Series (M1-M4), Intel Arc, or AMD Radeon 780M with 16GB+ RAM. Mobile devices or older laptops are discouraged as neural weight loading may cause thermal throttling.</p>
               </div>
             </div>
           </div>
 
-          <button id="btn-start" onclick="checkAndStartLoading()" class="w-full py-3 bg-morandi-slate text-white dark:bg-morandi-blue dark:text-gray-900 font-bold text-xs uppercase tracking-wider transition-colors hover:bg-black dark:hover:bg-white shadow-sm flex items-center justify-center space-x-2">
-            <span data-i18n="btnInit">Start Chat with Klara</span>
-            <i class="fa-solid fa-arrow-right text-xs"></i>
-          </button>
-
+          <div class="flex items-center space-x-3 pt-4">
+            <button onclick="switchAiView('view-disclaimer')" class="w-1/3 py-3 border border-gray-300 dark:border-gray-700 font-bold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <span data-i18n="disclaimer.cancel">Cancel</span>
+            </button>
+            <button id="btn-start" onclick="checkAndStartLoading()" class="w-2/3 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-sm flex items-center justify-center space-x-2">
+              <span data-i18n="ai.btn_start_chat">Start Chat</span>
+              <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+          </div>
         </div>
 
-        <!-- View 2: Progress & Loading Screen -->
-        <div id="view-loading" class="hidden flex-1 p-6 flex flex-col items-center justify-center text-center space-y-6">
+        <!-- VIEW 3: LOADING SCREEN -->
+        <div id="view-loading" class="hidden flex-1 p-6 flex flex-col items-center justify-center text-center space-y-6 animate-fade-in">
           <div class="relative w-12 h-12 flex items-center justify-center">
             <div id="loading-spinner" class="absolute inset-0 border-2 border-gray-300 dark:border-gray-700 border-t-morandi-slate dark:border-t-morandi-blue animate-spin"></div>
             <span class="text-xs font-mono font-bold" id="progress-percent-center">0%</span>
           </div>
 
           <div class="space-y-2 w-full max-w-xs">
-            <h3 id="loading-title" class="text-sm font-bold text-gray-900 dark:text-white" data-i18n="loadingTitle">Initializing Klara...</h3>
-            <p id="loading-subtext" class="text-xs text-gray-500 dark:text-gray-400 font-mono" data-i18n="loadingSubtext">Preparing background WebGPU Worker...</p>
+            <h3 id="loading-title" class="text-sm font-bold text-gray-900 dark:text-white" data-i18n="loadingTitle">Initializing...</h3>
+            <p id="loading-subtext" class="text-xs text-gray-500 dark:text-gray-400 font-mono" data-i18n="loadingSubtext">Preparing WebGPU environment...</p>
             
-            <div class="w-full bg-gray-200 dark:bg-gray-800 h-1.5 overflow-hidden mt-3">
-              <div id="progress-bar" class="bg-morandi-slate dark:bg-morandi-blue h-full w-0 transition-all duration-200"></div>
+            <div class="w-full bg-gray-200 dark:bg-gray-800 h-1.5 overflow-hidden mt-3 rounded-full">
+              <div id="progress-bar" class="bg-blue-600 h-full w-0 transition-all duration-200 rounded-full"></div>
             </div>
           </div>
 
@@ -967,37 +943,37 @@
             <p id="error-message" class="text-[11px] leading-relaxed"></p>
           </div>
 
-          <button id="btn-cancel" onclick="cancelLoading()" class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-xs font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-i18n="btnReturn">
+          <button id="btn-cancel" onclick="cancelLoading()" class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-xs font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-full" data-i18n="btnReturn">
             Return to Menu
           </button>
         </div>
 
-        <!-- View 3: Chat Interface -->
-        <div id="view-chat" class="hidden flex-1 flex flex-col h-full overflow-hidden">
+        <!-- VIEW 4: CHAT INTERFACE -->
+        <div id="view-chat" class="hidden flex-1 flex flex-col h-full overflow-hidden animate-fade-in">
           
-          <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-4 no-scrollbar w-full max-h-[340px]">
-            <!-- Welcome message from Klara -->
-            <div class="flex flex-col items-start space-y-1 max-w-[85%] mr-auto">
-              <div class="chat-bubble-ai px-4 py-2.5 text-xs sm:text-sm leading-relaxed shadow-sm font-sans" data-i18n="klara.welcomeMsg">
-                Hello! I am Klara, your personal network companion. How can I help you with your router configuration or dormitory internet today?
+          <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-4 no-scrollbar w-full max-h-[360px]">
+            <!-- Welcome message -->
+            <div class="flex flex-col items-start space-y-1 w-full">
+              <div class="chat-bubble-ai px-4 py-2.5 text-xs sm:text-sm leading-relaxed shadow-sm font-sans" id="chat-welcome-msg">
+                Hello! I am Clare, your personal network companion. How can I help you with your router configuration or dormitory internet today?
               </div>
               <span class="text-[10px] text-gray-400 font-mono px-1" id="welcome-timestamp">12:00</span>
             </div>
           </div>
 
-          <form onsubmit="handleSend(event)" class="p-2 bg-gray-50/90 dark:bg-morandi-darkbg border-t border-gray-200 dark:border-gray-800 flex items-center space-x-2 shrink-0">
+          <form onsubmit="handleSend(event)" class="p-3 bg-gray-50/90 dark:bg-morandi-darkbg border-t border-gray-200 dark:border-gray-800 flex items-center space-x-2 shrink-0">
             <input 
               type="text" 
               id="chat-input" 
-              placeholder="Ask Klara a question..." 
+              placeholder="Ask a question..." 
               data-i18n-placeholder="inputPlaceholder"
               autocomplete="off"
-              class="flex-1 px-3 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-gray-700 text-xs sm:text-sm focus:outline-none focus:border-morandi-slate dark:focus:border-morandi-blue transition-colors placeholder:text-gray-400"
+              class="flex-1 px-4 py-2.5 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-gray-700 text-xs sm:text-sm focus:outline-none focus:border-blue-500 transition-colors placeholder:text-gray-400 rounded-full"
             />
             <button 
               type="submit" 
               id="btn-send"
-              class="px-4 py-2 bg-morandi-slate text-white dark:bg-morandi-blue dark:text-gray-900 text-xs font-bold uppercase transition-colors disabled:opacity-40 shrink-0 flex items-center space-x-1"
+              class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase transition-colors disabled:opacity-40 shrink-0 flex items-center space-x-1 rounded-full shadow-sm"
             >
               <span data-i18n="btnSend">Send</span>
               <i class="fa-solid fa-arrow-up text-[10px]"></i>
@@ -1013,7 +989,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    /* 1. TRILINGUAL DICTIONARY */
+    /* 1. TRILINGUAL DICTIONARY (EN/DE/FR COMPLETE) */
     const translations = {
       en: {
         "nav.setup": "Setup Guide",
@@ -1039,7 +1015,6 @@
         "wizard.btn_prev": "Previous Step",
         "wizard.btn_next": "Next Step",
 
-        // Step 1 Port Details
         "port.select_prompt": "Click any port above to view details.",
         "port.wan_title": "BLUE WAN / INTERNET PORT",
         "port.wan_desc": "Connect the Ethernet cable from your wall socket strictly to this port. It connects your router to the dormitory LRZ network.",
@@ -1050,7 +1025,6 @@
         "port.reset_title": "RESET BUTTON",
         "port.reset_desc": "Press and hold for 10 seconds to restore factory default settings if you forget your admin password.",
 
-        // Step 2 & 3 Interactive Labels
         "wifi.title": "Scan & Connect to Default Wi-Fi",
         "wifi.hint": "Search available Wi-Fi networks on your phone or laptop. Find the network name (SSID) and password on your router's bottom sticker.",
         "wifi.available_title": "Available Networks",
@@ -1067,6 +1041,15 @@
 
         "led.title": "Interactive LED Diagnostic Inspector",
         "led.instruction_hint": "Click individual lights below to recreate your router's status",
+        "led.power_off_title": "Power Light OFF: Router Unpowered",
+        "led.power_off_desc": "Ensure the power adapter is firmly plugged into the electrical outlet and the router power button on the rear panel is pressed ON.",
+        "led.internet_err_title": "Internet LED Amber/OFF: WAN Cable or DHCP Issue",
+        "led.internet_err_desc": "Verify the Ethernet cable is plugged strictly into the BLUE WAN port, not yellow LAN ports. Log into router admin settings to ensure connection type is set to Dynamic IP (DHCP).",
+        "led.wlan_off_title": "WLAN LED OFF: Wi-Fi Radio Disabled",
+        "led.wlan_off_desc": "Press the physical Wi-Fi button on your router rear or side panel for 3 seconds to enable the wireless broadcast.",
+        "led.all_green_title": "All LEDs Green: Router Operating Normally",
+        "led.all_green_desc": "Your router is powered, connected to the dormitory LRZ network WAN port, and broadcasting wireless network signal properly.",
+
         "security.title": "Network Safety & Guidelines",
         "security.rules_heading": "Essential Dormitory Network Rules",
         "security.rule1": "Always connect the wall Ethernet outlet strictly to the BLUE WAN port of your router.",
@@ -1088,9 +1071,11 @@
         "speed.title": "Internet Speed Test",
         "speed.description": "Test your bandwidth, upload speed, and ping directly via Speedtest by Ookla.",
         "speed.button": "Launch Speed Test",
-        "support.card_ai_title": "Ask Klara",
+        
+        "support.card_ai_title": "Ask Clare",
         "support.card_ai_desc": "Your personal network & cybersecurity companion. Client-side local inference with zero data leaving your browser.",
         "support.card_ai_btn": "Start Chat",
+        
         "links.title": "Important External Links & Services",
         "links.stwm_title": "Studierendenwerk München Oberbayern",
         "links.stwm_desc": "Official student housing and services portal.",
@@ -1103,51 +1088,58 @@
         "links.geodata": "Bayern Topo Maps",
         "links.dwd": "DWD Weather Alerts",
         "links.medical": "Medical On-Call 116117",
+        
         "media.title": "Video Setup Guides",
         "media.heading": "YouTube Video Connection Search",
         "media.description": "Looking for visual video tutorials? Search general step-by-step router setup guides directly on YouTube.",
         "media.button": "Search YouTube",
+        
         "footer.provider": "Network Provider: <strong>Leibniz-Rechenzentrum (LRZ)</strong>",
         "footer.back_to_top": "Back to Top",
+        
         "a11y.title": "Accessibility Settings",
         "a11y.theme_label": "Color Mode",
         "a11y.font_label": "Typography Style",
         "a11y.contrast_label": "High Contrast Mode",
         "a11y.contrast_activate": "Activate High Contrast",
         "a11y.contrast_deactivate": "Deactivate High Contrast",
+        
         "disclaimer.title": "External Link Notice",
         "disclaimer.body": "You are about to leave the Network Tutors resident portal and proceed to an external website:",
         "disclaimer.note": "Network Tutors are not responsible for external content or privacy policies.",
         "disclaimer.cancel": "Cancel",
         "disclaimer.proceed": "Proceed",
         
-        // Klara Companion Keys
+        // AI Companion Multilingual Context
+        "ai.name": "Clare",
+        "ai.initial": "C",
+        "ai.badge": "AI",
+        "ai.greeting": "Hi! I am Clare, your AI network companion.",
+        "ai.tech_title": "WebGPU Technology",
+        "ai.tech_desc": "This feature loads AI models externally and utilizes your browser cache to perform natural language processing locally. Please note that this is an artificial intelligence technology.",
+        "ai.privacy_title": "Disclaimer & Security",
+        "ai.privacy_desc": "Although deployed locally and Network Tutors does not collect your chat data, we cannot guarantee absolute data security on your device. AI-generated outputs may be inaccurate and are for reference only.",
+        "ai.warn_title": "Important Hardware Warning",
+        "ai.warn_desc": "Do not use mobile devices or older computers. Recommended: Apple M-series, Intel Arc, or AMD 780M+ processors with 16GB+ RAM. Please use Chromium-based browsers or Firefox (Safari support is limited). Running on inadequate devices may cause overheating, system crashes, and reduce device lifespan.",
+        "ai.btn_accept": "I have read the above, start using Clare",
+        "ai.btn_exit": "Exit",
+        "ai.model_select": "Select Model",
+        "ai.model_qwen_dev": "0.5 Billion Parameters | Alibaba Cloud",
+        "ai.model_llama_dev": "1 Billion Parameters | Meta",
+        "ai.btn_start_chat": "Start Chat",
+
         "klara.statusOffline": "offline",
         "klara.statusOnline": "online",
         "klara.statusLoading": "loading...",
-        "klara.introTitle": "Meet Klara — Personal Network Companion",
-        "klara.introDesc": "Hi! I am Klara, your friendly network companion. I run 100% locally on your computer GPU to help you troubleshoot WiFi, router settings, and dormitory internet setup without sending data to cloud servers.",
-        "klara.selectModel": "Available On-Device Model",
-        "qwenName": "Qwen2.5 0.5B Instruct",
-        "qwenDesc": "Fast, lightweight, excellent multilingual network companion.",
-        "qwenSize": "~350 MB",
-        "llamaName": "Llama 3.2 1B",
-        "llamaDescDisabled": "Requires higher WebGPU buffer limits and is temporarily disabled.",
-        "llamaSize": "~700 MB",
-        "badgeRecommended": "Recommended",
         "badgeUnavailable": "Temporarily Unavailable",
-        "klara.info_sec_title": "100% On-Device Privacy",
-        "klara.info_sec_body": "Executes in WebGPU browser memory. No text or log is ever transmitted to external cloud servers.",
-        "klara.info_req_title": "Recommended Browser & Hardware",
-        "klara.info_req_body": "Please use Chromium-based browsers (Chrome, Edge, Brave) rather than Safari. Recommended setup: Apple M-Series (M1-M4), Intel Arc, or AMD Radeon 780M with 16GB+ RAM. Mobile devices or older laptops are discouraged as neural weight loading may cause thermal throttling.",
-        "btnInit": "Start Chat with Klara",
-        "loadingTitle": "Initializing Klara...",
-        "loadingSubtext": "Preparing background WebGPU Worker...",
+        
+        "loadingTitle": "Initializing Clare...",
+        "loadingSubtext": "Preparing WebGPU environment...",
         "errorTitle": "WebGPU Initialization Failed",
         "btnReturn": "Return to Menu",
         "btnSend": "Send",
-        "inputPlaceholder": "Ask Klara a question...",
-        "klara.welcomeMsg": "Hello! I am Klara, your personal network companion. How can I help you with your router configuration or dormitory internet today?"
+        "inputPlaceholder": "Ask Clare a question...",
+        "klara.welcomeMsg": "Hello! I am Clare, your personal network companion. How can I help you with your router configuration or dormitory internet today?"
       },
       de: {
         "nav.setup": "Einrichtung",
@@ -1173,7 +1165,6 @@
         "wizard.btn_prev": "Vorheriger Schritt",
         "wizard.btn_next": "Nächster Schritt",
 
-        // Step 1 Port Details
         "port.select_prompt": "Klicke auf einen Anschluss oben für Details.",
         "port.wan_title": "BLAUER WAN / INTERNET-PORT",
         "port.wan_desc": "Verbinde das Netzwerkkabel von der Wanddose ausschließlich mit diesem Port. Er verbindet Deinen Router mit dem LRZ-Netzwerk.",
@@ -1184,7 +1175,6 @@
         "port.reset_title": "RESET-TASTE",
         "port.reset_desc": "Halte die Taste 10 Sekunden lang gedrückt, um die Werkseinstellungen wiederherzustellen.",
 
-        // Step 2 & 3 Interactive Labels
         "wifi.title": "Suchen & mit Standard-WLAN verbinden",
         "wifi.hint": "Suche auf Deinem Smartphone oder Laptop nach verfügbaren WLANs. Netzwerkkennung (SSID) und Passwort findest Du auf dem Aufkleber unten am Router.",
         "wifi.available_title": "Verfügbare Netzwerke",
@@ -1201,6 +1191,15 @@
 
         "led.title": "Interaktiver LED-Diagnose-Inspektor",
         "led.instruction_hint": "Klicke auf einzelne Lampen, um den Status Deines Routers nachzubilden",
+        "led.power_off_title": "Power-LED AUS: Router ohne Strom",
+        "led.power_off_desc": "Stelle sicher, dass das Netzteil fest in der Steckdose steckt und der Netzschalter auf der Rückseite eingeschaltet ist.",
+        "led.internet_err_title": "Internet-LED Orange/AUS: WAN-Kabel oder DHCP-Problem",
+        "led.internet_err_desc": "Stelle sicher, dass das Ethernet-Kabel am BLAUEN WAN-Port (nicht gelb) angeschlossen ist. Prüfe in den Router-Einstellungen, ob der Verbindungstyp auf Dynamische IP (DHCP) steht.",
+        "led.wlan_off_title": "WLAN-LED AUS: WLAN deaktiviert",
+        "led.wlan_off_desc": "Drücke die WLAN-Taste am Router (meist Rückseite) für 3 Sekunden, um das Drahtlosnetzwerk wieder zu aktivieren.",
+        "led.all_green_title": "Alle LEDs Grün: Normaler Betrieb",
+        "led.all_green_desc": "Dein Router wird mit Strom versorgt, ist korrekt mit dem LRZ-Netzwerk verbunden und sendet ein aktives WLAN-Signal aus.",
+
         "security.title": "Netzwerksicherheit & Regeln",
         "security.rules_heading": "Wichtige Wohnheim-Netzwerkregeln",
         "security.rule1": "Schließe die Ethernet-Wanddose ausschließlich an den BLAUEN WAN-Port Deines Routers an.",
@@ -1222,9 +1221,11 @@
         "speed.title": "Internet-Geschwindigkeitstest",
         "speed.description": "Teste Deine Bandbreite, Upload-Geschwindigkeit und Latenz direkt über Speedtest von Ookla.",
         "speed.button": "Speedtest starten",
+        
         "support.card_ai_title": "Klara fragen",
-        "support.card_ai_desc": "Deine persönliche Netzwerk-Begleiterin. Lokale Ausführung im Browser ohne Datenübertragung an Server.",
+        "support.card_ai_desc": "Deine persönliche KI-Netzwerkbegleiterin. Lokale Ausführung im Browser ohne Datenübertragung an Server.",
         "support.card_ai_btn": "Chat starten",
+        
         "links.title": "Wichtige externe Links & Dienste",
         "links.stwm_title": "Studierendenwerk München Oberbayern",
         "links.stwm_desc": "Offizielles Portal für studentisches Wohnen und Services.",
@@ -1237,51 +1238,58 @@
         "links.geodata": "Bayern Topo-Karten",
         "links.dwd": "DWD Wetterwarnungen",
         "links.medical": "Ärztlicher Bereitschaftsdienst 116117",
+        
         "media.title": "Video-Einrichtungsanleitungen",
         "media.heading": "YouTube Video-Suche",
         "media.description": "Suchst Du nach anschaulichen Video-Anleitungen? Suche allgemeine Schritte zur Router-Einrichtung direkt auf YouTube.",
         "media.button": "Auf YouTube suchen",
+        
         "footer.provider": "Netzwerkanbieter: <strong>Leibniz-Rechenzentrum (LRZ)</strong>",
         "footer.back_to_top": "Nach oben",
+        
         "a11y.title": "Barrierefreiheit-Einstellungen",
         "a11y.theme_label": "Farbmodus",
         "a11y.font_label": "Schriftstil",
         "a11y.contrast_label": "Hoher Kontrast",
         "a11y.contrast_activate": "Hohen Kontrast aktivieren",
         "a11y.contrast_deactivate": "Hohen Kontrast deaktivieren",
+        
         "disclaimer.title": "Hinweis zu externem Link",
         "disclaimer.body": "Du verlässt nun das Portal der Network Tutors und wirst zu einer externen Webseite weitergeleitet:",
         "disclaimer.note": "Die Network Tutors sind nicht für Inhalte externer Seiten verantwortlich.",
         "disclaimer.cancel": "Abbrechen",
         "disclaimer.proceed": "Weiter",
 
-        // Klara Companion Keys
+        // AI Companion Multilingual Context
+        "ai.name": "Klara",
+        "ai.initial": "K",
+        "ai.badge": "KI",
+        "ai.greeting": "Hallo! Ich bin Klara, deine KI-Netzwerkbegleiterin.",
+        "ai.tech_title": "WebGPU-Technologie",
+        "ai.tech_desc": "Diese Funktion lädt KI-Modelle extern und nutzt deinen Browser-Cache für die lokale Sprachverarbeitung. Bitte beachte, dass es sich hierbei um Künstliche Intelligenz handelt.",
+        "ai.privacy_title": "Haftungsausschluss & Sicherheit",
+        "ai.privacy_desc": "Obwohl lokal ausgeführt und Network Tutors keine Daten sammelt, können wir keine absolute Datensicherheit garantieren. KI-Ausgaben können ungenau sein und dienen nur als Referenz.",
+        "ai.warn_title": "Wichtiger Hardware-Hinweis",
+        "ai.warn_desc": "Verwende keine Mobilgeräte oder ältere Computer. Empfohlen: Apple M-Serie, Intel Arc oder AMD 780M+ mit mindestens 16GB RAM. Nutze Chromium-Browser oder Firefox (Safari nur eingeschränkt). Ungeeignete Geräte können überhitzen, abstürzen und ihre Lebensdauer verkürzen.",
+        "ai.btn_accept": "Ich habe die Hinweise gelesen, Klara starten",
+        "ai.btn_exit": "Beenden",
+        "ai.model_select": "Modell auswählen",
+        "ai.model_qwen_dev": "0.5 Milliarden Parameter | Alibaba Cloud",
+        "ai.model_llama_dev": "1 Milliarde Parameter | Meta",
+        "ai.btn_start_chat": "Chat starten",
+
         "klara.statusOffline": "offline",
         "klara.statusOnline": "online",
         "klara.statusLoading": "lädt...",
-        "klara.introTitle": "Lerne Klara kennen — Deine Netzwerk-Begleiterin",
-        "klara.introDesc": "Hallo! Ich bin Klara, Deine persönliche Assistentin. Ich laufe zu 100% lokal auf Deinem Grafikprozessor, um Dir bei Router- und Netzwerkfragen zu helfen, ohne Daten an Server zu senden.",
-        "klara.selectModel": "Verfügbares lokales Modell",
-        "qwenName": "Qwen2.5 0.5B Instruct",
-        "qwenDesc": "Schnelles, leichtes und hervorragend mehrsprachiges Modell.",
-        "qwenSize": "~350 MB",
-        "llamaName": "Llama 3.2 1B",
-        "llamaDescDisabled": "Benötigt höhere WebGPU-Puffergrenzen und ist vorübergehend deaktiviert.",
-        "llamaSize": "~700 MB",
-        "badgeRecommended": "Empfohlen",
         "badgeUnavailable": "Vorübergehend nicht verfügbar",
-        "klara.info_sec_title": "100% Lokaler Datenschutz",
-        "klara.info_sec_body": "Wird direkt im Grafikspeicher ausgeführt. Es werden keinerlei Texte an externe Server gesendet.",
-        "klara.info_req_title": "Empfohlener Browser & Hardware",
-        "klara.info_req_body": "Bitte verwende Chromium-basierte Browser (Chrome, Edge, Brave) statt Safari. Empfehlung: Apple M-Serie (M1-M4), Intel Arc oder AMD Radeon 780M mit 16GB+ RAM.",
-        "btnInit": "Chat mit Klara starten",
+        
         "loadingTitle": "Klara wird initialisiert...",
-        "loadingSubtext": "Vorbereitung des Hintergrund-Workers...",
+        "loadingSubtext": "Vorbereitung der WebGPU-Umgebung...",
         "errorTitle": "WebGPU-Initialisierung fehlgeschlagen",
         "btnReturn": "Zurück zum Menü",
         "btnSend": "Senden",
-        "inputPlaceholder": "Stelle Klara eine Frage...",
-        "klara.welcomeMsg": "Hallo! Ich bin Klara. Wie kann ich Dir heute bei Deiner Router-Einrichtung oder dem Wohnheim-Netzwerk helfen?"
+        "inputPlaceholder": "Stelle eine Frage...",
+        "klara.welcomeMsg": "Hallo! Ich bin Klara. Wie kann ich dir heute bei der Router-Einrichtung oder dem Wohnheim-Netzwerk helfen?"
       },
       fr: {
         "nav.setup": "Guide d'installation",
@@ -1307,7 +1315,6 @@
         "wizard.btn_prev": "Étape précédente",
         "wizard.btn_next": "Étape suivante",
 
-        // Step 1 Port Details
         "port.select_prompt": "Cliquez sur un port ci-dessus pour afficher les détails.",
         "port.wan_title": "PORT WAN BLEU / INTERNET",
         "port.wan_desc": "Branchez le câble Ethernet de la prise murale exclusivement sur ce port. Il relie votre routeur au réseau de la résidence.",
@@ -1315,10 +1322,9 @@
         "port.lan_desc": "Connectez vos appareils filaires (PC, TV) ici. Ne branchez JAMAIS les câbles muraux sur les ports LAN jaunes !",
         "port.power_title": "PRISE D'ALIMENTATION",
         "port.power_desc": "Branchez le bloc d'alimentation officiel sur cette prise et allumez l'interrupteur.",
-        "port.reset_title": "BOUTON DERÉINITIALISATION",
+        "port.reset_title": "BOUTON DE RÉINITIALISATION",
         "port.reset_desc": "Maintenez appuyé pendant 10 secondes pour restaurer les paramètres d'usine si vous oubliez votre mot de passe.",
 
-        // Step 2 & 3 Interactive Labels
         "wifi.title": "Rechercher & Se connecter au Wi-Fi",
         "wifi.hint": "Recherchez les réseaux Wi-Fi disponibles sur votre appareil. Le nom du réseau (SSID) et le mot de passe sont sur l'étiquette du routeur.",
         "wifi.available_title": "Réseaux disponibles",
@@ -1335,6 +1341,15 @@
 
         "led.title": "Inspecteur interactif de diagnostic LED",
         "led.instruction_hint": "Cliquez sur les voyants ci-dessous pour recréer l'état de votre routeur",
+        "led.power_off_title": "Voyant d'alimentation ÉTEINT : Routeur hors tension",
+        "led.power_off_desc": "Assurez-vous que l'adaptateur secteur est bien branché dans la prise et que le bouton d'alimentation est sur ON.",
+        "led.internet_err_title": "Voyant Internet Orange/Éteint : Problème WAN ou DHCP",
+        "led.internet_err_desc": "Vérifiez que le câble Ethernet est bien branché sur le port WAN BLEU (pas jaune). Connectez-vous aux paramètres du routeur et assurez-vous que le type de connexion est sur IP dynamique (DHCP).",
+        "led.wlan_off_title": "Voyant WLAN ÉTEINT : Wi-Fi désactivé",
+        "led.wlan_off_desc": "Appuyez sur le bouton Wi-Fi physique de votre routeur pendant 3 secondes pour activer la diffusion sans fil.",
+        "led.all_green_title": "Tous les voyants sont Verts : Fonctionnement Normal",
+        "led.all_green_desc": "Votre routeur est alimenté, connecté au réseau du LRZ, et diffuse correctement le signal Wi-Fi.",
+
         "security.title": "Sécurité réseau & Règles",
         "security.rules_heading": "Règles réseau essentielles de la résidence",
         "security.rule1": "Branchez toujours la prise murale Ethernet exclusivement sur le port WAN BLEU de votre routeur.",
@@ -1356,9 +1371,11 @@
         "speed.title": "Test de vitesse Internet",
         "speed.description": "Testez votre débit, votre envoi et votre latence directement via Speedtest de Ookla.",
         "speed.button": "Lancer le test",
-        "support.card_ai_title": "Demander à Klara",
-        "support.card_ai_desc": "Votre assistante réseau personnelle. Inférence locale 100% sur votre navigateur.",
+        
+        "support.card_ai_title": "Demander à Claire",
+        "support.card_ai_desc": "Votre assistante réseau IA. Inférence locale 100% sur votre navigateur.",
         "support.card_ai_btn": "Lancer la discussion",
+        
         "links.title": "Liens externes importants",
         "links.stwm_title": "Studierendenwerk München Oberbayern",
         "links.stwm_desc": "Portail officiel des services étudiants.",
@@ -1371,51 +1388,58 @@
         "links.geodata": "Cartes Topo Bavière",
         "links.dwd": "Alertes Météo DWD",
         "links.medical": "Garde Médicale 116117",
+        
         "media.title": "Guides d'installation vidéo",
         "media.heading": "Recherche vidéo YouTube",
         "media.description": "Vous cherchez des tutoriels vidéo ? Recherchez des guides généraux d'installation de routeur directement sur YouTube.",
         "media.button": "Rechercher sur YouTube",
+        
         "footer.provider": "Fournisseur réseau : <strong>Leibniz-Rechenzentrum (LRZ)</strong>",
         "footer.back_to_top": "Retour en haut",
+        
         "a11y.title": "Paramètres d'accessibilité",
         "a11y.theme_label": "Mode couleur",
         "a11y.font_label": "Style typographique",
         "a11y.contrast_label": "Mode contraste élevé",
         "a11y.contrast_activate": "Activer le contraste élevé",
         "a11y.contrast_deactivate": "Désactiver le contraste élevé",
+        
         "disclaimer.title": "Avis de lien externe",
         "disclaimer.body": "Vous allez quitter le portail Network Tutors pour vous rendre sur un site externe :",
         "disclaimer.note": "Les Network Tutors ne sont pas responsables du contenu des sites externes.",
         "disclaimer.cancel": "Annuler",
         "disclaimer.proceed": "Poursuivre",
 
-        // Klara Companion Keys
+        // AI Companion Multilingual Context
+        "ai.name": "Claire",
+        "ai.initial": "C",
+        "ai.badge": "IA",
+        "ai.greeting": "Bonjour ! Je suis Claire, votre assistante réseau IA.",
+        "ai.tech_title": "Technologie WebGPU",
+        "ai.tech_desc": "Cette fonctionnalité charge des modèles IA et utilise le cache de votre navigateur pour traiter le langage naturel localement. Veuillez noter qu'il s'agit d'une technologie d'intelligence artificielle.",
+        "ai.privacy_title": "Avis de sécurité",
+        "ai.privacy_desc": "Bien que l'exécution soit locale et qu'aucune donnée ne soit collectée, la sécurité absolue de vos données n'est pas garantie. Les réponses de l'IA peuvent être inexactes et sont fournies à titre indicatif.",
+        "ai.warn_title": "Avertissement Matériel Important",
+        "ai.warn_desc": "Ne pas utiliser sur des appareils mobiles ou de vieux ordinateurs. Recommandé : processeurs Apple M-series, Intel Arc, ou AMD 780M+ avec 16Go+ de RAM. Utilisez Chromium ou Firefox (Safari limité). L'utilisation d'appareils inadaptés peut provoquer une surchauffe et réduire la durée de vie du matériel.",
+        "ai.btn_accept": "J'ai lu les informations, démarrer Claire",
+        "ai.btn_exit": "Quitter",
+        "ai.model_select": "Sélectionner le modèle",
+        "ai.model_qwen_dev": "0.5 Milliard de Paramètres | Alibaba Cloud",
+        "ai.model_llama_dev": "1 Milliard de Paramètres | Meta",
+        "ai.btn_start_chat": "Démarrer le chat",
+
         "klara.statusOffline": "hors ligne",
         "klara.statusOnline": "en ligne",
         "klara.statusLoading": "chargement...",
-        "klara.introTitle": "Découvrez Klara — Assistante Réseau",
-        "klara.introDesc": "Bonjour ! Je suis Klara, votre assistante réseau personnelle. S'exécute à 100% localement sur votre GPU pour vous guider sans envoyer de données vers un serveur.",
-        "klara.selectModel": "Modèle local disponible",
-        "qwenName": "Qwen2.5 0.5B Instruct",
-        "qwenDesc": "Modèle rapide, léger et multilingue.",
-        "qwenSize": "~350 Mo",
-        "llamaName": "Llama 3.2 1B",
-        "llamaDescDisabled": "Nécessite plus de mémoire WebGPU et est désactivé.",
-        "llamaSize": "~700 Mo",
-        "badgeRecommended": "Recommandé",
         "badgeUnavailable": "Temporairement indisponible",
-        "klara.info_sec_title": "Confidentialité 100% Locale",
-        "klara.info_sec_body": "S'exécute entièrement dans la mémoire de votre navigateur. Aucune donnée n'est transmise.",
-        "klara.info_req_title": "Navigateur & Matériel Recommandés",
-        "klara.info_req_body": "Veuillez utiliser des navigateurs basés sur Chromium (Chrome, Edge, Brave) plutôt que Safari. Configuration recommandée : Apple Silicon (M1-M4), Intel Arc, ou AMD Radeon 780M avec 16Go+ RAM.",
-        "btnInit": "Démarrer le chat avec Klara",
-        "loadingTitle": "Initialisation de Klara...",
-        "loadingSubtext": "Préparation du worker WebGPU...",
+        
+        "loadingTitle": "Initialisation de Claire...",
+        "loadingSubtext": "Préparation de l'environnement WebGPU...",
         "errorTitle": "Échec de l'initialisation WebGPU",
         "btnReturn": "Retour au menu",
         "btnSend": "Envoyer",
-        "inputPlaceholder": "Posez une question à Klara...",
-        "klara.welcomeMsg": "Bonjour ! Je suis Klara. Comment puis-je vous aider aujourd'hui pour votre routeur ou le réseau de la résidence ?"
+        "inputPlaceholder": "Posez une question...",
+        "klara.welcomeMsg": "Bonjour ! Je suis Claire. Comment puis-je vous aider aujourd'hui pour votre routeur ou le réseau de la résidence ?"
       }
     };
 
@@ -1448,6 +1472,13 @@
       calculateNextServiceDate();
       analyzeLedStates();
       updateHighContrastButtonText();
+      
+      // Update AI welcome message context if changed
+      const aiWelcomeMsg = document.getElementById('chat-welcome-msg');
+      if (aiWelcomeMsg && chatHistory.length === 0) {
+        aiWelcomeMsg.innerHTML = translations[lang]["klara.welcomeMsg"];
+      }
+
       closeLanguageModal();
     }
 
@@ -1542,7 +1573,6 @@
       if (!visualContainer) return;
 
       if (step === 1) {
-        // STEP 1: INTERACTIVE CLICKABLE PORTS SVG
         let activeTitle = translations[currentLang]["port.wan_title"];
         let activeDesc = translations[currentLang]["port.wan_desc"];
         let activeBadgeColor = "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300";
@@ -1573,20 +1603,17 @@
                 <rect x="20" y="20" width="660" height="120" fill="#2A3439" stroke="#1E2225" stroke-width="4" />
                 <rect x="30" y="30" width="640" height="100" fill="#1E2225" />
                 
-                <!-- Power Socket -->
                 <g onclick="selectRouterPort('power')" class="cursor-pointer group">
                   <circle cx="80" cy="80" r="16" fill="${selectedPortKey==='power'?'#4B5563':'#374151'}" stroke="${selectedPortKey==='power'?'#60A5FA':'#6B7280'}" stroke-width="${selectedPortKey==='power'?'3':'2'}"/>
                   <text x="80" y="118" fill="#9CA3AF" font-size="10" font-weight="bold" text-anchor="middle">POWER</text>
                 </g>
                 
-                <!-- WAN Port (Blue) -->
                 <g onclick="selectRouterPort('wan')" class="cursor-pointer group">
                   <rect x="180" y="58" width="50" height="44" fill="${selectedPortKey==='wan'?'#1D4ED8':'#2563EB'}" stroke="${selectedPortKey==='wan'?'#FFFFFF':'#60A5FA'}" stroke-width="${selectedPortKey==='wan'?'3':'2'}" />
                   <text x="205" y="118" fill="#60A5FA" font-size="10" font-weight="bold" text-anchor="middle">WAN (BLUE)</text>
                   ${selectedPortKey==='wan'?'<circle cx="205" cy="44" r="4" fill="#60A5FA" />':''}
                 </g>                
                 
-                <!-- LAN Ports (Yellow) -->
                 <g onclick="selectRouterPort('lan')" class="cursor-pointer group">
                   <rect x="270" y="58" width="38" height="44" fill="${selectedPortKey==='lan'?'#B45309':'#D97706'}" stroke="${selectedPortKey==='lan'?'#FFFFFF':'#FBBF24'}" stroke-width="${selectedPortKey==='lan'?'3':'1'}" />
                   <rect x="316" y="58" width="38" height="44" fill="${selectedPortKey==='lan'?'#B45309':'#D97706'}" stroke="${selectedPortKey==='lan'?'#FFFFFF':'#FBBF24'}" stroke-width="${selectedPortKey==='lan'?'3':'1'}" />
@@ -1595,7 +1622,6 @@
                   <text x="366" y="118" fill="#FBBF24" font-size="10" font-weight="bold" text-anchor="middle">LAN PORTS 1-4 (YELLOW)</text>
                 </g>
 
-                <!-- Reset Button -->
                 <g onclick="selectRouterPort('reset')" class="cursor-pointer group">
                   <circle cx="520" cy="80" r="8" fill="${selectedPortKey==='reset'?'#DC2626':'#EF4444'}" stroke="${selectedPortKey==='reset'?'#FFFFFF':'#F87171'}" stroke-width="${selectedPortKey==='reset'?'3':'1'}"/>
                   <text x="520" y="118" fill="#9CA3AF" font-size="10" font-weight="bold" text-anchor="middle">RESET</text>
@@ -1616,7 +1642,6 @@
           </div>
         `;
       } else if (step === 2) {
-        // STEP 2: SIMULATED WI-FI SCANNER
         visualContainer.innerHTML = `
           <div class="space-y-4">
             <h4 class="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2">
@@ -1676,7 +1701,6 @@
           </div>
         `;
       } else if (step === 3) {
-        // STEP 3: SIMULATED SIMPLE LOGIN
         visualContainer.innerHTML = `
           <div class="space-y-4">
             <h4 class="font-bold text-sm text-gray-900 dark:text-white flex items-center gap-2">
@@ -1828,53 +1852,43 @@
 
     function analyzeLedStates() {
       const output = document.getElementById('led-diagnostic-output');
-      if (!output) return;
+      if (!output || !translations[currentLang]) return;
 
       if (routerLeds.power === 'off') {
         output.className = "p-5 border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-sm space-y-2";
         output.innerHTML = `
           <div class="font-bold text-red-700 dark:text-red-400 flex items-center gap-2">
             <i class="fa-solid fa-circle-xmark"></i>
-            <span>Power Light OFF: Router Unpowered</span>
+            <span>${translations[currentLang]["led.power_off_title"]}</span>
           </div>
-          <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-            Ensure the power adapter is firmly plugged into the electrical outlet and the router power button on the rear panel is pressed ON.
-          </p>
+          <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">${translations[currentLang]["led.power_off_desc"]}</p>
         `;
       } else if (routerLeds.internet === 'off' || routerLeds.internet === 'amber') {
         output.className = "p-5 border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-sm space-y-2";
         output.innerHTML = `
           <div class="font-bold text-amber-800 dark:text-amber-300 flex items-center gap-2">
             <i class="fa-solid fa-triangle-exclamation"></i>
-            <span>Internet LED Amber/OFF: WAN Cable or DHCP Issue</span>
+            <span>${translations[currentLang]["led.internet_err_title"]}</span>
           </div>
-          <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1 list-disc pl-4 leading-relaxed">
-            <li>Verify the Ethernet cable is plugged strictly into the <strong>BLUE WAN port</strong>, not yellow LAN ports.</li>
-            <li>Verify the cable is firmly clicked into the room's wall Ethernet socket.</li>
-            <li>Log into router admin settings (<code class="font-mono">192.168.0.1</code>) and ensure connection type is set to <strong>Dynamic IP (DHCP)</strong>.</li>
-          </ul>
+          <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">${translations[currentLang]["led.internet_err_desc"]}</p>
         `;
       } else if (routerLeds.wlan === 'off') {
         output.className = "p-5 border border-blue-300 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30 text-sm space-y-2";
         output.innerHTML = `
           <div class="font-bold text-blue-800 dark:text-blue-300 flex items-center gap-2">
             <i class="fa-solid fa-wifi"></i>
-            <span>WLAN LED OFF: Wi-Fi Radio Disabled</span>
+            <span>${translations[currentLang]["led.wlan_off_title"]}</span>
           </div>
-          <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-            Press the physical Wi-Fi button on your router rear or side panel for 3 seconds to enable the wireless broadcast.
-          </p>
+          <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">${translations[currentLang]["led.wlan_off_desc"]}</p>
         `;
       } else {
         output.className = "p-5 border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-sm space-y-2";
         output.innerHTML = `
           <div class="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
             <i class="fa-solid fa-circle-check"></i>
-            <span>All LEDs Green: Router Operating Normally</span>
+            <span>${translations[currentLang]["led.all_green_title"]}</span>
           </div>
-          <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-            Your router is powered, connected to the dormitory LRZ network WAN port, and broadcasting wireless network signal properly.
-          </p>
+          <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">${translations[currentLang]["led.all_green_desc"]}</p>
         `;
       }
     }
@@ -1910,10 +1924,10 @@
       const contrastBtn = document.getElementById('contrast-toggle-btn');
       if (!contrastBtn) return;
       const isHighContrast = document.body.classList.contains('high-contrast');
-      contrastBtn.innerText = isHighContrast ? "Deactivate High Contrast" : "Activate High Contrast";
+      contrastBtn.innerText = isHighContrast ? translations[currentLang]["a11y.contrast_deactivate"] : translations[currentLang]["a11y.contrast_activate"];
     }
 
-    /* 6. INTEGRATED CLIENT-SIDE WEBGPU CHAT WORKER LOGIC (ASK KLARA) */
+    /* 6. INTEGRATED CLIENT-SIDE WEBGPU CHAT WORKER LOGIC */
     const workerScriptCode = `
       import { pipeline, TextStreamer, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3';
 
@@ -1923,14 +1937,12 @@
       let generator = null;
       let fileProgressMap = {};
 
-      const KLARA_SYSTEM_PROMPT = \`You are Klara, a friendly, thoughtful, and reliable network and cybersecurity companion. Your name evokes clarity and light. You feel like a knowledgeable friend, not a robotic assistant.
+      const AI_SYSTEM_PROMPT = \`You are an AI network companion for a student dormitory. You are friendly, concise, and helpful. 
 
 - Respond in the user's language.
 - Explain risks before recommending potentially disruptive changes.
 - Never invent facts, claim unperformed actions, or pretend to know what you cannot verify.
-- Ask one focused question when essential information is missing.
-
-Never fabricate citations, just say you don't know if you are not sure. Distinguish verified facts from assumptions.\`;
+- Keep responses brief and relevant to networking, routers, or general tech queries.\`;
 
       self.addEventListener('message', async (e) => {
         const { type, data } = e.data;
@@ -1966,7 +1978,7 @@ Never fabricate citations, just say you don't know if you are not sure. Distingu
             });
 
             const messages = [
-              { role: 'system', content: KLARA_SYSTEM_PROMPT },
+              { role: 'system', content: AI_SYSTEM_PROMPT },
               ...(data.history || []),
               { role: 'user', content: data.text }
             ];
@@ -1998,11 +2010,14 @@ Never fabricate citations, just say you don't know if you are not sure. Distingu
     function openAiModal() {
       document.getElementById('modal-ai')?.classList.remove('hidden');
       updateWelcomeTimestamp();
+      if (!aiWorker && chatHistory.length === 0) {
+        switchAiView('view-disclaimer');
+      }
     }
 
     function attemptCloseAiModal() {
       if (aiWorker || chatHistory.length > 0) {
-        if (!confirm("Current chat session with Klara will be ended. Are you sure you want to close?")) {
+        if (!confirm("Current AI chat session will be ended. Are you sure you want to close?")) {
           return;
         }
       }
@@ -2027,14 +2042,18 @@ Never fabricate citations, just say you don't know if you are not sure. Distingu
       if (tsElem) tsElem.innerText = getCurrentTimeFormatted();
     }
 
+    function showModelSelect() {
+      switchAiView('view-model-select');
+    }
+
     function selectModelOption(elem, modelId, modelName) {
       document.querySelectorAll('.model-option').forEach(el => {
-        el.className = 'block p-3 border border-gray-200 dark:border-gray-800 hover:border-gray-300 cursor-pointer transition-all model-option';
+        el.className = 'block p-4 border border-gray-200 dark:border-gray-800 hover:border-gray-300 cursor-pointer transition-all model-option';
         const radio = el.querySelector('input[type="radio"]');
         if (radio) radio.checked = false;
       });
 
-      elem.className = 'block p-3 border-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 cursor-pointer transition-all model-option';
+      elem.className = 'block p-4 border-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 cursor-pointer transition-all model-option';
       const currentRadio = elem.querySelector('input[type="radio"]');
       if (currentRadio) currentRadio.checked = true;
 
@@ -2044,7 +2063,7 @@ Never fabricate citations, just say you don't know if you are not sure. Distingu
 
     async function checkAndStartLoading() {
       switchAiView('view-loading');
-      document.getElementById('loading-title').innerText = `${translations[currentLang].loadingTitle}`;
+      document.getElementById('loading-title').innerText = translations[currentLang]["loadingTitle"];
       
       const statusBadge = document.getElementById('ai-status-badge');
       const statusDot = document.getElementById('ai-status-dot');
@@ -2124,28 +2143,26 @@ Never fabricate citations, just say you don't know if you are not sure. Distingu
       const chatContainer = document.getElementById('chat-messages');
       const timeStr = getCurrentTimeFormatted();
 
-      // User Message Bubble
       const userBubbleWrap = document.createElement('div');
-      userBubbleWrap.className = 'flex flex-col items-end space-y-1 max-w-[85%] ml-auto';
+      userBubbleWrap.className = 'flex flex-col items-end space-y-1 w-full mt-2';
       userBubbleWrap.innerHTML = `
-        <div class="chat-bubble-user px-4 py-2.5 text-xs sm:text-sm leading-relaxed shadow-sm font-sans break-words whitespace-pre-wrap">
+        <div class="chat-bubble-user px-4 py-2.5 text-xs sm:text-sm leading-relaxed shadow-sm font-sans break-words whitespace-pre-wrap ml-auto">
           ${escapeHtml(text)}
         </div>
-        <span class="text-[10px] text-gray-400 font-mono px-1">${timeStr}</span>
+        <span class="text-[10px] text-gray-400 font-mono px-1 ml-auto">${timeStr}</span>
       `;
       chatContainer.appendChild(userBubbleWrap);
 
-      // AI Message Bubble
       const aiBubbleWrap = document.createElement('div');
-      aiBubbleWrap.className = 'flex flex-col items-start space-y-1 max-w-[85%] mr-auto';
+      aiBubbleWrap.className = 'flex flex-col items-start space-y-1 w-full mt-2';
       
       currentAiBubble = document.createElement('div');
-      currentAiBubble.className = 'chat-bubble-ai px-4 py-2.5 text-xs sm:text-sm leading-relaxed shadow-sm font-sans break-words whitespace-pre-wrap';
+      currentAiBubble.className = 'chat-bubble-ai px-4 py-2.5 text-xs sm:text-sm leading-relaxed shadow-sm font-sans break-words whitespace-pre-wrap mr-auto';
       currentAiBubble.innerText = '';
       accumulatedResponse = '';
       
       const timeLabel = document.createElement('span');
-      timeLabel.className = 'text-[10px] text-gray-400 font-mono px-1';
+      timeLabel.className = 'text-[10px] text-gray-400 font-mono px-1 mr-auto';
       timeLabel.innerText = timeStr;
 
       aiBubbleWrap.appendChild(currentAiBubble);
@@ -2187,11 +2204,23 @@ Never fabricate citations, just say you don't know if you are not sure. Distingu
       const statusDot = document.getElementById('ai-status-dot');
       if (statusBadge) statusBadge.innerText = translations[currentLang]["klara.statusOffline"];
       if (statusDot) statusDot.className = "w-2 h-2 rounded-full bg-gray-400 inline-block";
-      switchAiView('view-intro');
+      switchAiView('view-disclaimer');
+      
+      const aiWelcomeMsg = document.getElementById('chat-welcome-msg');
+      if (aiWelcomeMsg) {
+          aiWelcomeMsg.innerHTML = translations[currentLang]["klara.welcomeMsg"];
+      }
+      
+      const chatContainer = document.getElementById('chat-messages');
+      if (chatContainer) {
+          Array.from(chatContainer.children).forEach((child, index) => {
+              if (index > 0) chatContainer.removeChild(child);
+          });
+      }
     }
 
     function switchAiView(viewId) {
-      ['view-intro', 'view-loading', 'view-chat'].forEach(id => {
+      ['view-disclaimer', 'view-model-select', 'view-loading', 'view-chat'].forEach(id => {
         document.getElementById(id).classList.add('hidden');
       });
       document.getElementById(viewId).classList.remove('hidden');
@@ -2220,3 +2249,4 @@ Never fabricate citations, just say you don't know if you are not sure. Distingu
   </script>
 </body>
 </html>
+```eof
